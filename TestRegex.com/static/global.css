@@ -1,0 +1,32 @@
+:root {
+    --header: #282A41;
+    --body-primary: #2D2F40;
+    --body-secondary: #585B63;
+    --body-tertiary: #656871;
+    --body-quaternary: #DDDED4;
+    --no-match: #363636;
+    --match-bg: #2b4230;
+    --error-bg: #8a2d2d;
+}
+
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    /* overflow: hidden; */
+    padding: 0;
+    tab-size: 4;
+    line-height: 16px; 
+    background-color: var(--body-primary);
+}
+
+header {
+    height: 50px;
+    background-color: var(--header);
+    align-items: center;
+    display: flex;
+    padding: 0 10px;
+    user-select: none;
+    box-sizing: border-box;
+}
