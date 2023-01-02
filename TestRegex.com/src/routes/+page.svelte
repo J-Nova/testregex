@@ -36,10 +36,6 @@
 
 </script>
 
-<aside>
-
-</aside>
-
 <div class="functions">
     <button>Save</button>
     <div class="flavour">
@@ -198,7 +194,6 @@
 
     #right-side {
         width: 40%;
-        background-color: var(--body-tertiary);
         display: flex;
         flex-direction: column;
         gap:10px;
@@ -217,6 +212,7 @@
     #right-side div {
         background-color: var(--body-secondary);
         height: auto;
+        padding: 5px;
     }
 
 </style>
