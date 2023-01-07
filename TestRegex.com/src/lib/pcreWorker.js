@@ -199,7 +199,6 @@ function preg_match(match_text) {
                             // content="${d[index].content}"
                             // group_name="${group_name}`;
                             // let tooltip_string = `<Tooltip ${data_string}"><span class="${class_name}">${d[index].content}</Tooltip>`; 
-                            console.log(result_data)
                             if (highlighter_data[start_index] === void 0){
                                 highlighter_data[start_index] = {
                                     matchNumber: result_data.length > 0 ? result_data.length :result_data.length,

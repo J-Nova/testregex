@@ -1,4 +1,3 @@
-import { writable } from 'svelte/store';
 // Reexport your entry components here
 export const match_status = {
     0: "No match",
@@ -7,5 +6,3 @@ export const match_status = {
 };
 
 export const FLAVORS = ["PCRE"]
-
-export let storeFE = writable({});

@@ -7,6 +7,8 @@
     --no-match: #363636;
     --match-bg: #2b4230;
     --error-bg: #8a2d2d;
+    --match_color_1: #5286AA;
+	--match_color_2: #1A5593;
 }
 
 
@@ -14,7 +16,6 @@ body {
     height: 100%;
     width: 100%;
     margin: 0;
-    /* overflow: hidden; */
     padding: 0;
     tab-size: 4;
     line-height: 16px; 

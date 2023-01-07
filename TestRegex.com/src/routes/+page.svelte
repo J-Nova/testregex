@@ -1,6 +1,5 @@
 <script>
-    // import TextArea from "./TextAreaResize.svelte";
-    import {match_status, FLAVORS, storeFE} from '$lib/data.js'
+    import {match_status, FLAVORS} from '$lib/data.js'
     import {updateRegex} from "$lib/matcher.js";
     import ToolTip from "./ToolTip.svelte";
     let testTextArea;
@@ -13,18 +12,16 @@
 
     let expressionString = "";
     let testString = "";
-    $storeFE = [];
+
+
+
+    let editorStatus = "Edit mode";
     
-    let match_color_1 = "#57787D";
-	let match_color_2 = "#1E2632";
-    
-    // let expressionArea;
-    // let testArea;
 
     let delimiter = "/";
     let flags = ["g", "m"];
     let status = 0;
-    let editorLockTimeout = 1500;
+    let editorLockTimeout = 3000;
     let flavor = FLAVORS[0];
 
     function flagString(){
@@ -53,54 +50,89 @@
         showHide("lookup");
     }
 
-    function highlightExpression(){}
+    function updateExpression(event){
+        function runExpression(regex_expression, flags, test_string, delimiter, flavor, explain){
+            updateRegex(
+            regex_expression, 
+            flags, 
+            test_string, 
+            false, 
+            "", 
+            delimiter, 
+            flavor,
+            errorCallback,
+            catastrophicCallback,
+            successCallback,
+            timeoutCallback, 
+            explain);
+        }
 
-    function highlightTest(){
-        if (expressionString.length > 0 && testString.length > 0)
-        runExpression(expressionString, flagString(), testString, delimiter, flavor, false);
-        setTimeout(lockEditor, editorLockTimeout);
+        // unlockEditor();
+        match_html = [];
+        let explain_expr = (event.target !== testTextArea)
+        if (expressionString.length > 0 && testString.length > 0){
+            runExpression(expressionString, flagString(), testString, delimiter, flavor, explain_expr);
+            setTimeout(lockEditor, editorLockTimeout);
+        }
+        console.log(match_html);
+        console.log(testString)
     }
 
     function lockEditor(){
-        
+        if (testString.length > 0){
+            testTextArea.style.display = "none";
+            editorStatus = "View mode";
+        }
     }
 
-    function successCallback(match_data){
-        console.log("success callback");
-        let matches = match_data.highlighter;
-        if (matches.length !== {} ){
-            let match_indexes = new Set();
-            for (const [_, value] of Object.entries(matches)){
-                let current_match = value;
-                for (let index=current_match.startIndex; index<current_match.endIndex; index++){
-                    match_indexes.add(index);
-                }
-            }
+    function unlockEditor(){
+        testTextArea.style.display = "";
+        testTextArea.focus();
+        testTextArea.setSelectionRange(-1, -1)
+        editorStatus = "Edit mode"
+    }
 
-            $storeFE = [];
-            for (let i=0; i<testString.length; i++){
-                let tooltip;
-                if (match_indexes.has(i)){
+    function highlight(match_indexes= new Set(), matches = {}){
+        let new_match_html = [];
+        for (let i=0; i<testString.length; i++){
+            let tooltip;
+            let isMatch;
+            if (match_indexes.has(i)){
+                if (matches[i]){
                     let matchNumber = matches[i].matchNumber;
                     let groupNumber = matches[i].groupNumber;
                     let groupNames = matches[i].groupNames;
                     let content = matches[i].content;
                     let start = matches[i].startIndex;
                     let end = matches[i].endIndex;
-                    let isMatch = true;
-                    tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch};
-                } else{
-                    let isMatch = false;
-                    let char = testString[i];
-                    tooltip = {isMatch:isMatch, content:char};
+                    let classNames = matches[i].classNames;
+                    isMatch = true;
+                    tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
+                    new_match_html.push(tooltip);
                 }
-                $storeFE.push(tooltip);
+            } else{
+                isMatch = false;
+                let char = testString[i];   
+                tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
+                new_match_html.push(tooltip);
             }
-            console.log($storeFE)
-            // Now compare the expression string to get non-matched characters compared to the match_data results.
-
-            // Then create new tooltip components and add it to CustomArea.
         }
+        match_html = new_match_html;
+    }
+
+    function successCallback(match_data){
+        console.log("success callback");
+        let matches = match_data.highlighter;
+        let match_indexes = new Set();
+        if (matches.length !== {} ){
+            for (const [_, value] of Object.entries(matches)){
+                let current_match = value;
+                for (let index=current_match.startIndex; index<current_match.endIndex; index++){
+                    match_indexes.add(index);
+                }
+            }
+        }
+        highlight(match_indexes, matches);
     }
 
     function errorCallback(){
@@ -115,28 +147,15 @@
         console.log("timeout callback");
     }
 
-    function runExpression(regex_expression, flags, test_string, delimiter, flavor, explain){
-        updateRegex(
-        regex_expression, 
-        flags, 
-        test_string, 
-        false, 
-        "", 
-        delimiter, 
-        flavor,
-        errorCallback,
-        catastrophicCallback,
-        successCallback,
-        timeoutCallback, 
-        explain);
-    }
 
-    function srollFn(e){
+    function srollFn(e){ // Sets the scroll position to match each other.
         if (e.target == testTextArea) {
             testBackdrop.scrollTop = testTextArea.scrollTop;
+        } else {
+            expressionBackdrop.scrollTop = expressionTextArea.scrollTop;
         }
     }
-
+    $: match_html = [];
 </script>
 
 <div class="functions">
@@ -175,7 +194,7 @@
                     <textarea
                         bind:this={expressionTextArea}
                         bind:value={expressionString}
-                        on:input={highlightExpression}
+                        on:input={e=>updateExpression(e)}
                         on:scroll={e => srollFn(e)}
                         spellcheck="false" 
                         autocomplete="off" 
@@ -195,22 +214,31 @@
         <div class="input" > 
             <!-- Create input container -->
             <div class="container">
+                <div class="editorStatus">{editorStatus}</div>
                 <pre
                     bind:this={testBackdrop}
-                    
-                    style="max-height: 35em; min-height: 35em"
+                    on:keydown
+                    on:click={unlockEditor}
+                    style="max-height: 31em; min-height: 31em"
                 >
                 <div class="custom-area" bind:this={testCustomArea}>
-                    {#each $storeFE as tooltip}
-                        <ToolTip objAttributes={tooltip}/>
-                    {/each}
+                    {#if match_html.length === 0}
+                        {testString}
+                    {:else}
+                        {#each match_html as tooltip}
+                            {#if tooltip !== undefined}
+                                <ToolTip objAttributes={tooltip}/>
+                            {/if}
+                        {/each}
+                    {/if}
                 </div>
                 </pre>
             
                 <textarea
                     bind:this={testTextArea}
                     bind:value={testString}
-                    on:input={highlightTest}
+                    on:input={e => updateExpression(e)}
+                    on:blur={lockEditor}
                     on:scroll={e => srollFn(e)}
                     spellcheck="false" 
                     autocomplete="off" 
@@ -291,7 +319,7 @@
         height: 90vh;
     }
 
-    #left-side {
+    #left-side {    
         background-color: var(--body-secondary);
         width: 60%;
         display: flex;
@@ -309,15 +337,11 @@
         text-transform: lowercase;
         color: var(--body-quaternary);
     }
-
-    .input div { /* this is for all the divs in the input */
+    
+    .input .input {
         background-color: var(--body-tertiary);
         border: 1px solid;
         border-radius: 3px;
-    }
-    
-
-    .input .input {
         align-items: center;
         display: flex;
         flex-direction: row;
@@ -374,13 +398,17 @@
 		width: 100%;
 	}
 	
+    .editorStatus {
+        position: absolute;
+        right: 0;
+        padding: 10px;
+    }
 	pre {
         background-color: var(--body-tertiary);
-		color: red;
         top: 0;
 	}
     pre div {
-        display: flex;
+        display: table-row;
     }
 	
 	pre, textarea{
@@ -395,8 +423,8 @@
 		width: 100%;
 		height: 100%;
         
-		font-family: 'Courier New', Courier, monospace;
-		font-size: small;
+		/* font-family: 'Courier New', Courier, monospace; */
+		font-size: medium;
 		font-weight: 400;
         
 		padding: 10px;

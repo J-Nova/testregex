@@ -4,7 +4,9 @@
 	let x;
 	let y;
 
-	
+	function classString(){
+		return objAttributes.classNames.join(" ");
+	}
 	function mouseOver(event) {
 		console.log(event);
 		isHovered = true;
@@ -22,12 +24,16 @@
 
 
 <span
+	class="{classString()}"
 	on:focus
+	on:focusin
+	on:focusout
 	on:mouseover={mouseOver}
     on:mouseleave={mouseLeave}
 	on:mousemove={mouseMove}>	
 	{objAttributes.content}
 </span>
+
 {#if isHovered && objAttributes.isMatch}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
 		Match: {objAttributes.matchNumber}
@@ -51,4 +57,12 @@
 		padding: 4px;
 		position: absolute;
 	}
+
+	.match0 {
+		background-color: var(--match_color_1);
+	}
+	.match0_2 {
+		background-color: var(--match_color_2);
+	}
+	
 </style>
