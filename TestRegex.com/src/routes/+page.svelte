@@ -24,7 +24,7 @@
     let delimiter = "/";
     let flags = ["g", "m"];
     let status = 0;
-    // TODO: get and set flavour through localstorage
+    let editorLockTimeout = 1500;
     let flavor = FLAVORS[0];
 
     function flagString(){
@@ -58,13 +58,17 @@
     function highlightTest(){
         if (expressionString.length > 0 && testString.length > 0)
         runExpression(expressionString, flagString(), testString, delimiter, flavor, false);
+        setTimeout(lockEditor, editorLockTimeout);
+    }
+
+    function lockEditor(){
+        
     }
 
     function successCallback(match_data){
         console.log("success callback");
         let matches = match_data.highlighter;
         if (matches.length !== {} ){
-            console.log(match_data);
             let match_indexes = new Set();
             for (const [_, value] of Object.entries(matches)){
                 let current_match = value;
@@ -72,7 +76,7 @@
                     match_indexes.add(index);
                 }
             }
-            console.log(testCustomArea)
+
             $storeFE = [];
             for (let i=0; i<testString.length; i++){
                 let tooltip;
@@ -88,7 +92,6 @@
                 } else{
                     let isMatch = false;
                     let char = testString[i];
-                    console.log(char);
                     tooltip = {isMatch:isMatch, content:char};
                 }
                 $storeFE.push(tooltip);
