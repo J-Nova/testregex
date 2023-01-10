@@ -4,30 +4,33 @@
 	let x;
 	let y;
 
-
 	function classString(){
 		return objAttributes.classNames.join(" ");
 	}
-	function showTooltip(event) {
-		if (!isHovered){
-			isHovered = true;
-			x = event.layerX;
-			y = event.layerY - 50;
-		}
+	function mouseOver(event) {
+		console.log(event);
+		isHovered = true;
+		x = event.layerX;
+		y = event.layerY - 50;
 	}
-	
+	function mouseMove(event) {
+		x = event.layerX;
+		y = event.layerY - 50;
+	}
 	function mouseLeave() {
 		isHovered = false;
 	}
-	console.log(objAttributes.isMatch)
 </script>
 
 
 <span
 	class="{classString()}"
 	on:focus
+	on:focusin
+	on:focusout
+	on:mouseover={mouseOver}
     on:mouseleave={mouseLeave}
-	on:mouseover={showTooltip}>
+	on:mousemove={mouseMove}>	
 	{objAttributes.content}
 </span>
 

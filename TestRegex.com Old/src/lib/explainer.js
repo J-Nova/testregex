@@ -1,4 +1,3 @@
-// @ts-nocheck
 export var Regex101Explainer = function () {
     "use strict";
     function e(t) {

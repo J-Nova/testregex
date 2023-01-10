@@ -1,21 +1,20 @@
 <script>
-    import {match_status, FLAVORS} from '$lib/data.js'
-    import {updateRegex} from "$lib/matcher.js";
+    import {match_status, FLAVORS} from '../lib/data.js'
+    import {updateRegex} from "../lib/matcher.js";
     import ToolTip from "./ToolTip.svelte";
     let testTextArea;
     let testBackdrop;
-    let testCustomArea;
+    let testCustomArea = "";
     
     let expressionTextArea;
     let expressionBackdrop;
-    let expressionCustomArea;
-    
+    let expressionCustomArea = "";
+
     let expressionString = "";
     let testString = "";
-    
-    
-    
-    $: match_html = [];
+
+
+
     let editorStatus = "Edit mode";
     
 
@@ -75,6 +74,8 @@
             runExpression(expressionString, flagString(), testString, delimiter, flavor, explain_expr);
             setTimeout(lockEditor, editorLockTimeout);
         }
+        console.log(match_html);
+        console.log(testString)
     }
 
     function lockEditor(){
@@ -123,7 +124,7 @@
         console.log("success callback");
         let matches = match_data.highlighter;
         let match_indexes = new Set();
-        if (Object.keys(matches).length > 0 ){
+        if (matches.length !== {} ){
             for (const [_, value] of Object.entries(matches)){
                 let current_match = value;
                 for (let index=current_match.startIndex; index<current_match.endIndex; index++){
@@ -154,6 +155,7 @@
             expressionBackdrop.scrollTop = expressionTextArea.scrollTop;
         }
     }
+    $: match_html = [];
 </script>
 
 <div class="functions">
@@ -217,7 +219,7 @@
                     bind:this={testBackdrop}
                     on:keydown
                     on:click={unlockEditor}
-                    style="max-height: 25em; min-height: 25em"
+                    style="max-height: 31em; min-height: 31em"
                 >
                 <div class="custom-area" bind:this={testCustomArea}>
                     {#if match_html.length === 0}
@@ -408,12 +410,12 @@
     pre div {
         display: table-row;
     }
-    
+	
 	pre, textarea{
         word-wrap: break-word;
 		white-space:pre-line;
 		overflow: auto;
-		word-break:break-all;
+		word-break: break-all;
 		
 		letter-spacing: 1px;
 		line-height: 1;
@@ -422,7 +424,7 @@
 		height: 100%;
         
 		/* font-family: 'Courier New', Courier, monospace; */
-		font-size: x-large;
+		font-size: medium;
 		font-weight: 400;
         
 		padding: 10px;
