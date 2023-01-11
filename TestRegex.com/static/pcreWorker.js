@@ -1,9 +1,14 @@
+// @ts-nocheck
 function callout(_) {
     if (debugging) {
         var t = _ >> 2,
+            
             e = (HEAP32[t + 3], HEAP32[t + 5]),
+            
             R = HEAP32[t + 6],
+            
             a = HEAP32[t + 10],
+            
             E = HEAP32[t + 11];
         callout_data[match_id] || (callout_data[match_id] =[]),
         callout_data[match_id][match_steps] = {
@@ -24,7 +29,9 @@ function callout(_) {
 
 
 function free_regex() {
+    
     void 0 !== cached_pattern.name_table && _free(cached_pattern.name_table),
+    
     void 0 !== cached_pattern.regex && _free(cached_pattern.regex),
     cached_pattern = {}
 }
@@ -74,38 +81,58 @@ function preg_compile(_, t) {
     cached_pattern.options = t,
     cached_pattern.option_bits = e,
     cached_pattern.is_global = R;
+    
     var E = _malloc(2 * (2 * _.length + 1));
+    
     stringToUTF16(_, E);
+    
     var r = _malloc(4),
+        
         c = _malloc(4),
         C = pcre_compile(E, e, r, c, null);
     if (! C) {
         free_regex();
+        
         var P = Pointer_stringify(HEAP32[r >> 2]) + " - offset: " + HEAP32[c >> 2];
         throw self.postMessage({error: P}),
         new Error(P)
     }
+    
     HEAP32[getCalloutAddr() >> 2] = callout_ptr;
+    
     var n = _malloc(4);
     pcre_fullinfo(C, null, PCRE_INFO_NAMECOUNT, n),
+    
     cached_pattern.named_subpats = HEAP32[n >> 2],
+    
     _free(n);
+    
     var l = _malloc(4);
     pcre_fullinfo(C, null, PCRE_INFO_NAMETABLE, l),
     cached_pattern.name_table = l;
+    
     var A = _malloc(4);
     pcre_fullinfo(C, null, PCRE_INFO_NAMEENTRYSIZE, A),
+    
     cached_pattern.name_entry_size = HEAP32[A >> 2],
+    
     _free(A);
+    
     var T = _malloc(4);
     return pcre_fullinfo(C, null, PCRE_INFO_CAPTURECOUNT, T),
+    
     cached_pattern.subpats = HEAP32[T >> 2],
+    
     cached_pattern.ovector_len = 3 * (HEAP32[T >> 2] + 1),
+    
     _free(T),
     cached_pattern.match_limit = getExtraAddr(),
     cached_pattern.regex = C,
+    
     _free(E),
+    
     _free(r),
+    
     _free(c),
     cached_pattern
 }
@@ -127,12 +154,16 @@ function preg_match(match_text) {
         lookbehind = void 0,
         oldPatternStart = oldPatternEnd = match_id = match_steps = total_steps = 0;
         var text_length = match_text.length,
+            
             e = _malloc(2 * (2 * match_text.length + 1));
+        
         stringToUTF16(match_text, e);
         var R = cached_pattern.named_subpats,
             a = cached_pattern.name_table,
             E = cached_pattern.name_entry_size;
+        
         ovector_len = cached_pattern.ovector_len;
+        
         var r = _malloc(4 * ovector_len),
             c = r >> 2,
             C = 0,
@@ -145,14 +176,19 @@ function preg_match(match_text) {
             s = !1;
         do {
             // get current character
+            
             var o = pcre_exec(cached_pattern.regex, cached_pattern.match_limit, e, text_length, C, P, r, ovector_len);
             if (o >= 0) {
                 match_steps = 0,
+                
                 match_counter = 0,
                 tempMatchData = {},
+                
                 0 == o && (o = ovector_len / 3);
                 for (var d =[], p = 0, GROUP_NUMBER = 0; 2 * o > GROUP_NUMBER; GROUP_NUMBER += 2) {
+                    
                     var start_index = HEAP32[c + GROUP_NUMBER],
+                        
                         end_index = HEAP32[c + (GROUP_NUMBER + 1)];
                     
                     let index = p++;
@@ -169,37 +205,31 @@ function preg_match(match_text) {
                         else {
                             var class_name = "",
                                 // First number is the match number -1, Second number is starting index of match, Third is end index of match, Fourth is the group number.
+                                
                                 tooltip_data = result_data.length + ";" + start_index + ";" + end_index + ";" + GROUP_NUMBER / 2;
                             // let class_names = []
                             if (0 !== GROUP_NUMBER){ // Check for group.
                                 var S = GROUP_NUMBER / 2 % 10 || 10;
                                 class_name = "match" + S
-                                // class_names.push(class_name);
+                            
                             } else {
                                 class_name = "match0" + (s ? "_2" : "")
                                 s = ! s;
-                                // class_names.push(class_name);
+                            
                             }
-                            // console.log(class_names);
+                            
                             var TOOLTIP_END = ";";
                             let group_name="";
                             if (R > 0) 
+                                
                                 for (var L = HEAP32[a >> 2], f = 0; R > f; f++) { // Here it adds the group name if there is one to F.
+                                    
                                     var M = HEAP8[L];
+                                    
                                     void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2), M === p - 1 && (TOOLTIP_END += d[M].name, group_name=d[M].name )),
                                     L += 2 * E
                                 }
                             tooltip_data += TOOLTIP_END
-                            // let data_string = `
-                            // class="${class_name}"
-                            // match_number=${result_data.length}
-                            // start_index=${start_index}
-                            // end_index=${end_index}
-                            // group_number=${GROUP_NUMBER/2}
-                            // content="${d[index].content}"
-                            // group_name="${group_name}`;
-                            // let tooltip_string = `<Tooltip ${data_string}"><span class="${class_name}">${d[index].content}</Tooltip>`; 
-                            console.log(result_data)
                             if (highlighter_data[start_index] === void 0){
                                 highlighter_data[start_index] = {
                                     matchNumber: result_data.length > 0 ? result_data.length :result_data.length,
@@ -234,14 +264,21 @@ function preg_match(match_text) {
                     match_steps > 0;
                     break
                 }
+                
                 HEAP32[c] = C,
+                
                 HEAP32[c + 1] = C + 1,
+                
                 text_length - 1 > C && "\r" === match_text.charAt(C) && "\n" === match_text.charAt(C + 1) && (HEAP32[c + 1] += 1)
+            
             } P = HEAP32[c + 1] === HEAP32[c] ? PCRE_NOTEMPTY_ATSTART | PCRE_ANCHORED : 0,
+            
             C = HEAP32[c + 1]
             
         } while (cached_pattern.is_global);
+        
         return _free(e),
+        
         _free(r), {
             result: result_data,
             highlighter: highlighter_data,
@@ -254,6 +291,7 @@ function preg_match(match_text) {
     }
     throw new Error("No pattern supplied to matching function!")
 }
+
 importScripts("pcrelib16.js");
 
 var PCRE_CASELESS = 1,
@@ -364,6 +402,7 @@ var PCRE_CASELESS = 1,
     PCRE_EXTRA_CALLOUT_DATA = 4,
     PCRE_EXTRA_TABLES = 8,
     PCRE_EXTRA_MATCH_LIMIT_RECURSION = 16,
+    
     pcre_compile = Module.cwrap("pcre16_compile", "number", [
         "number",
         "number",
@@ -371,6 +410,7 @@ var PCRE_CASELESS = 1,
         "number",
         "number"
     ]),
+    
     pcre_exec = Module.cwrap("pcre16_exec", "number", [
         "number",
         "number",
@@ -381,10 +421,14 @@ var PCRE_CASELESS = 1,
         "number",
         "number"
     ]),
+    
     pcre_fullinfo = Module.cwrap("pcre16_fullinfo", "number", ["number", "number", "number", "number"]),
+    
     getCalloutAddr = Module.cwrap("getCalloutAddress", "number", []),
+    
     getExtraAddr = Module.cwrap("getExtraAddress", "number", []),
     cached_pattern = {},
+    
     callout_ptr = Runtime.addFunction(callout),
     match_id,
     match_steps,

@@ -4,41 +4,58 @@
 	let x;
 	let y;
 
+
+	function classString(){
+		return objAttributes.classNames.join(" ");
+	}
+
+	function dataString(){
+		let value;
+		if (objAttributes.classNames.length > 0) {
+			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + "(" + objAttributes.groupNames+ ")" + ": " + objAttributes.content;
+		} else {
+			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + ": " + objAttributes.content;
+		}
+		return value;
+	}
+
+	function showTooltip(event) {
+		if (!isHovered){
+			isHovered = true;
+			x = event.layerX;
+			y = event.layerY - 50;
+		}
+	}
 	
-	function mouseOver(event) {
-		console.log(event);
-		isHovered = true;
-		x = event.layerX;
-		y = event.layerY - 50;
-	}
-	function mouseMove(event) {
-		x = event.layerX;
-		y = event.layerY - 50;
-	}
 	function mouseLeave() {
 		isHovered = false;
 	}
+	console.log(objAttributes.isMatch)
 </script>
 
 
 <span
+	class="{classString()}"
 	on:focus
-	on:mouseover={mouseOver}
-    on:mouseleave={mouseLeave}
-	on:mousemove={mouseMove}>	
+	on:focusin
+	on:focusout
+	on:pointerover={showTooltip}
+	on:pointerdown={showTooltip}
+	on:pointerenter={showTooltip}
+	on:pointermove={showTooltip}
+	on:mousemove={showTooltip}
+	on:mouseenter={showTooltip}
+	on:mouseover={showTooltip}
+	on:pointerleave={mouseLeave}
+    on:mouseleave={mouseLeave}>
 	{objAttributes.content}
 </span>
+
 {#if isHovered && objAttributes.isMatch}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		Match: {objAttributes.matchNumber}
-		Group: {objAttributes.groupNumber}
-		Names: {objAttributes.groupNames}
-		content: {objAttributes.content}
+		<header>Match - {(parseInt(objAttributes.matchNumber)+1)}</header>
+		{dataString()}
 		Position: {objAttributes.start}-{objAttributes.end}
-	</div>
-{:else if isHovered && !objAttributes.isMatch}
-	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		No match
 	</div>
 {/if}
 
@@ -51,4 +68,12 @@
 		padding: 4px;
 		position: absolute;
 	}
+
+	.match0 {
+		background-color: var(--match_color_1);
+	}
+	.match0_2 {
+		background-color: var(--match_color_2);
+	}
+	
 </style>

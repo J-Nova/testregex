@@ -1,4 +1,3 @@
-// @ts-nocheck
 export function updateRegex(expression, flags, test_string, substitution_enabled, substitution_value="", delimiter, flavor, errorCallback, catastrophicCallback, successCallback, timeoutCallback, explain) {
     var callbacks = {
         success: successCallback,
@@ -98,7 +97,7 @@ function updatePCRE(test_data, callbacks) {
     pcreWorker.running && clearTimeout(pcreTimeout), pcreWorker.worker && pcreWorker.worker.terminate(),
     pcreWorker = {};
     // Create a new worker instance
-    pcreWorker.worker = new Worker("/pcreWorker.js");
+    pcreWorker.worker = new Worker("src/lib/pcreWorker.js");
 
     // Create the onmessage handler for the worker.
     pcreWorker.worker.onmessage = function (event) {
