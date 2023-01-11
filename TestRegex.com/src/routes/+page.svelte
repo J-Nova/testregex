@@ -68,7 +68,6 @@
             explain);
         }
 
-        // unlockEditor();
         match_html = [];
         let explain_expr = (event.target !== testTextArea)
         if (expressionString.length > 0 && testString.length > 0){
@@ -237,6 +236,7 @@
                     bind:value={testString}
                     on:input={e => updateExpression(e)}
                     on:blur={lockEditor}
+                    on:mouseleave={lockEditor}
                     on:scroll={e => srollFn(e)}
                     spellcheck="false" 
                     autocomplete="off" 
