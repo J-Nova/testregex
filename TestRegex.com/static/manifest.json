@@ -1,0 +1,16 @@
+{
+    "name": "TestRegex.com, test, build and debug regex expressions",
+    "short_name": "TestRegex.com",
+    "start_url": "/",
+        "icons": [
+            {
+                "src": "logo.png",
+                "type": "image/png",
+                "sizes": "512x512"
+            }
+        ],
+    "theme_color": "#2D2F40",
+    "background_color": "#656871",
+    "display": "standalone",
+    "orientation": "portrait"
+}
