@@ -1,10 +1,13 @@
 // @ts-nocheck
-export function updateRegex(expression, flags, test_string, substitution_enabled, substitution_value="", delimiter, flavor, errorCallback, catastrophicCallback, successCallback, timeoutCallback, explain) {
+import {explainRegex} from "$lib/handler.js"
+
+export function updateRegex(expression, flags, test_string, substitution_enabled, substitution_value="", delimiter, flavor, errorCallback, catastrophicCallback, successCallback, timeoutCallback, explain, explainCallback) {
     var callbacks = {
         success: successCallback,
         error: errorCallback,
         catastrophic: catastrophicCallback,
-        timeout: timeoutCallback
+        timeout: timeoutCallback,
+        explain: explainCallback
     }
     var test_data = {
             regex: expression,
@@ -22,10 +25,7 @@ export function updateRegex(expression, flags, test_string, substitution_enabled
     if (explain) {
         treeview_timer && clearTimeout(treeview_timer),
         treeview_timer = setTimeout(function () {
-            console.log("Explain data");
-            
-            // console.log(Regex101Explainer.explain(test_data));
-            // replaceHtml("treeview", Regex101Explainer.explain(test_data))
+            explainCallback(explainRegex(test_data));
         }, treeview_match_timeout)
     }
 
@@ -67,33 +67,20 @@ function cancelMatching() {
 }
 
 function updatePCRE(test_data, callbacks) {
-    console.log("Doing PCRE expression")
     function PCRECallback(event_data, worker) {
-        console.log("Executing PCRE Expression callback");
         worker.running = false;
         if (event_data.error) {
-            console.log("Error executing PCRE")
-            //TODO Eigen error handling maken hier
-            // matcherError('<strong class="errorize_text">Your pattern contains one or more errors, please see the explanation section above.</strong>', "error");
             cancelMatching();
-            callbacks.error();
+            callbacks.error(event_data.error);
         }
         else if (event_data.catastrophic) {
-            console.log("BIG Error executing PCRE")
-            //TODO eigen catastrophic error handling maken hier.
             cancelMatching();
-            callbacks.catastrophic();
+            callbacks.catastrophic(event_data.catastrophic);
         } else {
-            // Expression is successfully executed.
-            console.log("Expression successfully executed")
             callbacks.success(event_data);
-            // updateMatchResult(event_data.result.length, event_data.steps), highlightMatchResult(test_data, event_data.highlighter), 
-            // handleSubResult(test_data, event_data.sub, event_data.result), 
-            // matchTimer && clearTimeout(matchTimer), 
-            // matchTimer = setTimeout(function () {compute_matches(event_data.result)}, treeview_match_timeout)
-            // updateTooltipData()
         }
     }
+    
     // If worker is running then terminate the worker then clear the worker.
     pcreWorker.running && clearTimeout(pcreTimeout), pcreWorker.worker && pcreWorker.worker.terminate(),
     pcreWorker = {};

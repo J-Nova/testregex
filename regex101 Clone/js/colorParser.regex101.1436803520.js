@@ -941,7 +941,19 @@ var Regex101Colorizer = function () {
 
             isGroupType(u.type) || u.type === regex_type.CHARCLASS || (o.pos += u.contents.length)
         }
-    } var y, u, g, h, d, f, E, x, A = {}, T = "/", N = FLAVOR.PCRE, O = [], R = 0, I = !1, b = "", v = {}, C = !1, P = -1, U = 2, m = "", L = 50, S = {
+    } var y, u, g, h, d, f, E, x, A = {}, 
+    T = "/", N = FLAVOR.PCRE, 
+    O = [], 
+    R = 0, 
+    I = !1, 
+    b = "", 
+    v = {}, 
+    C = !1, 
+    P = -1, 
+    U = 2, 
+    m = "", 
+    L = 50, 
+    S = {
         c: {
             1: 1,
             2: 1,
@@ -1087,7 +1099,23 @@ var Regex101Colorizer = function () {
             2: 0,
             3: 1
         }
-    }; return A.colorize = function (e, r, t, n, o, p, i) { var s = A.getTokens(e, r, t, n, o); return A.makeHtml(s[0].children, !1, !p, i) }, A.getTokens = function (e, r, t, n, p) { return void 0 !== n && (T = n), void 0 !== p && (N = p), s(), v = o(e, r, t) }, A.hasError = function () { return I || _.uniq(b).length < b.split("").length || x && !x.test(b) }, A.hasUnmatchedParen = function () { return P }, A.getCaptureData = function () { return { group_count: R, subpatterns: O } }, A.justParsed = function () { return C ? (C = !1, !0) : !1 }, A.returnTokens = function () { return v }, A.makeHtml = function (e, r, t, n) {
+    }; 
+    
+    return A.colorize = function (e, r, t, n, o, p, i) { var s = A.getTokens(e, r, t, n, o); return A.makeHtml(s[0].children, !1, !p, i) },
+    
+    A.getTokens = function (e, r, t, n, p) { return void 0 !== n && (T = n), void 0 !== p && (N = p), s(), v = o(e, r, t) }, 
+    
+    A.hasError = function () { return I || _.uniq(b).length < b.split("").length || x && !x.test(b) },
+    
+    A.hasUnmatchedParen = function () { return P },
+    
+    A.getCaptureData = function () { return { group_count: R, subpatterns: O } },
+    
+    A.justParsed = function () { return C ? (C = !1, !0) : !1 },
+    
+    A.returnTokens = function () { return v }, 
+    
+    A.makeHtml = function (e, r, t, n) {
         var o = {
             currentPos: 0,
             injected: t,
@@ -1105,5 +1133,9 @@ var Regex101Colorizer = function () {
 
             o.injected || (s += '<div class="caret">&nbsp;</div>')
         } return s
-    }, A.formatRegex = function () { return m = m.replace(/^ +/, ""), m = m.replace(/([\x01\x02]*)([\x03\x04]*)\x05(.+?)\x06/g, "$3$1$2"), m = m.replace(/[\x01\x02]+[\x03\x04]*\|/g, "|"), m = m.replace(/^(?:[\x07\x01]\x03*|\x02\x04*)|(?:[\x01\x07]\x03*|\x02\x04*)$/g, ""), m = m.replace(/([\x01\x02\x07])[\x03\x04]*[\x01\x02]/g, "$1"), m = m.replace(/[\x01\x02\x07]/g, "\n").replace(/[\x03\x04]/g, " ") }, A
+    }, 
+    
+    A.formatRegex = function () { return m = m.replace(/^ +/, ""), m = m.replace(/([\x01\x02]*)([\x03\x04]*)\x05(.+?)\x06/g, "$3$1$2"), m = m.replace(/[\x01\x02]+[\x03\x04]*\|/g, "|"), m = m.replace(/^(?:[\x07\x01]\x03*|\x02\x04*)|(?:[\x01\x07]\x03*|\x02\x04*)$/g, ""), m = m.replace(/([\x01\x02\x07])[\x03\x04]*[\x01\x02]/g, "$1"), m = m.replace(/[\x01\x02\x07]/g, "\n").replace(/[\x03\x04]/g, " ") }, 
+    
+    A
 }();
