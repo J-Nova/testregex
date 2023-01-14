@@ -1,6 +1,6 @@
-function updateRegex(e) {
+function updateRegex(explain) {
     console.log("Updating regex");
-    console.log(e);
+    console.log(explain);
     var current_flavour = getFlavor(),
         test_data = {
             regex: $("#regex").val(),
@@ -41,8 +41,7 @@ function updateRegex(e) {
         //     case FLAVOR.PYTHON:
         // }
 
-        if (e) {
-            console.log(e, "importantee");
+        if (explain) {
             if (!Regex101Colorizer.justParsed()) 
                 return;
             

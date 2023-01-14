@@ -65,7 +65,8 @@
             catastrophicCallback,
             successCallback,
             timeoutCallback, 
-            explain);
+            explain,
+            explainCallback);
         }
 
         match_html = [];
@@ -73,6 +74,8 @@
         if (expressionString.length > 0 && testString.length > 0){
             runExpression(expressionString, flagString(), testString, delimiter, flavor, explain_expr);
             setTimeout(lockEditor, editorLockTimeout);
+        } else if (expressionString.length > 0) {
+            runExpression(expressionString, flagString(), testString, delimiter, flavor, true);
         }
     }
 
@@ -133,8 +136,8 @@
         highlight(match_indexes, matches);
     }
 
-    function errorCallback(){
-        console.log("error callback");
+    function errorCallback(errorMessage){
+        console.log("error callback " + errorMessage);
     }
 
     function catastrophicCallback(){
@@ -145,8 +148,12 @@
         console.log("timeout callback");
     }
 
+    function explainCallback(explanation){
+        console.log("explain callback");
+        console.log(explanation);
+    }
 
-    function srollFn(e){ // Sets the scroll position to match each other.
+    function scrollFn(e){ // Sets the scroll position to match each other.
         if (e.target == testTextArea) {
             testBackdrop.scrollTop = testTextArea.scrollTop;
         } else {
@@ -171,6 +178,7 @@
 <main>
 
 <div id="left-side">
+    <!-- The expression area -->
     <div class="input">
         <h2>
             <span>Regular Expression Input</span>
@@ -192,7 +200,7 @@
                         bind:this={expressionTextArea}
                         bind:value={expressionString}
                         on:input={e=>updateExpression(e)}
-                        on:scroll={e => srollFn(e)}
+                        on:scroll={e => scrollFn(e)}
                         spellcheck="false" 
                         autocomplete="off" 
                         translate="no" 
@@ -203,7 +211,7 @@
             <span class="flags">{delimiter}{flagString()}</span>
         </div>
     </div>
-
+    <!-- The test area -->
     <div class="string">
         <h2>
             <span>Test string</span>
@@ -237,7 +245,7 @@
                     on:input={e => updateExpression(e)}
                     on:blur={lockEditor}
                     on:mouseleave={lockEditor}
-                    on:scroll={e => srollFn(e)}
+                    on:scroll={e => scrollFn(e)}
                     spellcheck="false" 
                     autocomplete="off" 
                     translate="no" 
