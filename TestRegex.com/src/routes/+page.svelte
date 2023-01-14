@@ -1,4 +1,5 @@
 <script>
+    import { JsonView } from '@zerodevx/svelte-json-view'
     import {match_status, FLAVORS} from '$lib/data.js'
     import {updateRegex} from "$lib/matcher.js";
     import ToolTip from "./ToolTip.svelte";
@@ -18,6 +19,7 @@
     $: match_html = [];
     let editorStatus = "Edit mode";
     
+    $: json = {};
 
     let delimiter = "/";
     let flags = ["g", "m"];
@@ -150,7 +152,8 @@
 
     function explainCallback(explanation){
         console.log("explain callback");
-        console.log(explanation);
+        console.log(explanation.body);
+        json = explanation.body;
     }
 
     function scrollFn(e){ // Sets the scroll position to match each other.
@@ -266,7 +269,12 @@
             </h2>
         </button>
         <div id="explanation">
-            <span>An explanation will automatically be generated about your regex expression.</span>
+            {#if Object.keys(json).length == 0}
+                <span>An explanation will automatically be generated about your regex expression.</span>
+            {:else}
+                <!-- {json} -->
+                <JsonView {json} />
+            {/if}
         </div>
     </div>
 
