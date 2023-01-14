@@ -7,6 +7,13 @@ export function explainRegex(test_data){
     let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true});
     regexpTree.traverse(astTree, {
 
+        "*": function({node}){
+            delete node["type"]
+            if (node.codePoint){
+                node.asciiCode = node.codePoint
+                delete node["codePoint"]
+            }
+        },
         
         Char: { // Adds explanations to Chars
             post({node}) {

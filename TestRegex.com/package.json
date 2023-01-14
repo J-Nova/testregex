@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@zerodevx/svelte-json-view": "^1.0.1",
 		"regexp-tree": "^0.1.24"
 	}
 }
