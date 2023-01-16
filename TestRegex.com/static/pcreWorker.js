@@ -232,7 +232,7 @@ function preg_match(match_text) {
                             tooltip_data += TOOLTIP_END
                             if (highlighter_data[start_index] === void 0){
                                 highlighter_data[start_index] = {
-                                    matchNumber: result_data.length > 0 ? result_data.length :result_data.length,
+                                    matchNumber: result_data.length,
                                     startIndex:start_index,
                                     endIndex: end_index,
                                     groupNumber: GROUP_NUMBER/2,
@@ -252,9 +252,9 @@ function preg_match(match_text) {
                             end: end_index
                         })
                     }
-                    result_data[l++] = d
                 }
-                result_data = d
+                result_data[l++] = d
+                // result_data = d
             } else {
                 if (o != PCRE_ERROR_NOMATCH) {
                     C >= text_length;

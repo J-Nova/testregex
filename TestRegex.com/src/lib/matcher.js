@@ -1,11 +1,11 @@
 // @ts-nocheck
 import {explainRegex} from "$lib/handler.js"
 
-export function updateRegex(expression, flags, test_string, substitution_enabled, substitution_value="", delimiter, flavor, errorCallback, catastrophicCallback, successCallback, timeoutCallback, explain, explainCallback) {
+export function updateRegex(expression, flags, test_string, substitution_enabled, substitution_value="", delimiter, flavor, errorCallback, successCallback, timeoutCallback, explain, explainCallback) {
     var callbacks = {
         success: successCallback,
         error: errorCallback,
-        catastrophic: catastrophicCallback,
+        catastrophic: errorCallback,
         timeout: timeoutCallback,
         explain: explainCallback
     }
@@ -25,7 +25,8 @@ export function updateRegex(expression, flags, test_string, substitution_enabled
     if (explain) {
         treeview_timer && clearTimeout(treeview_timer),
         treeview_timer = setTimeout(function () {
-            explainCallback(explainRegex(test_data));
+            let explanation = explainRegex(test_data);
+            if (explanation) explainCallback(explanation);
         }, treeview_match_timeout)
     }
 
@@ -111,13 +112,7 @@ function updatePCRE(test_data, callbacks) {
     pcreWorker.worker.postMessage(test_data);
 }
 
-function sanitizePython(e) {
-    var r = e;
-    return r = r.replace(/(\\[^ckgGXCKPpuzVhHRLlUNQE])|\\([ckgGXCKPpuzVhHRLlUNQE])/g, "$1$2"),
-    r = r.replace(/\\.|\[:(.*?):\]/g, function (e, r) {
-        return "\\" === e.charAt(0) ? e : "[\\:" + r + "\\:]"
-    })
-}
+
 function updateJavascript(e) {
     function r(r, t) {
         t.running = !1,
@@ -159,21 +154,6 @@ function updateJavascript(e) {
     jsWorker.worker.postMessage(e)
 }
 
-// function whitespaceCallback(e) {
-//     return "\\n" === e ? String.fromCharCode(10) : "\\r" === e ? String.fromCharCode(13) : "\\f" === e ? String.fromCharCode(14) : "\\t" === e ? String.fromCharCode(9) : e
-// }
-// function highlightMatchResult(e, r) {
-//     textHighlightTimeout && clearTimeout(textHighlightTimeout);
-//     var t = "",
-//         o = e.regexText.length;
-//     Object.keys(r).sort(function (e, r) {
-//         return e - r
-//     }).reverse().forEach(function (a) {
-//         t = r[a] + white_space(escapeHtml(e.regexText.substring(a, o))) + t,
-//         o = Math.floor(a)
-//     }),
-//     test_color_element = replaceHtml(test_color_element, white_space(escapeHtml(e.regexText.substring(0, o))) + t)
-// }
 function handleSubResult(e, r, t) {
     if (e.isSub) {
         for (var o = Regex101Colorizer.getCaptureData(), a =! 1, i = e.sub, s = "", n = 0, u = 0, c = r.length; c > u; u++) {
