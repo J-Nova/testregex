@@ -6,14 +6,6 @@ export function explainRegex(test_data){
 
     let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true});
     regexpTree.traverse(astTree, {
-
-        "*": function({node}){
-            delete node["type"]
-            if (node.codePoint){
-                node.asciiCode = node.codePoint
-                delete node["codePoint"]
-            }
-        },
         
         Char: { // Adds explanations to Chars
             post({node}) {
@@ -51,8 +43,8 @@ export function explainRegex(test_data){
 
         CharacterClass: { // Adds explanations to CharacterClasses
             post({node}){
-                if (node.negative) node.explanation = "Matches a single character not present from the list below"
-                else node.explanation = "Matches a single character present from the list below"
+                if (node.negative) node.explanation = "Matches a single character not present from the expressions list"
+                else node.explanation = "Matches a single character present from the expressions list"
                 let filters = node.expressions;
                 for (let i = 0; i < filters.length; i++){
                     if (filters[i].type === "ClassRange") filters[i].explanation = `Matches a single character in the range between ${filters[i].from.symbol} (index ${filters[i].from.codePoint}) and ${filters[i].to.symbol} (index ${filters[i].to.codePoint}) (case sensitive)`
@@ -98,14 +90,13 @@ export function explainRegex(test_data){
         Repetition: { // Adds explanations to Repetitions
             post({node}){
                 console.log(node)
-                node.explanation = "Matches repeated data by regex below"
+                node.explanation = "Matches repeated data by the expressions list"
         }},
 
         Alternative: { // Adds explanations to Alternatives (Multiple expressions)
             post({node}){
                 node.explanation = "Matches data by expressions below"
         }}
-
     })
     return astTree
 }
