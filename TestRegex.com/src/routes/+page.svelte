@@ -1,9 +1,11 @@
 <script>
-    import { JsonView } from '@zerodevx/svelte-json-view'
-    import {match_status, FLAVORS} from '$lib/data.js'
+    import {match_status, FLAVORS} from '$lib/data.js';
     import {updateRegex} from "$lib/matcher.js";
+    import Quickref from "./Quickref.svelte";
+	import Matchinformation from "./Matchinformation.svelte";
     import ToolTip from "./ToolTip.svelte";
-    import {quickref} from "$lib/reference_data.js";
+    import Matchexplanation from './Matchexplanation.svelte';
+
     let testTextArea;
     let testBackdrop;
     let testCustomArea;
@@ -15,24 +17,18 @@
     let expressionString = "";
     let testString = "";
     $: informationMessage = "Detailed match information will be displayed here automatically.";
-    $: textColor= resetTextColor();
     
-    function resetTextColor(){
-        return "--jsonValStringColor: #059669";
-    }
-    $:  selectedCategory = "all";
     
     $: match_html = [];
     let editorStatus = "Edit mode";
     
     $: json = {};
-    let explanationView;
 
     let delimiter = "/";
     let flags = ["g", "m"];
     let status = 0;
     let editorLockTimeout = 3000;
-    let flavor = FLAVORS[0];
+    $: flavor = FLAVORS[0];
 
     function flagString(){
         return flags.join("");
@@ -48,16 +44,6 @@
     function showExplanation(){
         //TODO get explanation from localstorage
         showHide("explanation");
-    }
-
-    function showInformation(){
-        // TODO get information from localstorage
-        showHide("information");
-    }
-
-    function lookUp(){
-        //TODO Implement all proper information
-        showHide("lookup");
     }
 
     function updateExpression(event){
@@ -137,7 +123,6 @@
     }
 
     function successCallback(match_data){
-        textColor = resetTextColor();
         let matches = match_data.highlighter;
         let match_indexes = new Set();
         if (Object.keys(matches).length > 0 ){
@@ -155,7 +140,6 @@
 
     function errorCallback(errorMessage){
         json = {error:errorMessage}
-        textColor = "--jsonValStringColor: #b54d4d"
         informationMessage = "Your expression contains one or more faults, please see explanation above.";
     }
 
@@ -166,7 +150,6 @@
 
     function explainCallback(explanation){
         json = explanation.body;
-        textColor = resetTextColor();
     }
 
     function scrollFn(e){ // Sets the scroll position to match each other.
@@ -177,9 +160,7 @@
         }
     }
 
-    function updateCategory(event){
-        selectedCategory = event.target.id
-    }
+    
 </script>
 
 <div class="functions">
@@ -279,94 +260,11 @@
 </div>
 
 <div id="right-side">
-    <div class="explanation">
-        <button on:click={showExplanation} class="headingButton">
-            <h2>
-                <span>Explanation</span>
-            </h2>
-        </button>
-        <div id="explanation" style="{textColor}">
-            {#if Object.keys(json).length == 0}
-                <span>An explanation will automatically be generated about your regex expression.</span>
-            {:else}
-                <JsonView {json} />
-            {/if}
-        </div>
-    </div>
-
-    <div class="information"> 
-        <button on:click={showInformation} class="headingButton">
-            <h2>
-                <span>Information</span>
-            </h2>
-        </button>
-        <div id="information">
-            {#if typeof informationMessage == "string"}
-                <span>{informationMessage}</span>
-            {:else}
-                {#each match_html as match}
-                    {#if match.start !== undefined}
-                    <div class="detailed-match">
-                        <div>Match {(parseInt(match.matchNumber)+1)}</div>
-                        <div>{match.start}-{match.end}</div>
-                        <div>{match.content}</div>
-                    </div>
-                    {/if}
-                {/each}
-            {/if}
-        </div>
-    </div>
-
-    <div class="lookup">
-        <button on:click={lookUp} class="headingButton">
-            <h2>
-                <span>Lookup</span>
-            </h2>
-        </button>
-        <div id="lookup">
-            <div class="categories">
-                <input type="text" placeholder="Search..." spellcheck="false">
-                <ul>
-                    <button class="quickref-button" id="all" on:click={e => updateCategory(e)}>All tokens</button>
-                    {#each Object.keys(quickref) as category}
-                        <li>
-                            <button class="quickref-button" id={category} on:click={e => updateCategory(e)}>{category}</button>
-                        </li>
-                    {/each}
-                </ul>
-            </div>
+    <Matchexplanation json={json}/>
     
-            <div class="data">
-                <ul>
-                    {#if selectedCategory == "all"}
-                        {#each Object.keys(quickref) as key}
-                            {#each quickref[key] as item }
-                                {#if item.flavors.includes(flavor)}
-                                <button class="category-container">
-                                    <div>{item.token}</div>
-                                    <div>{item.desc}</div>
-                                </button>
-                                {/if}
-                                <!-- <div>{item.info}</div> -->
-                                <!-- TODO optimize this by moving it into a function -->
-                                <!-- TODO show the item info when clicking on a token -->
-                            {/each}        
-                        {/each}
-                    {:else}
-                        {#each quickref[selectedCategory] as item }
-                            {#if item.flavors.includes(flavor)}
-                            <button class="category-container">
-                                <div>{item.token}</div>
-                                <div>{item.desc}</div>
-                            </button>
-                            {/if}
-                            <!-- <div>{item.info}</div> -->
-                        {/each}
-                    {/if}
-                </ul>
-            </div>
-        </div>
-    </div>
+    <Matchinformation match_html={match_html} informationMessage={informationMessage}/>
+
+    <Quickref flavor={flavor}/>
 </div>
 
 </main>
@@ -376,29 +274,11 @@
         list-style-type: none;
     }
 
-    .category-container{
-        display: flex;
-        flex-direction: row;
-        margin: 5px;
-        padding: 5px;
-        justify-content: space-between;
-        background-color: inherit;
-        border: none;
-        width: 100%;
-    }
-    .category-container:hover {
-        background-color: var(--body-tertiary);
-    }
-
     .functions {
         display: flex;
         flex-direction: row;
         max-width: 60%;
         justify-content: space-between;
-    }
-    #lookup {
-        display: flex;
-        flex-direction: row;
     }
 
     .functions ul {
@@ -467,46 +347,6 @@
         gap:10px;
     }
 
-    #right-side .headingButton {
-        background-color: inherit;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        text-align: inherit;
-        width: 100%;
-    }
-
-    
-    
-    #explanation, #information {
-        max-height: 35vh;
-        overflow-y: auto;
-    }
-    .detailed-match {
-        display: flex;
-        flex-direction: row;
-        margin: 5px;
-        padding:5px;
-        gap: 5px;
-        background-color: var(--body-quaternary);
-        width: auto;
-    }
-
-    .detailed-match div:nth-child(2){
-        border: 0px;
-        border-right: 1px;
-        border-style: solid;
-        padding-right: 3px;
-    }
-
-
-    #right-side div.explanation, #right-side div.information, #right-side div.lookup {
-        height: auto;
-        background-color: var(--body-secondary);
-        padding: 5px;
-    }
 
 
     /* Text Area styling ----------------------*/
