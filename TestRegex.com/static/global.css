@@ -31,3 +31,42 @@ header {
     user-select: none;
     box-sizing: border-box;
 }
+
+button.right {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+    width: 100%;
+    border-bottom: 1px solid var(--body-quaternary) ;
+}
+
+#explanation, #information, #lookup {
+    max-height: 30vh;
+    overflow-y: auto;
+    padding-top: 10px;
+    height:100%;
+}
+
+li {
+    list-style-type: none;
+}
+
+.right-container {
+    height: auto;
+    background-color: var(--body-secondary);
+    padding: 5px;
+}
+
+::-webkit-scrollbar {
+    background: var(--body-tertiary);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--body-quaternary);
+    border-radius: 8px;
+}
