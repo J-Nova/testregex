@@ -1,5 +1,7 @@
 // @ts-nocheck
-const CACHE_NAME = 'TestRegex-Cache';
+import { build, files, version } from '$service-worker';
+
+const CACHE_NAME = `cache-${version}`;
 
 // listen for fetch events in page navigation and return anything that has been cached
 self.addEventListener("fetch",event => {
