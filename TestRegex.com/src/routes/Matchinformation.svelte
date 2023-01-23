@@ -1,41 +1,44 @@
 <script>
-    let informationButton;
     export let match_html;
     export let informationMessage;
-    function showHide() {
-        if (document.getElementById(informationButton).style.display == "none") {
-            document.getElementById(informationButton).style.display = "block";
-        } else {
-            document.getElementById(informationButton).style.display = "none";
-        }
+    let toggleForm = false;
+    let height = "auto";
+
+    function toggle(){
+        toggleForm = !toggleForm
+        if (toggleForm) height = "100%";
+        else height = "auto";
     }
+
 </script>
 
-<div class="information"> 
-    <button on:click={showHide} class="headingButton" bind:this={informationButton}>
+<div class="right-container" style="height: {height};"> 
+    <button on:click={toggle} class="right">
         <h2>
             <span>Information</span>
         </h2>
     </button>
-    <div id="information">
-        {#if typeof informationMessage == "string"}
-            <span>{informationMessage}</span>
-        {:else}
-            {#each match_html as match}
-                {#if match.start !== undefined}
-                <div class="detailed-match">
-                    <div>Match {(parseInt(match.matchNumber)+1)}</div>
-                    <div>{match.start}-{match.end}</div>
-                    <div>{match.content}</div>
-                </div>
-                {/if}
-            {/each}
-        {/if}
-    </div>
+    {#if toggleForm}
+        <div id="information">
+            {#if typeof informationMessage == "string"}
+                <span>{informationMessage}</span>
+            {:else}
+                {#each match_html as match}
+                    {#if match.start !== undefined}
+                    <div class="match">
+                        <div>Match {(parseInt(match.matchNumber)+1)}</div>
+                        <div>{match.start}-{match.end}</div>
+                        <div>{match.content}</div>
+                    </div>
+                    {/if}
+                {/each}
+            {/if}
+        </div>
+    {/if}
 </div>
 
 <style>
-    .detailed-match {
+    .match {
         display: flex;
         flex-direction: row;
         margin: 5px;
@@ -45,21 +48,9 @@
         width: auto;
     }
 
-    .detailed-match div:nth-child(2){
+    .match div:nth-child(2){
         border: 0px;
-        border-right: 1px;
-        border-style: solid;
-        padding-right: 3px;
-    }
-
-    div.information {
-        height: auto;
-        background-color: var(--body-secondary);
-        padding: 5px;
-    }
-
-    #explanation, #information, #lookup {
-        max-height: 35vh;
-        overflow-y: auto;
+        border-right: 1px solid;
+        padding-right: 5px;
     }
 </style>

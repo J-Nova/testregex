@@ -1,77 +1,102 @@
 <script>
     import {quickref} from "$lib/reference_data.js";
-    $:  selectedCategory = "all";
-    let lookupButton;
     export let flavor = "PCRE";
-    
-    function updateCategory(event){
-        selectedCategory = event.target.id
-    }
+    let infoToggle = false;
+    let toggleForm = false;
+    let height = "auto";
 
-    function showHide() {
-        if (document.getElementById(lookupButton).style.display == "none") {
-            document.getElementById(lookupButton).style.display = "block";
+    $: selectedCategoryItems = getCategoryData("all");
+
+
+    function getCategoryData(categoryKey){
+        let items = [];
+        if (categoryKey === "all") {
+            Object.entries(quickref).forEach(([key, _]) => {
+                Object.entries(quickref[key]).forEach(([_, value]) => {
+                    if (value.flavors.includes(flavor)) {
+                        items.push(value);
+                    }
+                });
+            }); 
         } else {
-            document.getElementById(lookupButton).style.display = "none";
+            Object.entries(quickref[categoryKey]).forEach(([_, value]) => {
+                if (value.flavors.includes(flavor)) {
+                    items.push(value);
+                }
+            });
         }
+        selectedCategoryItems = items;
+        return items;
     }
 
+
+    function updateCategory(event){
+        getCategoryData(event.target.id);
+    }
+
+    function toggle(){
+        toggleForm = !toggleForm
+        if (toggleForm) height = "100%";
+        else height = "auto";
+    }
 
 </script>
 
-<div class="lookup">
-    <button on:click={showHide} class="headingButton" bind:this={lookupButton}>
+<div class="right-container" style="height: {height};">
+    <button on:click={toggle} class="right">
         <h2>
             <span>Lookup</span>
         </h2>
     </button>
-    <div id="lookup">
-        <div class="categories">
-            <input type="text" placeholder="Search..." spellcheck="false">
-            <ul>
-                <button class="quickref-button" id="all" on:click={e => updateCategory(e)}>All tokens</button>
-                {#each Object.keys(quickref) as category}
-                    <li>
-                        <button class="quickref-button" id={category} on:click={e => updateCategory(e)}>{category}</button>
-                    </li>
-                {/each}
-            </ul>
-        </div>
+    {#if toggleForm}
+        <div id="lookup">
+            <div class="categories">
+                <ul>
+                    <li><input type="text" placeholder="Search..." spellcheck="false"></li>
+                    <li><button id="all" on:click={e => updateCategory(e)}>All tokens</button></li>
+                    {#each Object.keys(quickref) as category}
+                        <li>
+                            <button id={category} on:click={e => updateCategory(e)}>{category}</button>
+                        </li>
+                    {/each}
+                </ul>
+            </div>
 
-        <div class="data">
-            <ul>
-                {#if selectedCategory == "all"}
-                    {#each Object.keys(quickref) as key}
-                        {#each quickref[key] as item }
-                            {#if item.flavors.includes(flavor)}
-                            <button class="category-container">
-                                <div>{item.token}</div>
-                                <div>{item.desc}</div>
-                            </button>
-                            {/if}
-                            <!-- <div>{item.info}</div> -->
-                            <!-- TODO optimize this by moving it into a function -->
-                            <!-- TODO show the item info when clicking on a token -->
-                        {/each}        
-                    {/each}
-                {:else}
-                    {#each quickref[selectedCategory] as item }
-                        {#if item.flavors.includes(flavor)}
-                        <button class="category-container">
-                            <div>{item.token}</div>
-                            <div>{item.desc}</div>
+            <div class="results">
+                <ul>
+                    {#each selectedCategoryItems as item}
+                        <button class="item" on:click={() => (infoToggle = !infoToggle)}>
+                            <div class="token">{item.token}</div>
+                            <div class="desc">{item.desc}</div>
+                            <div class="info">{item.info}</div>
                         </button>
-                        {/if}
-                        <!-- <div>{item.info}</div> -->
-                    {/each}
-                {/if}
-            </ul>
+                    {/each}        
+                </ul>
+            </div>
         </div>
-    </div>
+    {/if}
 </div>
 
 <style>
-    .category-container{
+    #lookup {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .categories {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .results {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 100%;
+        padding:10px;
+    }
+
+    .item{
         display: flex;
         flex-direction: row;
         margin: 5px;
@@ -82,12 +107,25 @@
         width: 100%;
     }
 
-    .category-container:hover {
+    .item:hover {
         background-color: var(--body-tertiary);
     }
-
-    #lookup {
-        display: flex;
-        flex-direction: row;
+    
+    .item .token{
+        color:mediumseagreen;
     }
+    
+    .item .desc {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    
+    .item .info {
+        display: none;
+        position: relative;
+        top:0;
+        left:0;
+    }
+
 </style>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import regexpTree from 'regexp-tree';
 
 export function explainRegex(test_data){
@@ -115,115 +114,32 @@ export function transpileExpression(expression){
     return transpiledExpression
 }
 
-// function explainExpression(regexExpression) {
-//     // Go over all characters in the expression
 
-//     for (var index = 0; index < regexExpression.length;){
-//         var currentCharacter = regexExpression.charAt(index);
-        
-//         switch(currentCharacter){
-//             case "\\": {
-//                 let result;
-//                 result = anchors()
-//                 result = classes()
-//                 result = characters()
-//                 // Check anchors
-//                 // Check classes
-//                 // Check Special characters
-//             }
-//         }
-//     }
-
-//     function nextCharacter(){
-//         let nextIndex = index +1;
-//         return regexExpression.charAt(nextIndex)
-//     }
-
-//     function anchors(){
-//         // explain anchors and boundaries
-//         // https://www.rexegg.com/regex-quickstart.html#anchors
-//         if (currentCharacter === "\\") {
-//             let next = nextCharacter();
-//             if (next === "A") return "Start of string";
-//             else if (next === "Z") return "End of string";
-//             else if (next === "b") return "Word boundary";
-//             else if (next === "B") return "Not word boundary";
-//             else if (next === "G") return "End of the previous match";
-//             else if (next === "<") return "Start of word";
-//             else if (next === ">") return "End of word";
-//         } else {
-//             if (currentCharacter === "^") return "Start of string, or start of line in multi-line pattern";
-//             else if (currentCharacter === "$") return "End of string, or end of line in multi-line pattern";
-//         }
-//     }
-
-//     function characters(){
-//         // Explain character things
-//         // https://www.rexegg.com/regex-quickstart.html#chars
-//         // https://www.rexegg.com/regex-quickstart.html#morechars
-//         if (currentCharacter === "\\"){
-//             let next = nextCharacter();
-//             if (next === "w") return "Word - [a-zA-­Z0-9_]";
-//             else if (next === "W") return "Non-word - [^a-zA­-Z0-9_]";
-//             else if (next === "d") return "Digit - [0-9]";
-//             else if (next === "D") return "Non-digit - [^0-9]";
-//             else if (next === "s") return "Whitespace - [\/f\/t/­\/x0b\/n\/r]";
-//             else if (next === "S") return "Non-whitespace - [^\/f\/t/­\/x0b\/n\/r]";
-//             else if (next === "x") return "Hexadecimal";
-//             else if (next === "O") return "Octal digit";
-//         } else if (currentCharacter === ".") {
-//             return "Any character (except new line \/n)";
-//         }
-//     }
-    
-//     function quantifiers(){
-//         // Explain quantifiers
-//         // https://www.rexegg.com/regex-quickstart.html#quantifiers
-//         // https://www.rexegg.com/regex-quickstart.html#morequants
-//     }
-    
-//     function logic(){
-//         // Explain logic operators
-//         // https://www.rexegg.com/regex-quickstart.html#logic
-//     }
-    
-//     function whitespace(){
-//         // explain whitespace
-//         // https://www.rexegg.com/regex-quickstart.html#whitespace
-//     }
-    
-//     function classes(){
-//         // Explain classes
-//         // https://www.rexegg.com/regex-quickstart.html#classes
-//     }
-    
-    
-//     function posix(){
-//         // Explain posix classes
-//         // https://www.rexegg.com/regex-quickstart.html#anchors
-//     }
-    
-//     function modifiers(){
-//         // explain modifiers
-//         // https://www.rexegg.com/regex-quickstart.html#modifiers
-//     }
-    
-//     function lookArounds(){
-//         // Explain lookarounds
-//         // https://www.rexegg.com/regex-quickstart.html#lookarounds
-//     }
-    
-//     function classOperations(){
-//         // explain classoperations
-//         // https://www.rexegg.com/regex-quickstart.html#classoperations
-//     }
-    
-//     function otherSyntax(){
-//         // explain otherSyntax
-//         // https://www.rexegg.com/regex-quickstart.html#other
-//     }
-    
-//     function backreference(){
-//         // explain a backreference
-//     }
-// }
+export function highlighter(match_indexes= new Set(), matches = {}, testString=""){
+    let new_match_html = [];
+    for (let i=0; i<testString.length; i++){
+        let tooltip;
+        let isMatch;
+        if (match_indexes.has(i)){
+            if (matches[i]){
+                let matchNumber = matches[i].matchNumber;
+                let groupNumber = matches[i].groupNumber;
+                let groupNames = matches[i].groupNames;
+                let content = matches[i].content;
+                let start = matches[i].startIndex;
+                let end = matches[i].endIndex;
+                let classNames = matches[i].classNames;
+                isMatch = true;
+                tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
+                new_match_html.push(tooltip);
+            }
+        } else{
+            isMatch = false;
+            let char = testString[i];   
+            tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
+            new_match_html.push(tooltip);
+        }
+    }
+    console.log(new_match_html);
+    return new_match_html
+}

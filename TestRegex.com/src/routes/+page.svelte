@@ -1,6 +1,7 @@
 <script>
     import {match_status, FLAVORS} from '$lib/data.js';
     import {updateRegex} from "$lib/matcher.js";
+    import {highlighter} from "$lib/handler.js";
     import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
     import ToolTip from "./ToolTip.svelte";
@@ -16,34 +17,23 @@
     
     let expressionString = "";
     let testString = "";
+    let editorStatus = "Edit mode";
     $: informationMessage = "Detailed match information will be displayed here automatically.";
     
     
-    $: match_html = [];
-    let editorStatus = "Edit mode";
     
-    $: json = {};
+    $: match_data_list = [];
+    $: MatchAstTree = {};
+    $: matchTextColor = "base";
 
     let delimiter = "/";
     let flags = ["g", "m"];
-    let status = 0;
+    $:  status = 0;
     let editorLockTimeout = 3000;
     $: flavor = FLAVORS[0];
 
     function flagString(){
         return flags.join("");
-    }
-    function showHide(id) {
-        if (document.getElementById(id).style.display == "none") {
-            document.getElementById(id).style.display = "block";
-        } else {
-            document.getElementById(id).style.display = "none";
-        }
-    }
-
-    function showExplanation(){
-        //TODO get explanation from localstorage
-        showHide("explanation");
     }
 
     function updateExpression(event){
@@ -63,7 +53,7 @@
             explainCallback);
         }
 
-        match_html = [];
+        match_data_list = [];
         let explain_expr = (event.target !== testTextArea)
         if (expressionString.length > 0 && testString.length > 0){
             runExpression(expressionString, flagString(), testString, delimiter, flavor, explain_expr);
@@ -73,7 +63,7 @@
         } 
         
         if (expressionString.length == 0) {
-            json = {};
+            MatchAstTree = {};
         } 
         if (testString.length == 0) {
             informationMessage = "Detailed match information will be displayed here automatically.";
@@ -94,35 +84,8 @@
         editorStatus = "Edit mode"
     }
 
-    function highlight(match_indexes= new Set(), matches = {}){
-        let new_match_html = [];
-        for (let i=0; i<testString.length; i++){
-            let tooltip;
-            let isMatch;
-            if (match_indexes.has(i)){
-                if (matches[i]){
-                    let matchNumber = matches[i].matchNumber;
-                    let groupNumber = matches[i].groupNumber;
-                    let groupNames = matches[i].groupNames;
-                    let content = matches[i].content;
-                    let start = matches[i].startIndex;
-                    let end = matches[i].endIndex;
-                    let classNames = matches[i].classNames;
-                    isMatch = true;
-                    tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
-                    new_match_html.push(tooltip);
-                }
-            } else{
-                isMatch = false;
-                let char = testString[i];   
-                tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
-                new_match_html.push(tooltip);
-            }
-        }
-        match_html = new_match_html;
-    }
-
     function successCallback(match_data){
+        matchTextColor = "base";
         let matches = match_data.highlighter;
         let match_indexes = new Set();
         if (Object.keys(matches).length > 0 ){
@@ -134,22 +97,27 @@
             }
             // @ts-ignore
             informationMessage = ["a"];
-        }
-        highlight(match_indexes, matches);
+            status = 1;
+        } else status = 0;
+        match_data_list = highlighter(match_indexes, matches, testString);
     }
 
     function errorCallback(errorMessage){
-        json = {error:errorMessage}
+        MatchAstTree = {error:errorMessage}
         informationMessage = "Your expression contains one or more faults, please see explanation above.";
+        matchTextColor = "error";
+        status = 2;
     }
 
     function timeoutCallback(){
-        json = {error: "Timed out while waiting on expression results"}
+        MatchAstTree = {error: "Timed out while waiting on expression results"}
         informationMessage = "Detailed match information will be displayed here automatically.";
+        matchTextColor = "error";
+        status = 2;
     }
 
     function explainCallback(explanation){
-        json = explanation.body;
+        MatchAstTree = explanation.body;
     }
 
     function scrollFn(e){ // Sets the scroll position to match each other.
@@ -159,7 +127,6 @@
             expressionBackdrop.scrollTop = expressionTextArea.scrollTop;
         }
     }
-
     
 </script>
 
@@ -228,10 +195,10 @@
                     style="max-height: 25em; min-height: 25em"
                 >
                 <div class="custom-area" bind:this={testCustomArea}>
-                    {#if match_html.length === 0}
+                    {#if match_data_list.length === 0}
                         {testString}
                     {:else}
-                        {#each match_html as tooltip}
+                        {#each match_data_list as tooltip}
                             {#if tooltip !== undefined}
                                 <ToolTip objAttributes={tooltip}/>
                             {/if}
@@ -260,9 +227,9 @@
 </div>
 
 <div id="right-side">
-    <Matchexplanation json={json}/>
+    <Matchexplanation json={MatchAstTree} matchColor={matchTextColor}/>
     
-    <Matchinformation match_html={match_html} informationMessage={informationMessage}/>
+    <Matchinformation match_html={match_data_list} informationMessage={informationMessage}/>
 
     <Quickref flavor={flavor}/>
 </div>
@@ -270,10 +237,6 @@
 </main>
 
 <style>
-    li {
-        list-style-type: none;
-    }
-
     .functions {
         display: flex;
         flex-direction: row;
@@ -345,6 +308,7 @@
         display: flex;
         flex-direction: column;
         gap:10px;
+        height: 100%;
     }
 
 
@@ -396,7 +360,6 @@
 		resize: none;
 		border: none;
 		outline: none;
-		/* color: transparent !important; */
 	}
 
 	::placeholder {
