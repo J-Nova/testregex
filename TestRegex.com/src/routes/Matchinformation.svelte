@@ -1,6 +1,5 @@
 <script>
-    export let match_html;
-    export let informationMessage;
+    import {delimiter, flags, editor_status, expressionString, testString, status, information_message, match_data_list, MatchAstTree, matchTextColor, editorLockTimeout, flavor} from "$lib/stores.js";
     let toggleForm = false;
     let height = "auto";
 
@@ -20,10 +19,10 @@
     </button>
     {#if toggleForm}
         <div id="information">
-            {#if typeof informationMessage == "string"}
-                <span>{informationMessage}</span>
+            {#if typeof $information_message == "string"}
+                <span>{$information_message}</span>
             {:else}
-                {#each match_html as match}
+                {#each $match_data_list as match}
                     {#if match.start !== undefined}
                     <div class="match">
                         <div>Match {(parseInt(match.matchNumber)+1)}</div>
@@ -52,5 +51,22 @@
         border: 0px;
         border-right: 1px solid;
         padding-right: 5px;
+    }
+
+    .right-container {
+        height: auto;
+        background-color: var(--body-secondary);
+        padding: 5px;
+    }
+    button.right {
+        background-color: inherit;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        text-align: inherit;
+        width: 100%;
+        border-bottom: 1px solid var(--body-quaternary) ;
     }
 </style>

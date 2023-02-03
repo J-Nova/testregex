@@ -1,6 +1,6 @@
 <script>
     import {quickref} from "$lib/reference_data.js";
-    export let flavor = "PCRE";
+    import {flavor} from "$lib/stores.js";
     let infoToggle = false;
     let toggleForm = false;
     let height = "auto";
@@ -13,14 +13,14 @@
         if (categoryKey === "all") {
             Object.entries(quickref).forEach(([key, _]) => {
                 Object.entries(quickref[key]).forEach(([_, value]) => {
-                    if (value.flavors.includes(flavor)) {
+                    if (value.flavors.includes($flavor)) {
                         items.push(value);
                     }
                 });
             }); 
         } else {
             Object.entries(quickref[categoryKey]).forEach(([_, value]) => {
-                if (value.flavors.includes(flavor)) {
+                if (value.flavors.includes($flavor)) {
                     items.push(value);
                 }
             });
@@ -39,7 +39,6 @@
         if (toggleForm) height = "100%";
         else height = "auto";
     }
-
 </script>
 
 <div class="right-container" style="height: {height};">
@@ -78,6 +77,18 @@
 </div>
 
 <style>
+
+    button.right {
+        background-color: inherit;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        text-align: inherit;
+        width: 100%;
+        border-bottom: 1px solid var(--body-quaternary) ;
+    }
     #lookup {
         display: flex;
         flex-direction: row;
@@ -128,4 +139,12 @@
         left:0;
     }
 
+    .right-container {
+        height: auto;
+        background-color: var(--body-secondary);
+        padding: 5px;
+    }
+    li {
+        list-style-type: none;
+    }
 </style>
