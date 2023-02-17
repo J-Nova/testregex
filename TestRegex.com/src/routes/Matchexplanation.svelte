@@ -11,44 +11,29 @@
 
     function toggle(){
         toggleForm = !toggleForm
-        if (toggleForm) height = "100%";
-        else height = "auto";
     }
 
 </script>
 
-<div class="right-container" style="height: {height};">
-    <button on:click={toggle} class="right">
+<div class="right-container">
+    <button on:click={toggle} class="toggle">
         <h2>
-            <span>Explanation</span>
+            Explanation
         </h2>
     </button>
     {#if toggleForm}
-        <div id="explanation" style="{textColors[$matchTextColor]}">
+        <div class="right-data-container" style="{textColors[$matchTextColor]}">
             {#if Object.keys($MatchAstTree).length == 0}
                 <span>An explanation will automatically be generated about your regex expression.</span>
             {:else}
-                <JsonView json={$MatchAstTree} />
+                <JsonView json={$MatchAstTree}/>
             {/if}
         </div>
     {/if}
 </div>
 
 <style>
-    .right-container {
-        height: auto;
-        background-color: var(--body-secondary);
-        padding: 5px;
-    }
-    button.right {
-        background-color: inherit;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        text-align: inherit;
-        width: 100%;
-        border-bottom: 1px solid var(--body-quaternary) ;
-    }
+    /* .right-data-container {
+        height: calc(100vh/3 - 50px);
+    } */
 </style>

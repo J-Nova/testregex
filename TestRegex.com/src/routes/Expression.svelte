@@ -1,7 +1,8 @@
 <script>
     import { createEventDispatcher } from 'svelte';
+    import Options from "./Options.svelte"
     import {match_status} from "$lib/data.js";
-    import {delimiter, flags, expressionString, status} from "$lib/stores.js";
+    import {flags, expressionString, status} from "$lib/stores.js";
     const dispatch = createEventDispatcher();
     let expressionBackdrop;
     let expressionCustomArea;
@@ -16,7 +17,7 @@
         <span class="result">{match_status[$status]}</span>
     </h2>
     <div class="input">
-        <span class="delimiter">{$delimiter}</span>
+        <Options/>
             <!-- Create input container -->
             <div class="container">
                 <pre
@@ -39,7 +40,7 @@
                 ></textarea>
             </div>
             <!-- End of creating input container -->
-        <span class="flags">{$delimiter}{$flags.join("")}</span>
+            <Options showFlags={true}/>
     </div>
 </div>
 
@@ -93,8 +94,6 @@
         
         width: 100%;
         height: 100%;
-        
-        /* font-family: 'Courier New', Courier, monospace; */
         font-size: x-large;
         font-weight: 400;
         
@@ -110,11 +109,5 @@
         resize: none;
         border: none;
         outline: none;
-    }
-
-    .delimiter, .flags {
-        align-self: baseline;
-        padding: 15px;
-        color: var(--body-quaternary);
     }
 </style>

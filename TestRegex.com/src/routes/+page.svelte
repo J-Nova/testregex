@@ -86,7 +86,7 @@
     
 </script>
 
-<Functions/>
+<!-- <Functions/> -->
 
 <main>
 <div id="left-side">
@@ -111,24 +111,25 @@
         display: flex;
         flex-direction: row;
         gap: 10px;
-        height: 90vh;
+        height: 100%;
     }
 
     #left-side {    
         background-color: var(--body-secondary);
-        width: 60%;
+        max-width: 60vw;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        padding:10px;
         gap:10px;
+        padding:10px;
     }
 
     #right-side {
-        width: 40%;
+        max-width: 40vw;
+        width: 100%;
         display: flex;
         flex-direction: column;
         gap:10px;
-        height: 100%;
     }
 
 </style>

@@ -12,14 +12,13 @@
 }
 
 
-body {
-    height: 100%;
-    width: 100%;
+html, body {
     margin: 0;
     padding: 0;
     tab-size: 4;
     line-height: 16px; 
     background-color: var(--body-primary);
+    height: 100%;
 }
 
 header {
@@ -30,13 +29,6 @@ header {
     padding: 0 10px;
     user-select: none;
     box-sizing: border-box;
-}
-
-#explanation, #information, #lookup {
-    max-height: 30vh;
-    overflow-y: auto;
-    padding-top: 10px;
-    height:100%;
 }
 
 ::-webkit-scrollbar {
@@ -52,4 +44,40 @@ header {
 
 ::placeholder {
     color : var(--body-primary);
+}
+
+button.toggle {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+    width: 100%;
+    border-bottom: 1px solid var(--body-quaternary) ;
+    height: 50px;
+}
+
+.right-data-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    height: calc(100vh/3 - 100px);
+    padding-top: 10px;
+}
+
+.right-container {
+    height: auto;
+    background-color: var(--body-secondary);
+    padding: 5px;
+}
+
+
+ul {
+    padding: 0px;
+}
+
+li {
+    list-style-type: none;
 }

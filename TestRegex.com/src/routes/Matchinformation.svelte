@@ -5,20 +5,18 @@
 
     function toggle(){
         toggleForm = !toggleForm
-        if (toggleForm) height = "100%";
-        else height = "auto";
     }
 
 </script>
 
-<div class="right-container" style="height: {height};"> 
-    <button on:click={toggle} class="right">
+<div class="right-container"> 
+    <button on:click={toggle} class="toggle">
         <h2>
-            <span>Information</span>
+            Information
         </h2>
     </button>
     {#if toggleForm}
-        <div id="information">
+        <div class="right-data-container">
             {#if typeof $information_message == "string"}
                 <span>{$information_message}</span>
             {:else}
@@ -53,20 +51,4 @@
         padding-right: 5px;
     }
 
-    .right-container {
-        height: auto;
-        background-color: var(--body-secondary);
-        padding: 5px;
-    }
-    button.right {
-        background-color: inherit;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        text-align: inherit;
-        width: 100%;
-        border-bottom: 1px solid var(--body-quaternary) ;
-    }
 </style>

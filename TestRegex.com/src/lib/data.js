@@ -8,16 +8,17 @@ export const FLAVORS = {
     "PCRE": {
         "start": ":",
         "flags": [
-            {"g": {"global": "Don't return after the first match"}},
-            {"m": {"multi line": "^ and $ match start/end of file"}},
-            {"i": {"insensitive":"Case insensitive match"}},
-            {"x": {"extended":"Ignore whitespace"}},
-            {"s": {"single line": "Dot matches newline"}},
-            {"u": {"unicode": "Match with full unicode"}},
-            {"U": {"ungreedy": "Make quantifiers lazy"}}, 
-            {"A": {"anchored": "Anchor to the start of pattern or at the end of most recent match"}},{"J": {"jchanged": "Allow duplicate subpattern names"}},
-            {"D": {"dollar end only": "$ matches only end of pattern"}},
-            {"J": {"jchanged": "Allow duplicate subpattern names"}}
+            {"g": {full:"global", desc: "Don't return after the first match"}},
+            {"m": {full:"multi line", desc: "^ and $ match start/end of file"}},
+            {"i": {full:"insensitive", desc:"Case insensitive match"}},
+            {"x": {full:"extended", desc:"Ignore whitespace"}},
+            {"s": {full:"single line", desc: "Dot matches newline"}},
+            {"u": {full:"unicode", desc: "Match with full unicode"}},
+            {"U": {full:"ungreedy", desc: "Make quantifiers lazy"}}, 
+            {"A": {full:"anchored", desc: "Anchor to the start of pattern or at the end of most recent match"}},
+            {"J": {full:"jchanged", desc: "Allow duplicate subpattern names"}},
+            {"D": {full:"dollar end only", desc: "$ matches only end of pattern"}},
+            {"J": {full:"jchanged", desc: "Allow duplicate subpattern names"}}
         ],
         "delimiters": ["/", "~", "@", ";", "%", "`", "#"]
 

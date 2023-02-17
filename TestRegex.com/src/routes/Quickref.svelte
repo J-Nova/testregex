@@ -41,27 +41,27 @@
     }
 </script>
 
-<div class="right-container" style="height: {height};">
-    <button on:click={toggle} class="right">
+<div class="right-container">
+    <button on:click={toggle} class="toggle">
         <h2>
-            <span>Lookup</span>
+            Lookup
         </h2>
     </button>
     {#if toggleForm}
         <div id="lookup">
-            <div class="categories">
+            <div class="right-data-container">
                 <ul>
                     <li><input type="text" placeholder="Search..." spellcheck="false"></li>
                     <li><button id="all" on:click={e => updateCategory(e)}>All tokens</button></li>
                     {#each Object.keys(quickref) as category}
                         <li>
-                            <button id={category} on:click={e => updateCategory(e)}>{category}</button>
+                            <button class="item" id={category} on:click={e => updateCategory(e)}>{category}</button>
                         </li>
                     {/each}
                 </ul>
             </div>
 
-            <div class="results">
+            <div class="right-data-container">
                 <ul>
                     {#each selectedCategoryItems as item}
                         <button class="item" on:click={() => (infoToggle = !infoToggle)}>
@@ -77,34 +77,10 @@
 </div>
 
 <style>
-
-    button.right {
-        background-color: inherit;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        text-align: inherit;
-        width: 100%;
-        border-bottom: 1px solid var(--body-quaternary) ;
-    }
     #lookup {
         display: flex;
         flex-direction: row;
-    }
-
-    .categories {
-        overflow-y: auto;
-        overflow-x: hidden;
-        width: 100%;
-    }
-
-    .results {
-        overflow-y: auto;
-        overflow-x: hidden;
-        width: 100%;
-        padding:10px;
+        gap:6px;
     }
 
     .item{
@@ -137,14 +113,5 @@
         position: relative;
         top:0;
         left:0;
-    }
-
-    .right-container {
-        height: auto;
-        background-color: var(--body-secondary);
-        padding: 5px;
-    }
-    li {
-        list-style-type: none;
     }
 </style>
