@@ -7,7 +7,7 @@
     import Matchexplanation from './Matchexplanation.svelte';
     import Expression from "./Expression.svelte";
     import TestData from './TestData.svelte';
-    import Functions from "./Functions.svelte"
+    import Nav from "./Nav.svelte";
 
     import {delimiter, flags, editor_status, expressionString, testString, status, information_message, match_data_list, MatchAstTree, matchTextColor, editorLockTimeout, flavor} from "$lib/stores.js";
 
@@ -86,50 +86,47 @@
     
 </script>
 
-<!-- <Functions/> -->
-
+<Nav/>
 <main>
-<div id="left-side">
-    <!-- The expression area -->
-    <Expression on:updateExpression={updateExpression}/>
-    <!-- The test area -->
-    <TestData on:updateExpression={updateExpression}/>
-</div>
+    <div class="left">
+        <Expression on:updateExpression={updateExpression}/>
+        <TestData on:updateExpression={updateExpression}/>
+    </div>
 
-<div id="right-side">
-    <Matchexplanation/>
-    
-    <Matchinformation/>
-
-    <Quickref/>
-</div>
-
+    <div class="right">
+        <Matchexplanation/>
+        <Matchinformation/>
+        <Quickref/>
+    </div>
 </main>
 
 <style>
     main {
         display: flex;
         flex-direction: row;
-        gap: 10px;
-        height: 100%;
+        gap: 1rem;
+        height: 100rem;
+        width: 100%;
     }
 
-    #left-side {    
+    .left {    
+        display: grid;
+        grid-template-rows: 3rem 3rem 5rem auto;
+        max-width: 70rem;
+        width: 100%;
+        padding:1rem;
         background-color: var(--body-secondary);
-        max-width: 60vw;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap:10px;
-        padding:10px;
     }
-
-    #right-side {
-        max-width: 40vw;
-        width: 100%;
+    
+    .right {
         display: flex;
         flex-direction: column;
-        gap:10px;
+        max-width: 30rem;
+        width: 100%;
+        background-color: var(--body-secondary);
+        height: 100%;
+        padding: 1rem;
+        gap: 1rem;
     }
 
 </style>

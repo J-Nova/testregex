@@ -59,8 +59,8 @@
         </span>
         <div class="dropdown-content">
             {#each available_flags as availableFlag }
-                <span on:keypress on:click={e=> {setFlags(availableFlag)}} class={checkedFlag(availableFlag)}>
-                    <span class="full">{availableFlag[Object.keys(availableFlag)[0]].full}</span>
+                <span on:keypress on:click={e=> {setFlags(availableFlag)}} class={checkedFlag(availableFlag)} id="flag">
+                    <span id="flag" class="full">{availableFlag[Object.keys(availableFlag)[0]].full}</span>
                     <span>{availableFlag[Object.keys(availableFlag)[0]].desc}</span>
                 </span>
             {/each}
@@ -75,44 +75,43 @@
     .unchecked {background-color: var(--body-tertiarry);}
 
     .dropbtn {
-        background-color: none;
-        padding: 12px;
-        font-size: 16px;
+        padding: 0px 12px;
+        font-size: x-large;
         border: none;
         cursor: pointer;
     }
 
-    .container {
-        display: inline-flex;
-        gap:10px;
-    }
 
     .dropdown-content {
+        border: 1px solid var(--border-color);
         display: none;
         position: absolute;
         background-color: var(--body-secondary);
         z-index: 1;
-
         word-wrap: break-word;
         box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);
         border-radius: 3px;
-        border: 1px solid;
-        box-sizing: border-box;
-        max-height: 50vh;
+        max-height: 30rem;
         white-space:wrap;
         overflow:auto;
-        max-width: 200px;
+        max-width: 15rem;
     }
     
     .dropdown-content span {
         color: black;
-        padding: 3px 6px;
+        padding: 6px 6px;
+        font-size: x-large;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .dropdown-content #flag {
         display: block;
+        justify-content: left;
     }
 
     .container:hover .dropdown-content { display: block;}
 
-    .full {
-        font-weight: bold;
-    }
+    .full { font-weight: bold; }
 </style>

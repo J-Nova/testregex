@@ -1,9 +1,7 @@
 <script>
     import {quickref} from "$lib/reference_data.js";
     import {flavor} from "$lib/stores.js";
-    let infoToggle = false;
-    let toggleForm = false;
-    let height = "auto";
+    import Item from "./Item.svelte";
 
     $: selectedCategoryItems = getCategoryData("all");
 
@@ -33,85 +31,95 @@
     function updateCategory(event){
         getCategoryData(event.target.id);
     }
-
-    function toggle(){
-        toggleForm = !toggleForm
-        if (toggleForm) height = "100%";
-        else height = "auto";
+    function highlighter(item){
+        highlightItem = item;
     }
+    $:  highlightItem = undefined;
 </script>
 
 <div class="right-container">
-    <button on:click={toggle} class="toggle">
+    {#if highlightItem !== undefined}
+            <Item item={highlightItem} on:closeHighlight={e => {highlightItem = undefined}}/>
+    {:else}
         <h2>
             Lookup
         </h2>
-    </button>
-    {#if toggleForm}
-        <div id="lookup">
-            <div class="right-data-container">
-                <ul>
-                    <li><input type="text" placeholder="Search..." spellcheck="false"></li>
-                    <li><button id="all" on:click={e => updateCategory(e)}>All tokens</button></li>
-                    {#each Object.keys(quickref) as category}
-                        <li>
-                            <button class="item" id={category} on:click={e => updateCategory(e)}>{category}</button>
-                        </li>
-                    {/each}
-                </ul>
+        <div class="quickref">
+            <div class="category">
+                <input type="text" placeholder="Search..." spellcheck="false">
+                <button class="item" id="all" on:click={e => updateCategory(e)}>All tokens</button>
+                {#each Object.keys(quickref) as category}
+                    <button class="item" id={category} on:click={e => updateCategory(e)}>
+                        {category}
+                    </button>
+                {/each}
             </div>
-
-            <div class="right-data-container">
-                <ul>
-                    {#each selectedCategoryItems as item}
-                        <button class="item" on:click={() => (infoToggle = !infoToggle)}>
-                            <div class="token">{item.token}</div>
-                            <div class="desc">{item.desc}</div>
-                            <div class="info">{item.info}</div>
-                        </button>
-                    {/each}        
-                </ul>
+            <div class="results">
+                {#each selectedCategoryItems as item}
+                    <button class="result-item" on:click={e => {highlighter(item)}}>
+                        <div class="desc">{item.desc}</div>
+                        <div class="token">{item.token}</div>
+                    </button>
+                {/each}        
             </div>
         </div>
     {/if}
 </div>
 
 <style>
-    #lookup {
+    h2 {
+        margin: 0px;
+    }
+
+    .quickref{
         display: flex;
         flex-direction: row;
-        gap:6px;
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+        flex-grow: 1;
+    }
+
+    .category, .results {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        width: 100%;
     }
 
     .item{
         display: flex;
         flex-direction: row;
-        margin: 5px;
-        padding: 5px;
         justify-content: space-between;
         background-color: inherit;
         border: none;
         width: 100%;
     }
 
-    .item:hover {
+    .result-item{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: inherit;
+        border: none;
+        width: 100%;
+    }
+
+    .item:hover, .result-item:hover {
         background-color: var(--body-tertiary);
     }
     
-    .item .token{
-        color:mediumseagreen;
-    }
-    
-    .item .desc {
+    .desc {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        flex-grow: 1;
+        text-align: left;
+        margin-right: 10px;
     }
-    
-    .item .info {
-        display: none;
-        position: relative;
-        top:0;
-        left:0;
+
+    .token {
+        color:mediumseagreen;
+        white-space: nowrap;
+        flex-shrink: 1;
     }
 </style>
