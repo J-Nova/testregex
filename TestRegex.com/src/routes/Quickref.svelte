@@ -3,7 +3,7 @@
     import {flavor} from "$lib/stores.js";
     import Item from "./Item.svelte";
 
-    $: selectedCategoryItems = getCategoryData("all");
+    $: selectedItems = getCategoryData("all");
 
 
     function getCategoryData(categoryKey){
@@ -23,18 +23,42 @@
                 }
             });
         }
-        selectedCategoryItems = items;
+        selectedItems = items;
         return items;
     }
 
+    function getSearchData(searchString){
+        let items = []
+        Object.entries(quickref).forEach(([_, cr_items]) => {
+                cr_items.forEach((item) => {
+                    if (
+                        item.flavors.includes($flavor) && 
+                        (item.desc.includes(searchString) || item.info.includes(searchString))) 
+                        { items.push(item); }
+                });
+            });
+            selectedItems = items;
+        return items;
+    }
+
+    function search(){
+        if (searchString.length > 0) {
+            getSearchData(searchString);
+        }
+        else {
+            getCategoryData("all")
+        }
+    }
 
     function updateCategory(event){
         getCategoryData(event.target.id);
     }
+
     function highlighter(item){
         highlightItem = item;
     }
     $:  highlightItem = undefined;
+    let searchString = undefined;
 </script>
 
 <div class="right-container">
@@ -46,7 +70,7 @@
         </h2>
         <div class="quickref">
             <div class="category">
-                <input type="text" placeholder="Search..." spellcheck="false">
+                <input type="text" placeholder="Search..." spellcheck="false" on:keyup={search} bind:value={searchString}>
                 <button class="item" id="all" on:click={e => updateCategory(e)}>All tokens</button>
                 {#each Object.keys(quickref) as category}
                     <button class="item" id={category} on:click={e => updateCategory(e)}>
@@ -55,7 +79,7 @@
                 {/each}
             </div>
             <div class="results">
-                {#each selectedCategoryItems as item}
+                {#each selectedItems as item}
                     <button class="result-item" on:click={e => {highlighter(item)}}>
                         <div class="desc">{item.desc}</div>
                         <div class="token">{item.token}</div>
