@@ -4,11 +4,30 @@
     --body-secondary: #585B63;
     --body-tertiary: #656871;
     --body-quaternary: #DDDED4;
+
     --match_color_1: #5286AA;
 	--match_color_2: #1A5593;
 
-    --background-color: rgb(5, 10, 25);
-    --border-color: rgb(255, 255, 255, 0.1);
+    --base-status-color: #656871;
+    --error-status-color: #9b3737;
+    --match-status-color: #499b37;
+    --no-match-status-color: #377d9b;
+    --timeout-status-color: #9b8537;
+
+    --background-color: rgba(5, 10, 25, 1);
+    --border-color: rgba(255, 255, 255, 0.1);
+
+
+    --highlight-color: rgba(241, 241, 241, 0.5);
+
+    --checked-text-color: rgba(255, 195, 0, 1);
+    --checked-border-color: rgba(255, 214, 10, 1);
+
+    --unchecked-text-color: rgba(0, 53, 102, 1);
+    --unchecked-border-color: rgba(0, 8, 20, 1);
+
+    --box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);
+
 }
 
 * {

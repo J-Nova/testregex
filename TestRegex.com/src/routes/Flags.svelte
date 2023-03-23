@@ -1,31 +1,39 @@
 <script>
-    import {delimiter, flags, flavor} from "$lib/stores.js";
+    import {flags, flavor} from "$lib/stores.js";
     import {FLAVORS} from "$lib/data.js"
-    let flavorObj = FLAVORS[$flavor];
-    
 
-    function setDelimiter(updatedDelimiter) {
-        $delimiter = updatedDelimiter;
-        available_delimiters = available_delimiters;
+    function setFlags(updateFlag) {
+        updateFlag = Object.keys(updateFlag)[0];
+        if ($flags.includes(updateFlag)) {
+            $flags = $flags.filter(e => e !== updateFlag);
+        }else {
+            $flags.push(updateFlag);
+            $flags = $flags
+        }
+        available_flags = FLAVORS[$flavor].flags;
     }
 
-    function checkedDelimiter(delim){
-        if ($delimiter === delim){
+    function checkedFlag(flag){
+        if ($flags.includes(Object.keys(flag)[0])){
             return "checked";
-        } else {
+        }else {
             return "unchecked";
         }
     }
 
-    $: available_delimiters = FLAVORS[$flavor].delimiters;
+    $: available_flags = FLAVORS[$flavor].flags;
+
 </script>
 
 <span class="container">
-    <span class="dropbtn">{flavorObj.start}{$delimiter}</span>
+    <span class="dropbtn">
+        {$flags.sort().join("")}
+    </span>
     <div class="dropdown-content">
-        {#each available_delimiters as availableDelimiter }
-            <span on:keypress on:click={e => {setDelimiter(availableDelimiter)}} class={checkedDelimiter(availableDelimiter)}>
-                {availableDelimiter}
+        {#each available_flags as availableFlag }
+            <span on:keypress on:click={e=> {setFlags(availableFlag)}} class={checkedFlag(availableFlag)} id="flag">
+                <span id="flag" class="full">{availableFlag[Object.keys(availableFlag)[0]].full}</span>
+                <span>{availableFlag[Object.keys(availableFlag)[0]].desc}</span>
             </span>
         {/each}
     </div>
@@ -53,7 +61,6 @@
         cursor: pointer;
     }
 
-
     .dropdown-content {
         border: 1px solid var(--border-color);
         display: none;
@@ -66,23 +73,20 @@
         max-height: 30rem;
         overflow:auto;
         max-width: 15rem;
-    }
-    
-    .dropdown-content span {
-        padding: 6px 6px;
-        font-size: x-large;
-        display: flex;
-        justify-content: center;
-        cursor: pointer;
         user-select: none;
     }
 
+    .dropdown-content #flag {
+        display: block;
+        padding: 2px;
+        border-radius: 3px;
+    }
 
-    .container:hover .dropdown-content {     
+    .container:hover .dropdown-content { 
         display: flex;
         flex-direction: column;
-        gap: 4px;
-        padding: 4px;
+        gap: 10px;
+        padding: 10px;
     }
 
     .full { font-weight: bold; }

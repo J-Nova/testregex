@@ -1,6 +1,5 @@
 <script>
     import {information_message, match_data_list} from "$lib/stores.js";
-
 </script>
 
 <div class="right-container">

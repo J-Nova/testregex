@@ -1,18 +1,17 @@
 <script>
+    import Options from "./Options.svelte";
+    import Flags from "./Flags.svelte";
+    import {expressionString, match_status, status_color, match_codes} from "$lib/stores.js";
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
-    import Options from "./Options.svelte"
-    import {match_status} from "$lib/data.js";
-    import {expressionString, status} from "$lib/stores.js";
     let expressionBackdrop;
-    let expressionCustomArea;
     let expressionTextArea;
 
 </script>
 
 <div class="heading">
     <h2>Regular Expression Input</h2>
-    <span class="result">{match_status[$status]}</span>
+    <span class="result" style="background-color:var({$status_color})">{match_codes[$match_status]}</span>
 </div>
 <div class="input">
     <Options/>
@@ -23,7 +22,7 @@
                 aria-hidden="true"
                 class="pre-container"
                 >
-            <div class="custom-area" bind:this={expressionCustomArea}>{$expressionString}</div>
+            <div class="custom-area">{$expressionString}</div>
             </pre>
         
             <textarea
@@ -38,7 +37,8 @@
             ></textarea>
         </div>
         <!-- End of creating input container -->
-        <Options showFlags={true}/>
+        <Options/>
+        <Flags/>
 </div>
 
 <style>

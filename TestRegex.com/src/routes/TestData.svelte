@@ -1,7 +1,8 @@
 <script>
+// @ts-nocheck
     import ToolTip from "./ToolTip.svelte";
     import { createEventDispatcher } from 'svelte';
-    import {editor_status, testString, match_data_list} from "$lib/stores.js";
+    import {editor_status, editor_codes, testString, match_data_list} from "$lib/stores.js";
 
     let testBackdrop;
     let testCustomArea;
@@ -16,7 +17,8 @@
     function lockEditor(){
         if ($testString.length > 0){
             testTextArea.style.display = "none";
-            $editor_status = "View mode";
+            $editor_status = 0;
+            testCustomArea.focus();
         }
     }
 
@@ -24,17 +26,19 @@
         testTextArea.style.display = "";
         testTextArea.focus();
         testTextArea.setSelectionRange(-1, -1)
-        $editor_status = "Edit mode"
+        $editor_status = 1;
     }
 
     function scrollFn(){
         testBackdrop.scrollTop = testTextArea.scrollTop;
     }
 
+    $: disabled_input = $editor_status == 0 ? true : false;
+
 </script>
 <div class="heading">
     <h2>Test string</h2>
-    <div class="editor-status">{$editor_status}</div>
+    <div class="editor-status">{editor_codes[$editor_status]}</div>
 </div>
 
 <div class="container">
@@ -67,7 +71,8 @@
         spellcheck="false" 
         autocomplete="off" 
         translate="no" 
-        placeholder="Insert your test string here" 
+        placeholder="Insert your test string here"
+        disabled="{disabled_input}"
     ></textarea>
 </div>
 

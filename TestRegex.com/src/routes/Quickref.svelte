@@ -1,7 +1,8 @@
 <script>
+// @ts-nocheck
     import {quickref} from "$lib/reference_data.js";
     import {flavor} from "$lib/stores.js";
-    import Item from "./Item.svelte";
+    import Item from "./Quickref-item.svelte";
 
     $: selectedItems = getCategoryData("all");
 
