@@ -3,37 +3,29 @@
     import ToolTip from "./ToolTip.svelte";
     import { createEventDispatcher } from 'svelte';
     import {editor_status, editor_codes, testString, match_data_list} from "$lib/stores.js";
+    const dispatch = createEventDispatcher();
+    function scrollFn(){testBackdrop.scrollTop = testTextArea.scrollTop;}
 
     let testBackdrop;
     let testCustomArea;
     let testTextArea;
 
-    const dispatch = createEventDispatcher();
 
-    function updateExpression(){
-        dispatch("updateExpression", false);
-    }
-
-    function lockEditor(){
-        if ($testString.length > 0){
+    function updateEditor(locking){
+        if (locking){
+            testBackdrop.focus();
             testTextArea.style.display = "none";
-            $editor_status = 0;
-            testCustomArea.focus();
+            testTextArea.disabled = true;
+        } else if (testTextArea && !locking) {
+            testTextArea.disabled = false;
+            testTextArea.style.display = "block";
+            testTextArea.focus();
+            testTextArea.setSelectionRange(-1, -1);
         }
+        return locking;
     }
 
-    function unlockEditor(){
-        testTextArea.style.display = "";
-        testTextArea.focus();
-        testTextArea.setSelectionRange(-1, -1)
-        $editor_status = 1;
-    }
-
-    function scrollFn(){
-        testBackdrop.scrollTop = testTextArea.scrollTop;
-    }
-
-    $: disabled_input = $editor_status == 0 ? true : false;
+    $: disabled_input = ($editor_status == 0 ? updateEditor(true) : updateEditor(false));
 
 </script>
 <div class="heading">
@@ -44,9 +36,9 @@
 <div class="container">
     <pre
         bind:this={testBackdrop}
+        on:keyup
         on:keydown
-        on:click={unlockEditor}
-        
+        on:click={e => ($editor_status = 1)}
     >
     <div class="custom-area" bind:this={testCustomArea}>
         {#if $match_data_list.length === 0}
@@ -64,15 +56,12 @@
     <textarea
         bind:this={testTextArea}
         bind:value={$testString}
-        on:input={updateExpression}
-        on:blur={lockEditor}
-        on:mouseleave={lockEditor}
+        on:input={e => dispatch("updateExpression", false)}
         on:scroll={scrollFn}
         spellcheck="false" 
         autocomplete="off" 
         translate="no" 
         placeholder="Insert your test string here"
-        disabled="{disabled_input}"
     ></textarea>
 </div>
 
@@ -109,7 +98,6 @@
 
     pre {
         background-color: var(--body-tertiary);
-        top: 0;
     }
 
     pre div {

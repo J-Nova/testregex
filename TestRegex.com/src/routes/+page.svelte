@@ -14,7 +14,7 @@
     let expression_timer;
 
     function lockEditor(){
-        $editor_status = 0;
+        if ($testString.length > 0) $editor_status = 0;
     }
 
     function updateExpression(explain){

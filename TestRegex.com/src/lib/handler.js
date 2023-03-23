@@ -1,3 +1,4 @@
+// @ts-nocheck
 import regexpTree from 'regexp-tree';
 
 export function explainRegex(test_data){
@@ -89,7 +90,6 @@ export function explainRegex(test_data){
     
             Repetition: { // Adds explanations to Repetitions
                 post({node}){
-                    console.log(node)
                     node.explanation = "Matches repeated data by the expressions list"
             }},
     
@@ -140,6 +140,6 @@ export function highlighter(match_indexes= new Set(), matches = {}, testString="
             new_match_html.push(tooltip);
         }
     }
-    console.log(new_match_html);
+
     return new_match_html
 }

@@ -30,15 +30,14 @@
 	function mouseLeave() {
 		isHovered = false;
 	}
-	console.log(objAttributes.isMatch)
 </script>
 
 
 <span
 	class="{classString()}"
-	on:focus
-	on:focusin
-	on:focusout
+	on:focus={showTooltip}
+	on:focusin={showTooltip}
+	on:focusout={mouseLeave}
 	on:pointerover={showTooltip}
 	on:pointerdown={showTooltip}
 	on:pointerenter={showTooltip}
@@ -67,6 +66,7 @@
 		border-radius: 4px;
 		padding: 4px;
 		position: absolute;
+		z-index: 0;
 	}
 
 	.match0 {
