@@ -25,6 +25,7 @@
         display: flex;
         width: 100%;
         border-bottom: 1px solid var(--border-color);
+        background-color: var(--background-color);
     }
 
     nav .nav-section {

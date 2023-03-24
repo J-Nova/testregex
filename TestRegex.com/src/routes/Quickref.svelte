@@ -4,9 +4,6 @@
     import {flavor} from "$lib/stores.js";
     import Item from "./Quickref-item.svelte";
 
-    $: selectedItems = getCategoryData("all");
-
-
     function getCategoryData(categoryKey){
         let items = [];
         if (categoryKey === "all") {
@@ -58,7 +55,8 @@
     function highlighter(item){
         highlightItem = item;
     }
-    $:  highlightItem = undefined;
+    $: selectedItems = getCategoryData("all");
+    $: highlightItem = undefined;
     let searchString = undefined;
 </script>
 
@@ -72,16 +70,16 @@
         <div class="quickref">
             <div class="category">
                 <input type="text" placeholder="Search..." spellcheck="false" on:keyup={search} bind:value={searchString}>
-                <button class="item" id="all" on:click={e => updateCategory(e)}>All tokens</button>
+                <button class="item" id="all" on:click={updateCategory}>All tokens</button>
                 {#each Object.keys(quickref) as category}
-                    <button class="item" id={category} on:click={e => updateCategory(e)}>
+                    <button class="item" id={category} on:click={updateCategory}>
                         {category}
                     </button>
                 {/each}
             </div>
             <div class="results">
                 {#each selectedItems as item}
-                    <button class="result-item" on:click={e => {highlighter(item)}}>
+                    <button class="result-item" on:click={_ => {highlighter(item)}}>
                         <div class="desc">{item.desc}</div>
                         <div class="token">{item.token}</div>
                     </button>
@@ -130,7 +128,8 @@
     }
 
     .item:hover, .result-item:hover {
-        background-color: var(--body-tertiary);
+        background-color: var(--highlight-color);
+        border-radius: 3px;
     }
     
     .desc {
@@ -143,7 +142,7 @@
     }
 
     .token {
-        color:mediumseagreen;
+        color:#3cb371;
         white-space: nowrap;
         flex-shrink: 1;
     }

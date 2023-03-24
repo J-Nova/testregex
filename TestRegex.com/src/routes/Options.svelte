@@ -21,7 +21,10 @@
 </script>
 
 <span class="container">
-    <span class="dropbtn">{flavorObj.start}{$delimiter}</span>
+    <span class="dropbtn">
+        <span>{flavorObj.start}</span>
+        <span class="delimiter">{$delimiter}</span>
+    </span>
     <div class="dropdown-content">
         {#each available_delimiters as availableDelimiter }
             <span on:keypress on:click={e => {setDelimiter(availableDelimiter)}} class={checkedDelimiter(availableDelimiter)}>
@@ -44,13 +47,23 @@
         color: var(--unchecked-text-color);
     }
 
-    .checked:hover, .unchecked:hover { background-color: var(--highlight-color)}
+    .delimiter {
+        padding-top: 2px;
+    }
+
+    .checked:hover, .unchecked:hover { 
+        background-color: var(--highlight-color)
+    }
 
     .dropbtn {
         padding: 0px 12px;
         font-size: x-large;
         border: none;
         cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        height: 100%;
     }
 
 
@@ -58,7 +71,7 @@
         border: 1px solid var(--border-color);
         display: none;
         position: absolute;
-        background-color: var(--body-secondary);
+        background-color: var(--secondary);
         z-index: 1;
         word-wrap: break-word;
         box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);

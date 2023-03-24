@@ -43,29 +43,25 @@
     .checked {
         border: 1px solid var(--checked-border-color);
         border-radius: 3px;
-        color: var(--checked-text-color);
+        color: var(--primary-text-color);
     }
     
     .unchecked {
         border: 1px solid var(--unchecked-border-color);
         border-radius: 3px;
-        color: var(--unchecked-text-color);
+        color: var(--primary-text-color );
     }
 
-    .checked:hover, .unchecked:hover { background-color: var(--highlight-color)}
-
-    .dropbtn {
-        padding: 0px 12px;
-        font-size: x-large;
-        border: none;
-        cursor: pointer;
+    .checked:hover, .unchecked:hover { 
+        background-color: var(--highlight-color)
     }
+
 
     .dropdown-content {
         border: 1px solid var(--border-color);
         display: none;
         position: absolute;
-        background-color: var(--body-secondary);
+        background-color: var(--secondary);
         z-index: 1;
         word-wrap: break-word;
         box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);
@@ -87,6 +83,14 @@
         flex-direction: column;
         gap: 10px;
         padding: 10px;
+    }
+
+    .dropbtn {
+        padding: 0px 12px;
+        font-size: x-large;
+        border: none;
+        cursor: pointer;
+        color: var(--flag-color);
     }
 
     .full { font-weight: bold; }

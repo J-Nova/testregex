@@ -10,7 +10,7 @@
 </script>
 
 <div class="heading">
-    <h2>Regular Expression Input</h2>
+    <h2>regular expression</h2>
     <span class="result" style="background-color:var({$status_color})">{match_codes[$match_status]}</span>
 </div>
 <div class="input">
@@ -33,7 +33,7 @@
                 spellcheck="false" 
                 autocomplete="off" 
                 translate="no" 
-                placeholder="Insert your expression here" 
+                placeholder="Insert your expression here"
             ></textarea>
         </div>
         <!-- End of creating input container -->
@@ -50,6 +50,7 @@
         align-items: center;
         margin: 5px 0px;
         padding: 5px 0px;
+        color: var(--primary-text-color);
     }
 
     .result {
@@ -59,6 +60,7 @@
         height: fit-content;
         width: 150px;
         text-align: center;
+        color: var(--secondary-text-color);
     }
 
     h2 {
@@ -66,11 +68,12 @@
     }
 
     .input {
-        background-color: var(--body-tertiary);
+        background-color: var(--primary);
         border: 1px solid var(--border-color);
         border-radius: 3px;
         display: flex;
         flex-direction: row;
+        box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
     }
     
     .container {
@@ -82,7 +85,6 @@
         min-height: inherit !important;
     }
     pre {
-        background-color: var(--body-tertiary);
         top: 0;
     }
     pre div {
@@ -101,6 +103,7 @@
         font-weight: 400;
         padding: 1px 1px 1px 1px;
         margin:0;
+        padding-top: 5px;
     }
 
     textarea {

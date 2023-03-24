@@ -118,11 +118,11 @@
 
     .left {    
         display: grid;
-        grid-template-rows: 3rem 3rem 5rem auto;
+        grid-template-rows: 3rem 2.5rem 4rem auto;
         max-width: 70rem;
         width: 100%;
         padding:1rem;
-        background-color: var(--body-secondary);
+        background-color: var(--secondary);
     }
     
     .right {
@@ -130,10 +130,11 @@
         flex-direction: column;
         max-width: 30rem;
         width: 100%;
-        background-color: var(--body-secondary);
+        background-color: var(--secondary);
         height: 100%;
         padding: 1rem;
         gap: 1rem;
+        color: var(secondary-text-color);
     }
 
 </style>

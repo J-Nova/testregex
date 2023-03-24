@@ -13,8 +13,7 @@ export const FLAVORS = {
             {"U": {full:"ungreedy", desc: "Make quantifiers lazy"}}, 
             {"A": {full:"anchored", desc: "Anchor to the start of pattern or at the end of most recent match"}},
             {"J": {full:"jchanged", desc: "Allow duplicate subpattern names"}},
-            {"D": {full:"dollar end only", desc: "$ matches only end of pattern"}},
-            {"J": {full:"jchanged", desc: "Allow duplicate subpattern names"}}
+            {"D": {full:"dollar end only", desc: "$ matches only end of pattern"}}
         ],
         "delimiters": ["/", "~", "@", ";", "%", "`", "#"]
 

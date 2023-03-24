@@ -28,7 +28,7 @@
 
 </script>
 <div class="heading">
-    <h2>Test string</h2>
+    <h2>test data</h2>
     <div class="editor-status">{editor_codes[$editor_status]}</div>
 </div>
 
@@ -60,7 +60,7 @@
         spellcheck="false" 
         autocomplete="off" 
         translate="no" 
-        placeholder="Insert your test string here"
+        placeholder="Insert your test data here"
     ></textarea>
 </div>
 
@@ -72,7 +72,10 @@
         height: fit-content;
         width: 150px;
         text-align: center;
+        background-color: var(--base-status-color);
+        color: var(--secondary-text-color);
     }
+
     .heading {
         display: flex;
         flex-direction: row;
@@ -81,6 +84,7 @@
         border-bottom: 1px solid var(--border-color);
         margin: 10px 0px;
         padding: 10px 0px;
+        color: var(--primary-text-color);
     }
     
     h2{
@@ -92,11 +96,8 @@
         border-radius: 3px;
         border: 1px solid var(--border-color);
         height: 100%;
-    }
-
-
-    pre {
-        background-color: var(--body-tertiary);
+        box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
+        background-color: var(--primary);
     }
 
     pre div {
