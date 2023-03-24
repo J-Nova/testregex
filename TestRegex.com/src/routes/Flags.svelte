@@ -40,6 +40,10 @@
 </span>
 
 <style>
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 8px;
+    }
     .checked {
         border: 1px solid var(--checked-border-color);
         border-radius: 3px;
