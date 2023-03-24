@@ -7,7 +7,6 @@
     function scrollFn(){testBackdrop.scrollTop = testTextArea.scrollTop;}
 
     let testBackdrop;
-    let testCustomArea;
     let testTextArea;
 
 
@@ -40,7 +39,7 @@
         on:keydown
         on:click={e => ($editor_status = 1)}
     >
-    <div class="custom-area" bind:this={testCustomArea}>
+    <div class="custom-area">
         {#if $match_data_list.length === 0}
             {$testString}
         {:else}
