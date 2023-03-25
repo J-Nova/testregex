@@ -23,7 +23,6 @@
         }
         return locking;
     }
-
     $: disabled_input = ($editor_status == 0 ? updateEditor(true) : updateEditor(false));
 
 </script>
@@ -37,7 +36,7 @@
         bind:this={testBackdrop}
         on:keyup
         on:keydown
-        on:click={e => ($editor_status = 1)}
+        on:click={_ => ($editor_status = 1)}
     >
     <div class="custom-area">
         {#if $match_data_list.length === 0}
@@ -55,7 +54,7 @@
     <textarea
         bind:this={testTextArea}
         bind:value={$testString}
-        on:input={e => dispatch("updateExpression", false)}
+        on:input={_ => dispatch("updateExpression", false)}
         on:scroll={scrollFn}
         spellcheck="false" 
         autocomplete="off" 

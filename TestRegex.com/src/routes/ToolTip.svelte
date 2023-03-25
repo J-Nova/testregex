@@ -54,11 +54,11 @@
 
 {#if isHovered && objAttributes.isMatch}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		<header>Match - {(parseInt(objAttributes.matchNumber)+1)}</header>
-		<span>
+		<span class="header">Match - {(parseInt(objAttributes.matchNumber)+1)}</span>
+		<span class="match-data">
 			{dataString()}
 		</span>
-		<span>
+		<span class="match-position">
 			Position: {objAttributes.start}-{objAttributes.end}
 		</span>
 	</div>
@@ -66,20 +66,24 @@
 
 <style>
 	.tooltip {
-		border: 1px solid #ddd;
-		box-shadow: 1px 1px 1px #ddd;
-		background: white;
-		border-radius: 4px;
-		padding: 4px;
+		border: 1px solid var(--border-color);
+		box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
+		background: var(--secondary);
+		color: var(--primary-text-color);
+		border-radius: 3px;
+		padding: 10px;
 		position: absolute;
 		z-index: 0;
+		display: flex;
+		flex-direction: column;
+		font-size:medium;
 	}
 
 	.match0 {
-		background-color: var(--match_color_1);
+		background-color: var(--senary);
 	}
 	.match0_2 {
-		background-color: var(--match_color_2);
+		background-color: var(--tertiary);
 	}
 	
 </style>
