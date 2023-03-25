@@ -70,3 +70,9 @@ body {
     grid-auto-rows: 35px 20vh;
     box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
 }
+
+.right-container h2 {
+    margin: 0px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 6px;
+}

@@ -23,10 +23,6 @@
     </div>
 </div>
 <style>
-    h2 {
-        margin: 0px;
-    }
-    
     .tree-container{
         overflow-y: auto;
     }

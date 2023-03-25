@@ -7,7 +7,7 @@
         Information
     </h2>
     <div class="info-container">
-        {#if typeof $information_message == "string"}
+        {#if $match_data_list.length == 0}
             <span>{$information_message}</span>
         {:else}
             {#each $match_data_list as match}
@@ -24,10 +24,6 @@
 </div>
 
 <style>
-    h2 {
-        margin: 0px;
-    }
-    
     .info-container {
         overflow-y: auto;
         display: flex;
@@ -39,9 +35,11 @@
         flex-direction: row;
         padding:5px;
         gap: 5px;
-        background-color: var(--body-quaternary);
-        width: 100%;
+        background-color: var(--highlight-color);
+        width: auto;
         height: fit-content;
+        border-radius: 3px;
+        margin-right: 6px;
     }
 
     .match div:nth-child(2){

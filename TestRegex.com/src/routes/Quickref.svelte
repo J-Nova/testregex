@@ -90,10 +90,6 @@
 </div>
 
 <style>
-    h2 {
-        margin: 0px;
-    }
-
     .quickref{
         display: flex;
         flex-direction: row;

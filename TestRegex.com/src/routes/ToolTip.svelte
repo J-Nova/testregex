@@ -11,10 +11,12 @@
 
 	function dataString(){
 		let value;
-		if (objAttributes.classNames.length > 0) {
-			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + "(" + objAttributes.groupNames+ ")" + ": " + objAttributes.content;
+		if (objAttributes.classNames.length > 1) {
+			objAttributes.groupNames = objAttributes.groupNames.filter(function(e){return e}); 
+			let groupname = objAttributes.groupNames.length == 0 ? "" : "(" + objAttributes.groupNames+ ")";
+			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + groupname + ": " + objAttributes.content;
 		} else {
-			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + ": " + objAttributes.content;
+			value = "Matched: " + objAttributes.content;
 		}
 		return value;
 	}
@@ -53,8 +55,12 @@
 {#if isHovered && objAttributes.isMatch}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
 		<header>Match - {(parseInt(objAttributes.matchNumber)+1)}</header>
-		{dataString()}
-		Position: {objAttributes.start}-{objAttributes.end}
+		<span>
+			{dataString()}
+		</span>
+		<span>
+			Position: {objAttributes.start}-{objAttributes.end}
+		</span>
 	</div>
 {/if}
 
