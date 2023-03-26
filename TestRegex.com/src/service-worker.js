@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { build, files, version } from '$service-worker';
+import {version} from '$service-worker';
 
 const CACHE_NAME = `cache-${version}`;
 
@@ -16,7 +16,7 @@ async function fetchWorker(request) {
         cache.put(request, res.clone());
         return res;
     } catch (err) {
-        result = await caches.match(event.request);
+        result = await caches.match(request);
         return result;
     }
 }
