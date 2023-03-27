@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-18.04
     name: deploy to production
     steps:
-      - name: deploying
-        run: echo Deploying to oracle server
+      - run: echo "Deploying to production..."
+
