@@ -19,7 +19,6 @@ else
         ssh -i $KEY_PATH ubuntu@$SERVER_IP 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
 
         echo "Starting the container on server."
-        ssh -i $KEY_PATH ubuntu@$SERVER_IP "cd testregex && git pull && sudo docker build -t testregex ."
-        ssh -i $KEY_PATH ubuntu@$SERVER_IP "sudo docker run -d -p 80:3000 testregex"
+        ssh -i $KEY_PATH ubuntu@$SERVER_IP "cd testregex && git pull && cd webapp && npm install && npm run build && cd .. && sudo docker build -t testregex . && sudo docker run -d -p 80:3000 testregex"
     fi
 fi
