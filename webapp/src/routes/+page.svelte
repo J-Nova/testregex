@@ -134,7 +134,7 @@
         height: 100%;
         padding: 1rem;
         gap: 1rem;
-        color: var(secondary-text-color);
+        color: var(--secondary-text-color);
     }
 
 </style>
