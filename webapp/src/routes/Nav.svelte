@@ -26,6 +26,7 @@
         width: 100%;
         border-bottom: 1px solid var(--border-color);
         background-color: var(--background-color);
+        height: 10%;
     }
 
     nav .nav-section {
@@ -43,7 +44,7 @@
 
     #regex {
         flex-basis: 50%;
-        gap: 6rem;
+        flex-grow: 1;
     }
     
     #tools {

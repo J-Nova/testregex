@@ -27,17 +27,20 @@
     --unchecked-border-color: #9b3737;
 
     --flag-color: #3cb371;
-
+    
 }
 
 * {
     box-sizing: border-box;
-    font-family: "Rubik", sans-serif;
+    font-family: 'Courier', monospace;
+
 }
 
 html, body{
     height: 100%;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
 body {
@@ -45,7 +48,6 @@ body {
     background-color: var(--background-color);
     display: flex;
     flex-direction: column;
-    margin: 0px;
     overflow: hidden;
 }
 
@@ -64,19 +66,24 @@ body {
 }
 
 .right-container {
-    background-color: var(--primary);
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
+    background-color: var(--primary);
     border: 1px solid var(--border-color);
+    box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
     border-radius: 3px;
     padding: 3px;
-    display: grid;
-    grid-auto-rows: 35px 20vh;
-    box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
+    max-height: 25%;
 }
 
 .right-container h2 {
     margin: 0px;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    height: fit-content;
+    word-wrap: break-word;
 }

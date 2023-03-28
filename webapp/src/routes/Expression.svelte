@@ -58,13 +58,15 @@
         border-radius: 3px;
         padding: 3px 3px;
         height: fit-content;
-        width: 150px;
+        width: fit-content;
         text-align: center;
         color: var(--secondary-text-color);
     }
 
     h2 {
         margin: 0px;
+        text-transform: uppercase;
+        font-weight: 500;
     }
 
     .input {
@@ -95,11 +97,10 @@
         white-space:pre-line;
         overflow-y: auto;
         word-break:break-all;
-        letter-spacing: 1px;
-        line-height: 1;
+        line-height: 1.25;
         width: 100%;
         height: 100%;
-        font-size: x-large;
+        font-size: larger;
         font-weight: 400;
         padding: 1px 1px 1px 1px;
         margin:0;

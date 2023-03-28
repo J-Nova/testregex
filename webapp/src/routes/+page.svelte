@@ -93,48 +93,58 @@
     
 </script>
 
-<Nav/>
-<main>
+<div class="container">
+    <!-- <Nav/> -->
     <div class="left">
         <Expression on:updateExpression={updateExpression}/>
         <TestData on:updateExpression={updateExpression}/>
     </div>
-
+    
     <div class="right">
         <Matchexplanation/>
         <Matchinformation/>
         <Quickref/>
     </div>
-</main>
+</div>
 
 <style>
-    main {
+    .container {
         display: flex;
         flex-direction: row;
-        gap: 1rem;
-        height: 100rem;
+        gap: 1%;
+        height: 100%;
         width: 100%;
     }
 
     .left {    
         display: grid;
         grid-template-rows: 3rem 2.5rem 4rem auto;
-        max-width: 70rem;
+        max-width: 69%;
         width: 100%;
-        padding:1rem;
+        padding: 0rem 1rem 0rem 1rem;
         background-color: var(--secondary);
     }
     
     .right {
         display: flex;
         flex-direction: column;
-        max-width: 30rem;
+        max-width: 30%;
         width: 100%;
-        background-color: var(--secondary);
         height: 100%;
+        background-color: var(--secondary);
         padding: 1rem;
         gap: 1rem;
         color: var(--secondary-text-color);
     }
+
+    @media screen and (max-width: 800px) {
+    .right {
+        display: none;
+        visibility: hidden;
+    }
+    .left {
+        max-width: 100%;
+    }
+}
 
 </style>

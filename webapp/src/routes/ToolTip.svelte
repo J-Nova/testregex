@@ -37,18 +37,28 @@
 
 <span
 	class="{classString()}"
+	on:focusout={mouseLeave}
+	on:pointerleave={mouseLeave}
+    on:mouseleave={mouseLeave}
+	on:touchend={mouseLeave}
+	on:touchcancel={mouseLeave}
+
+	
 	on:focus={showTooltip}
 	on:focusin={showTooltip}
-	on:focusout={mouseLeave}
+
 	on:pointerover={showTooltip}
 	on:pointerdown={showTooltip}
 	on:pointerenter={showTooltip}
 	on:pointermove={showTooltip}
+
 	on:mousemove={showTooltip}
 	on:mouseenter={showTooltip}
 	on:mouseover={showTooltip}
-	on:pointerleave={mouseLeave}
-    on:mouseleave={mouseLeave}>
+
+	on:touchmove={showTooltip}
+	on:touchstart={showTooltip}
+	>
 	{objAttributes.content}
 </span>
 

@@ -69,7 +69,7 @@
         border-radius: 3px;
         padding: 3px 3px;
         height: fit-content;
-        width: 150px;
+        width: fit-content;
         text-align: center;
         background-color: var(--base-status-color);
         color: var(--secondary-text-color);
@@ -88,13 +88,16 @@
     
     h2{
         margin: 0px;
+        text-transform: uppercase;
+        font-weight: 500;
     }
     
     .container {
+        margin-bottom: 10px;
+        width: 100%;
         position: relative;
         border-radius: 3px;
         border: 1px solid var(--border-color);
-        height: 100%;
         box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
         background-color: var(--primary);
     }
@@ -108,9 +111,8 @@
         overflow: auto;
         word-break:break-all;
         cursor:default;
-        font-size: x-large;
-        letter-spacing: 1px;
-        line-height: 1;
+        font-size: larger;
+        line-height: 1.25;
         width: 100%;
         height: 100%;
         font-weight: 400;

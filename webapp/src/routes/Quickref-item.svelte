@@ -11,44 +11,46 @@
 
     <card class="container">
         <div class="header">
-            <span>{desc}</span>
+            <span class="description">{desc}</span>
             <span on:keydown on:click={e => {dispatch("closeHighlight");}} class="close">Close</span>
         </div>
-
-        <div class="information">
-            <span class="token">{token}</span>
-            <span class="info">{info}</span>
-        </div>
-
-        <div class="example">
-            <div class="container">
-                <span class="expression token">/{token}/g</span>
-                <span class="test">This is the test data</span>
+        <div>
+            <div class="information">
+                <span class="token">{token}</span>
+                <span>{info}</span>
             </div>
-            <span class="load">
-                <Icon icon="carbon:arrow-right"/>
-            </span>
+    
+            <div class="example">
+                <div class="container">
+                    <span class="token">/{token}/g</span>
+                    <span class="test">This is the test data</span>
+                </div>
+                <span class="load">
+                    <Icon icon="carbon:arrow-right"/>
+                </span>
+            </div>
         </div>
-        
     </card>
 
 <style>
     .container {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 20%;
         padding: 6px;
     }
 
     .token {
         color: var(--senary);
-        letter-spacing: 3px;
+    }
+
+    .test {
+        color: var(--primary-text-color);
     }
 
     .header{
         display: flex;
         justify-content: space-between;
-        background-color: var(--body-tertiary);
         align-items: center;
         padding: 6px;
         border-bottom: 1px solid var(--border-color);
@@ -74,7 +76,6 @@
         border-radius: 3px;
         width : 100%;
         height: auto;
-        gap: 1rem;
         background-color: var(--secondary);
         display: flex;
         flex-direction: row;
