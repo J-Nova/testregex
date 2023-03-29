@@ -55,6 +55,7 @@
     function highlighter(item){
         highlightItem = item;
     }
+
     $: selectedItems = getCategoryData("all");
     $: highlightItem = undefined;
     let searchString = undefined;
@@ -70,9 +71,9 @@
         <div class="quickref">
             <div class="category">
                 <input type="text" placeholder="Search..." spellcheck="false" on:keyup={search} bind:value={searchString}>
-                <button class="item" id="all" on:click={updateCategory}>All tokens</button>
+                <button class="item" on:click={_ => getCategoryData("all")}>All tokens</button>
                 {#each Object.keys(quickref) as category}
-                    <button class="item" id={category} on:click={updateCategory}>
+                    <button class="item" on:click={_ => getCategoryData(category)}>
                         {category}
                     </button>
                 {/each}
@@ -100,9 +101,21 @@
     }
 
     .category, .results {
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
         width: 100%;
+    }
+
+    input::placeholder {
+        color: var(--primary-text-color);
+    }
+    input {
+        width: 99%;
+        background-color: var(--background-color);
+        border-radius: 3px;
+        border: none;
+        padding: 3px;
+        color: var(--primary-text-color);
     }
 
     .item{
@@ -122,7 +135,7 @@
         border: none;
         width: 100%;
     }
-
+    
     .item:hover, .result-item:hover {
         background-color: var(--highlight-color);
         border-radius: 3px;

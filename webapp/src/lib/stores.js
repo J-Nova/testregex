@@ -9,7 +9,10 @@ export let status_color = writable("--base-status-color");
 export let information_message = writable("Detailed match information will be displayed here automatically.");
 export let match_data_list = writable([]);
 export let MatchAstTree = writable({});
+
 export let editorLockTimeout = writable(500);
+export let showToolTips = writable(true);
+export let visualizeSpecialCharacters = writable(false);
 
 export let flavor = writable("PCRE");
 export let flags = writable(["g", "m"]);

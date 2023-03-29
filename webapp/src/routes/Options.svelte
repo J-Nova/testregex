@@ -1,5 +1,5 @@
 <script>
-    import {delimiter, flags, flavor} from "$lib/stores.js";
+    import {delimiter, flavor} from "$lib/stores.js";
     import {FLAVORS} from "$lib/data.js"
     let flavorObj = FLAVORS[$flavor];
     
@@ -27,7 +27,7 @@
     </span>
     <div class="dropdown-content">
         {#each available_delimiters as availableDelimiter }
-            <span on:keypress on:click={e => {setDelimiter(availableDelimiter)}} class={checkedDelimiter(availableDelimiter)}>
+            <span on:keypress on:click={_ => {setDelimiter(availableDelimiter)}} class={checkedDelimiter(availableDelimiter)}>
                 {availableDelimiter}
             </span>
         {/each}
@@ -88,6 +88,7 @@
         justify-content: center;
         cursor: pointer;
         user-select: none;
+        color: var(--primary-text-color);
     }
 
 

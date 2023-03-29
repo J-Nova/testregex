@@ -7,7 +7,10 @@
     import Matchexplanation from './Matchexplanation.svelte';
     import Expression from "./Expression.svelte";
     import TestData from './TestData.svelte';
-    import Nav from "./Nav.svelte";
+    import Ad from './Ad.svelte';
+    import Flavour from './Flavour.svelte';
+    import Tools from './Tools.svelte';
+    import Settings from './Settings.svelte';
 
     import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, match_data_list, MatchAstTree, editorLockTimeout, flavor, status_color} from "$lib/stores.js";
 
@@ -94,13 +97,18 @@
 </script>
 
 <div class="container">
-    <!-- <Nav/> -->
-    <div class="left">
+    <div class="settings-content">
+        <Ad/>
+        <Flavour/>
+        <Tools/>
+        <Settings/>
+    </div>
+    <div class="main-content">
         <Expression on:updateExpression={updateExpression}/>
         <TestData on:updateExpression={updateExpression}/>
     </div>
     
-    <div class="right">
+    <div class="informative-content">
         <Matchexplanation/>
         <Matchinformation/>
         <Quickref/>
@@ -116,16 +124,27 @@
         width: 100%;
     }
 
-    .left {    
+    .settings-content {
+        display: flex;
+        flex-direction: column;
+        gap: 5%;
+        max-width: 10%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--secondary);
+        color: var(--primary-text-color);
+    }
+
+    .main-content {    
         display: grid;
         grid-template-rows: 3rem 2.5rem 4rem auto;
-        max-width: 69%;
+        max-width: 59%;
         width: 100%;
         padding: 0rem 1rem 0rem 1rem;
         background-color: var(--secondary);
     }
     
-    .right {
+    .informative-content {
         display: flex;
         flex-direction: column;
         max-width: 30%;
@@ -138,11 +157,11 @@
     }
 
     @media screen and (max-width: 800px) {
-    .right {
+    .informative-content {
         display: none;
         visibility: hidden;
     }
-    .left {
+    .main-content {
         max-width: 100%;
     }
 }

@@ -1,6 +1,5 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-    import { delimiter, flags} from "$lib/stores.js";
     import Icon from '@iconify/svelte';
     const dispatch = createEventDispatcher();
     export let item;
@@ -12,7 +11,7 @@
     <card class="container">
         <div class="header">
             <span class="description">{desc}</span>
-            <span on:keydown on:click={e => {dispatch("closeHighlight");}} class="close">Close</span>
+            <span on:keydown on:click={_ => {dispatch("closeHighlight");}} class="close">Close</span>
         </div>
         <div>
             <div class="information">
@@ -46,6 +45,11 @@
 
     .test {
         color: var(--primary-text-color);
+    }
+
+    .information {
+        font-size: 80%;
+        padding: 6px;
     }
 
     .header{
