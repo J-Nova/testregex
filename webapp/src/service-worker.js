@@ -16,7 +16,7 @@ async function fetchWorker(request) {
         cache.put(request, res.clone());
         return res;
     } catch (err) {
-        result = await caches.match(request);
-        return result;
+        let res = await caches.match(request);
+        return res;
     }
 }
