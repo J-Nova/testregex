@@ -1,33 +1,14 @@
 // @ts-nocheck
 function callout(_) {
-    if (debugging) {
-        var t = _ >> 2,
-            
-            e = (HEAP32[t + 3], HEAP32[t + 5]),
-            
-            R = HEAP32[t + 6],
-            
-            a = HEAP32[t + 10],
-            
-            E = HEAP32[t + 11];
-        callout_data[match_id] || (callout_data[match_id] =[]),
-        callout_data[match_id][match_steps] = {
-            pstart: oldPatternStart,
-            pend: oldPatternEnd,
-            sstart: e,
-            send: R - e,
-            data: !0
-        },
-        oldPatternStart = a,
-        oldPatternEnd = E,
-        oldStrStart = e,
-        oldStrEnd = R - e
-    }
     match_steps++,
     total_steps++
 }
 
 
+/**
+ * Frees the memory allocated for the cached regex pattern.
+ * @returns None
+ */
 function free_regex() {
     
     void 0 !== cached_pattern.name_table && _free(cached_pattern.name_table),
@@ -36,15 +17,21 @@ function free_regex() {
     cached_pattern = {}
 }
 
-function preg_compile(_, t) {
-    if (t += "C", void 0 !== cached_pattern) {
-        if (cached_pattern.pattern === _ && cached_pattern.options === t) 
+/**
+ * Compiles a regular expression pattern with the given flags.
+ * @param {string} expression - The regular expression pattern to compile.
+ * @param {string} expression_flags - The flags to apply to the regular expression pattern.
+ * @returns The compiled regular expression pattern.
+ */
+function preg_compile(expression, expression_flags) {
+    if (expression_flags += "C", void 0 !== cached_pattern) {
+        if (cached_pattern.pattern === expression && cached_pattern.options === expression_flags) 
             return cached_pattern;
         
         free_regex()
     }
-    for (var e = 0, R =! 1, a = 0; a < t.length; a++) 
-        switch (t[a]) {
+    for (var e = 0, R =! 1, a = 0; a < expression_flags.length; a++) 
+        switch (expression_flags[a]) {
             case "g": R = !0;
                 break;
             case "i": e |= PCRE_CASELESS;
@@ -77,14 +64,14 @@ function preg_compile(_, t) {
             case "u": e |= PCRE_UTF16 | PCRE_UCP
         }
     
-    cached_pattern.pattern = _,
-    cached_pattern.options = t,
+    cached_pattern.pattern = expression,
+    cached_pattern.options = expression_flags,
     cached_pattern.option_bits = e,
     cached_pattern.is_global = R;
     
-    var E = _malloc(2 * (2 * _.length + 1));
+    var E = _malloc(2 * (2 * expression.length + 1));
     
-    stringToUTF16(_, E);
+    stringToUTF16(expression, E);
     
     var r = _malloc(4),
         
@@ -93,9 +80,9 @@ function preg_compile(_, t) {
     if (! C) {
         free_regex();
         
-        var P = Pointer_stringify(HEAP32[r >> 2]) + " - offset: " + HEAP32[c >> 2];
-        throw self.postMessage({error: P}),
-        new Error(P)
+        var error_message = Pointer_stringify(HEAP32[r >> 2]) + " - offset: " + HEAP32[c >> 2];
+        throw self.postMessage({error: error_message}),
+        new Error(error_message)
     }
     
     HEAP32[getCalloutAddr() >> 2] = callout_ptr;
@@ -124,7 +111,7 @@ function preg_compile(_, t) {
     cached_pattern.subpats = HEAP32[T >> 2],
     
     cached_pattern.ovector_len = 3 * (HEAP32[T >> 2] + 1),
-    
+
     _free(T),
     cached_pattern.match_limit = getExtraAddr(),
     cached_pattern.regex = C,
@@ -137,20 +124,15 @@ function preg_compile(_, t) {
     cached_pattern
 }
 
-function putPrefix(highlighter_data, index, content) {
-    highlighter_data[index] || (highlighter_data[index] = ""),
-    highlighter_data[index] = content + highlighter_data[index]
-}
-function putSuffix(highlighter_data, index, content) {
-    highlighter_data[index] || (highlighter_data[index] = ""),
-    highlighter_data[index] += content
-}
+
+/**
+ * Searches for a pattern match in the given text using a cached regex pattern.
+ * @param {string} match_text - The text to search for a pattern match.
+ * @returns None
+ * @throws {Error} If no pattern is supplied to the matching function.
+ */
 function preg_match(match_text) {
     if (cached_pattern.regex) {
-        callout_data = [],
-        callout_html = {},
-        matchData = {},
-        tempMatchData = {},
         lookbehind = void 0,
         oldPatternStart = oldPatternEnd = match_id = match_steps = total_steps = 0;
         var text_length = match_text.length,
@@ -158,7 +140,7 @@ function preg_match(match_text) {
             e = _malloc(2 * (2 * match_text.length + 1));
         
         stringToUTF16(match_text, e);
-        var R = cached_pattern.named_subpats,
+        var subpaths = cached_pattern.named_subpats,
             a = cached_pattern.name_table,
             E = cached_pattern.name_entry_size;
         
@@ -171,24 +153,14 @@ function preg_match(match_text) {
             result_data = [],
             l = 0,
             highlighter_data = {},
-            sub_data = [],
-            O = 0,
             s = !1;
         do {
-            // get current character
-            
-            var o = pcre_exec(cached_pattern.regex, cached_pattern.match_limit, e, text_length, C, P, r, ovector_len);
-            if (o >= 0) {
+            var matches_amount = pcre_exec(cached_pattern.regex, cached_pattern.match_limit, e, text_length, C, P, r, ovector_len);
+            if (matches_amount >= 0) {
                 match_steps = 0,
-                
-                match_counter = 0,
-                tempMatchData = {},
-                
-                0 == o && (o = ovector_len / 3);
-                for (var d =[], p = 0, GROUP_NUMBER = 0; 2 * o > GROUP_NUMBER; GROUP_NUMBER += 2) {
-                    
+                0 == matches_amount && (matches_amount = ovector_len / 3);
+                for (var d =[], p = 0, GROUP_NUMBER = 0; 2 * matches_amount > GROUP_NUMBER; GROUP_NUMBER += 2) {
                     var start_index = HEAP32[c + GROUP_NUMBER],
-                        
                         end_index = HEAP32[c + (GROUP_NUMBER + 1)];
                     
                     let index = p++;
@@ -198,65 +170,20 @@ function preg_match(match_text) {
                         content: match_text.substring(start_index, end_index),
                         subpats: cached_pattern.subpats
                     };
-                    var i = -1 !== start_index;
-                    if (i) {
-                        if (start_index === end_index) 
-                            putPrefix(highlighter_data, end_index, '<span class="match_99">&nbsp;</span>');
-                        else {
-                            var class_name = "",
-                                // First number is the match number -1, Second number is starting index of match, Third is end index of match, Fourth is the group number.
-                                
-                                tooltip_data = result_data.length + ";" + start_index + ";" + end_index + ";" + GROUP_NUMBER / 2;
-                            // let class_names = []
-                            if (0 !== GROUP_NUMBER){ // Check for group.
-                                var S = GROUP_NUMBER / 2 % 10 || 10;
-                                class_name = "match" + S
-                            
-                            } else {
-                                class_name = "match0" + (s ? "_2" : "")
-                                s = ! s;
-                            
-                            }
-                            
-                            var TOOLTIP_END = ";";
-                            let group_name="";
-                            if (R > 0) 
-                                
-                                for (var L = HEAP32[a >> 2], f = 0; R > f; f++) { // Here it adds the group name if there is one to F.
-                                    
-                                    var M = HEAP8[L];
-                                    
-                                    void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2), M === p - 1 && (TOOLTIP_END += d[M].name, group_name=d[M].name )),
-                                    L += 2 * E
+                    let match = -1 !== start_index;
+
+                    if (match && subpaths > 0) { 
+                            for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) { // Here it adds the group name if there is one.
+                                var M = HEAP8[L];
+                                void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2)),
+                                    L += 2 * E;
                                 }
-                            tooltip_data += TOOLTIP_END
-                            if (highlighter_data[start_index] === void 0){
-                                highlighter_data[start_index] = {
-                                    matchNumber: result_data.length,
-                                    startIndex:start_index,
-                                    endIndex: end_index,
-                                    groupNumber: GROUP_NUMBER/2,
-                                    content: d[index].content,
-                                    groupNames: [],
-                                    classNames: [class_name]
-                                };
-                                if (group_name !== "") highlighter_data[start_index].groupNames.push(group_name);
-                            } else {
-                                highlighter_data[start_index].groupNames.push(group_name);
-                                highlighter_data[start_index].classNames.push(class_name);
-                            }
                         }
-                        0 === GROUP_NUMBER && (sub_data[O++] =
-                            { tag: '<span class="match0">',
-                            start: start_index,
-                            end: end_index
-                        })
-                    }
+
                 }
                 result_data[l++] = d
-                // result_data = d
             } else {
-                if (o != PCRE_ERROR_NOMATCH) {
+                if (matches_amount != PCRE_ERROR_NOMATCH) {
                     C >= text_length;
                     break
                 }
@@ -264,28 +191,19 @@ function preg_match(match_text) {
                     match_steps > 0;
                     break
                 }
-                
                 HEAP32[c] = C,
-                
                 HEAP32[c + 1] = C + 1,
-                
                 text_length - 1 > C && "\r" === match_text.charAt(C) && "\n" === match_text.charAt(C + 1) && (HEAP32[c + 1] += 1)
+            }
             
-            } P = HEAP32[c + 1] === HEAP32[c] ? PCRE_NOTEMPTY_ATSTART | PCRE_ANCHORED : 0,
-            
+            P = HEAP32[c + 1] === HEAP32[c] ? PCRE_NOTEMPTY_ATSTART | PCRE_ANCHORED : 0,
             C = HEAP32[c + 1]
-            
         } while (cached_pattern.is_global);
-        
         return _free(e),
         
         _free(r), {
-            result: result_data,
-            highlighter: highlighter_data,
-            sub: sub_data,
-            callout_data: callout_data,
-            callout_html: callout_html,
-            catastrophic: o === PCRE_ERROR_MATCHLIMIT,
+            highlighter: result_data,
+            catastrophic: matches_amount === PCRE_ERROR_MATCHLIMIT,
             steps: total_steps
         }
     }
@@ -433,19 +351,18 @@ var PCRE_CASELESS = 1,
     match_id,
     match_steps,
     total_steps,
-    callout_data,
-    callout_html,
     oldPatternStart = 0,
     oldPatternEnd = 0,
     oldStrStart = 0,
     oldStrEnd = 0,
-    matchData = {},
-    tempMatchData = {},
     lookbehind = void 0,
     debugging = false;
 
-self.onmessage = function (_) {
+self.onmessage = function (event) {
     self.postMessage("onload")
-    preg_compile(_.data.regex, _.data.options)
-    self.postMessage(preg_match(_.data.regexText));
+    let expression = event.data.regex;
+    let expression_flags = event.data.options;
+    preg_compile(expression, expression_flags);
+    let result = preg_match(event.data.regexText);
+    self.postMessage(result);
 };

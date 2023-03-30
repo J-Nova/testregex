@@ -29,31 +29,6 @@ export function updateRegex(expression, flags, test_string, substitution_enabled
             if (explanation) explainCallback(explanation);
         }, treeview_match_timeout)
     }
-
-    // if (test_data.flavor === FLAVOR.PYTHON && (test_data.regex = sanitizePython(test_data.regex)), 0 === test_data.regex.length) {
-    //     var o = white_space(escapeHtml(test_area.value));
-    //     test_color_element = replaceHtml(test_color_element, o),
-    //     replaceHtml("treeview", "An explanation of your regex will be automatically generated as you type."),
-    //     replaceHtml("match_info", "Detailed match information will be displayed here automatically."),
-    //     replaceHtml("subst_result", o),
-    //     display_info("no match", "no_match"),
-    //     clearTimeout(matchTimer),
-    //     clearTimeout(treeview_timer),
-    //     $("#debugger_menu, #sample_menu, #permalink_menu, #community_submit, #format_regex").removeClass("active").addClass("disabled"),
-    //     $("#permalink_data").hide(),
-    //     stopUnitTests(),
-    //     updateTooltipData()
-    // } else {
-
-    //     // TODO handle other languages like Javascript and python...
-
-        
-    //     // switch (test_data.regexText.length > 0, current_flavour) {
-    //     //     case FLAVOR.JS: updateJavascript(test_data);
-    //     //         break;
-    //     //     case FLAVOR.PYTHON:
-    //     // }
-    // }
 }
 
 
@@ -108,7 +83,7 @@ function updatePCRE(test_data, callbacks) {
     }
 
     pcreWorker.callback = PCRECallback;
-    pcreWorker.running = !1;
+    pcreWorker.running = false;
     pcreWorker.worker.postMessage(test_data);
 }
 
@@ -152,26 +127,6 @@ function updateJavascript(e) {
     jsWorker.timeout = timeoutError,
     jsWorker.running = !1,
     jsWorker.worker.postMessage(e)
-}
-
-function handleSubResult(e, r, t) {
-    if (e.isSub) {
-        for (var o = Regex101Colorizer.getCaptureData(), a =! 1, i = e.sub, s = "", n = 0, u = 0, c = r.length; c > u; u++) {
-            var l = i.replace(subRegex.PCRE, function (e) {
-                var r = parseSub(e, o, !0, t[u]);
-                return r === !1 && (a =! 0),
-                r
-            });
-            if (a) 
-                break;
-            
-
-            var m = r[u];
-            s += white_space(escapeHtml(e.regexText.substring(n, m.start))) + m.tag + white_space(escapeHtml(l)) + "</span>",
-            n = m.end
-        }
-        a ? replaceHtml("subst_result", white_space(escapeHtml(e.regexText)) + "\n") : (s += white_space(escapeHtml(e.regexText.substring(n, e.regexText.length))), replaceHtml("subst_result", s + "\n"))
-    }
 }
 
 
