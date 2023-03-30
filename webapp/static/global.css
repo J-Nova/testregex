@@ -62,7 +62,7 @@ body {
 }
 
 ::placeholder {
-    color : black;
+    color : var(--secondary-text-color);
 }
 
 .right-container {
@@ -86,6 +86,7 @@ h2, h1 {
     font-weight: 500;
     height: fit-content;
     word-wrap: break-word;
+    font-size: x-large;
 }
 
 a {

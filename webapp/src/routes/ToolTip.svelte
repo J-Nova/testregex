@@ -6,7 +6,7 @@
 
 
 	function classString(){
-		return objAttributes.classNames.join(" ");
+		return objAttributes.classNames;
 	}
 
 	function dataString(){
@@ -93,6 +93,14 @@
 		background-color: var(--senary);
 	}
 	.match0_2 {
+		background-color: var(--tertiary);
+	}
+	
+	.match1 {
+		background-color: var(--senary);
+	}
+	
+	.match2 {
 		background-color: var(--tertiary);
 	}
 	

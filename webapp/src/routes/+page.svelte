@@ -82,11 +82,11 @@
         $match_status = 2;
         $status_color = "--error-status-color";
     }
-
+    
     function timeoutCallback(){
         $MatchAstTree = {error: "Timed out while waiting on expression results"}
         $information_message = "Detailed match information will be displayed here automatically.";
-        $status_color = "--timeout-status-color";
+        $status_color = "--error-status-color";
         $match_status = 2;
     }
 
@@ -128,7 +128,7 @@
         display: flex;
         flex-direction: column;
         gap: 5%;
-        max-width: 10%;
+        max-width: 15%;
         width: 100%;
         height: 100%;
         background-color: var(--secondary);
@@ -157,13 +157,23 @@
     }
 
     @media screen and (max-width: 800px) {
-    .informative-content {
-        display: none;
-        visibility: hidden;
+        .informative-content {
+            display: none;
+            visibility: hidden;
+        }
+        .main-content {
+            max-width: 100%;
+        }
     }
-    .main-content {
-        max-width: 100%;
+
+    @media screen and (max-width: 900px) {
+        .settings-content {
+            display: none;
+            visibility: hidden;
+        }
+        .main-content {
+            max-width: 100%;
+        }
     }
-}
 
 </style>
