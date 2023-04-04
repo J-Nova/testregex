@@ -12,7 +12,8 @@
     import Tools from './Tools.svelte';
     import Settings from './Settings.svelte';
 
-    import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, match_data_list, MatchAstTree, editorLockTimeout, flavor, status_color} from "$lib/stores.js";
+    import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, match_data_list, MatchAstTree, editorLockTimeout, flavor, status_color, explain_timeout, match_timeout} from "$lib/stores.js";
+    
 
     let expression_timer;
 
@@ -25,16 +26,17 @@
             updateRegex(
             regex_expression, 
             flags, 
-            test_string, 
-            false, 
-            "", 
+            test_string,
             delimiter, 
             flavor,
             errorCallback,
             successCallback,
             timeoutCallback, 
             explain,
-            explainCallback);
+            explainCallback,
+            $explain_timeout,
+            $match_timeout
+            );
         }
 
         $match_data_list = [];
@@ -60,20 +62,15 @@
     }
 
     function successCallback(match_data){
-        let match_indexes = new Set();
+        console.log(match_data);
         if (Object.keys(match_data.highlighter).length > 0 ){
-            for (let [_, current_match] of Object.entries(match_data.highlighter)){
-                for (let index=current_match.startIndex; index<current_match.endIndex; index++){
-                    match_indexes.add(index);
-                }
-            }
             $match_status = 1;
             $status_color = "--match-status-color";
         } else {
             $match_status = 0;
             $status_color = "--no-match-status-color";
         }
-        $match_data_list = highlighter(match_indexes, match_data.highlighter, $testString);
+        $match_data_list = highlighter(match_data.highlighter, $testString);
     }
 
     function errorCallback(errorMessage){

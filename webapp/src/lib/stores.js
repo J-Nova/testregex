@@ -18,6 +18,10 @@ export let flavor = writable("PCRE");
 export let flags = writable(["g", "m"]);
 export let delimiter = writable("/");
 
+export let match_timeout = writable(2000);
+export let explain_timeout = writable(2000);
+
+
 export const match_codes = {
     0: "No match",
     1: "Match found",
