@@ -2,7 +2,7 @@
 // @ts-nocheck
     import ToolTip from "./ToolTip.svelte";
     import { createEventDispatcher } from 'svelte';
-    import {editor_status, editor_codes, testString, match_data_list, editorLockTimeout} from "$lib/stores.js";
+    import {editor_status, editor_codes, testString, match_data_list} from "$lib/stores.js";
     const dispatch = createEventDispatcher();
     function scrollFn(){testBackdrop.scrollTop = testTextArea.scrollTop;}
 
@@ -44,7 +44,7 @@
         {:else}
             {#each $match_data_list as tooltip}
                 {#if tooltip !== undefined}
-                    <ToolTip objAttributes={tooltip}/>
+                    <ToolTip match={tooltip}/>
                 {/if}
             {/each}
         {/if}

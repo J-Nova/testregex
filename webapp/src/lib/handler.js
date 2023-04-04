@@ -115,31 +115,48 @@ export function transpileExpression(expression){
 }
 
 
-export function highlighter(match_indexes= new Set(), matches = {}, testString=""){
+export function highlighter(matches, testString){
     let new_match_html = [];
-    for (let i=0; i<testString.length; i++){
-        let tooltip;
-        let isMatch;
-        if (match_indexes.has(i)){
-            if (matches[i]){
-                let matchNumber = matches[i].matchNumber;
-                let groupNumber = matches[i].groupNumber;
-                let groupNames = matches[i].groupNames;
-                let content = matches[i].content;
-                let start = matches[i].startIndex;
-                let end = matches[i].endIndex;
-                let classNames = matches[i].classNames;
-                isMatch = true;
-                tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
+
+    // Loop over all the matches.
+    for (let i=0; i<matches.length; i++){
+        let match = matches[i];
+        for (let j=0; j<match.length; j++){
+            if (match[j]){
+                let match_num = i + 1;
+                let group_num = 9999;
+                let group_name = match[j].name !== undefined ? match[j].name : "";
+                let content = match[j].content;
+                let start = match[j].start;
+                let end = match[j].end;
+                let class_name = "match";
+                let tooltip = {match_num:match_num, group_num:group_num, group_name:group_name, content:content, start:start, end:end, class_name};
                 new_match_html.push(tooltip);
             }
-        } else{
-            isMatch = false;
-            let char = testString[i];   
-            tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
-            new_match_html.push(tooltip);
         }
     }
+
+
+    // for (let i=0; i<testString.length; i++){
+    //     let tooltip;
+    //     let isMatch;
+    //     if (matches[i]){
+    //         let match_num = i + 1;
+    //         let group_num = 9999;
+    //         let group_name = matches[i].name !== undefined ? matches[i].name : "";
+    //         let content = matches[i].content;
+    //         let start = matches[i].start;
+    //         let end = matches[i].end;
+    //         isMatch = true;
+    //         tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
+    //         new_match_html.push(tooltip);
+    //     } else{
+    //         isMatch = false;
+    //         let char = testString[i];   
+    //         tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
+    //         new_match_html.push(tooltip);
+    //     }
+    // }
 
     return new_match_html
 }

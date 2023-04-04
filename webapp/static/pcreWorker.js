@@ -151,9 +151,7 @@ function preg_match(match_text) {
             C = 0,
             P = 0,
             result_data = [],
-            l = 0,
-            highlighter_data = {},
-            s = !1;
+            l = 0;
         do {
             var matches_amount = pcre_exec(cached_pattern.regex, cached_pattern.match_limit, e, text_length, C, P, r, ovector_len);
             if (matches_amount >= 0) {

@@ -1,22 +1,20 @@
 <script>
-	export let objAttributes;
+	export let match;
 	let isHovered = false;
 	let x;
 	let y;
 
 
 	function classString(){
-		return objAttributes.classNames;
+		return match.class_name;
 	}
 
-	function dataString(){
+	function matchContent(){
 		let value;
-		if (objAttributes.classNames.length > 1) {
-			objAttributes.groupNames = objAttributes.groupNames.filter(function(e){return e}); 
-			let groupname = objAttributes.groupNames.length == 0 ? "" : "(" + objAttributes.groupNames+ ")";
-			value = "Group " + (parseInt(objAttributes.groupNumber)+1) + groupname + ": " + objAttributes.content;
+		if (match.group_name !== undefined) {
+			value = "Group " + (match.group_num) + match.group_name + ": " + match.content;
 		} else {
-			value = "Matched: " + objAttributes.content;
+			value = "Matched: " + match.content;
 		}
 		return value;
 	}
@@ -31,6 +29,19 @@
 	
 	function mouseLeave() {
 		isHovered = false;
+	}
+
+	function randomColor(){
+		let r = getRandomInt(85, 170);
+		let g = getRandomInt(85, 170);
+		let b = getRandomInt(85, 170);
+		return `${r}, ${g}, ${b}`
+	}
+
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min) + min);
 	}
 </script>
 
@@ -58,18 +69,19 @@
 
 	on:touchmove={showTooltip}
 	on:touchstart={showTooltip}
+	style="background-color: rgb({randomColor()});"
 	>
-	{objAttributes.content}
+	{match.content}
 </span>
 
-{#if isHovered && objAttributes.isMatch}
+{#if isHovered && match.class_name === "match"}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		<span class="header">Match - {(parseInt(objAttributes.matchNumber)+1)}</span>
+		<span class="header">Match - {match.match_num}</span>
 		<span class="match-data">
-			{dataString()}
+			{matchContent()}
 		</span>
 		<span class="match-position">
-			Position: {objAttributes.start}-{objAttributes.end}
+			Position: {match.start}-{match.end}
 		</span>
 	</div>
 {/if}
