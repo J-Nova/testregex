@@ -2,7 +2,7 @@
 // @ts-nocheck
     import ToolTip from "./ToolTip.svelte";
     import { createEventDispatcher } from 'svelte';
-    import {editor_status, editor_codes, testString, match_data_list} from "$lib/stores.js";
+    import {editor_status, editor_codes, testString, highlight_data} from "$lib/stores.js";
     const dispatch = createEventDispatcher();
     function scrollFn(){testBackdrop.scrollTop = testTextArea.scrollTop;}
 
@@ -38,17 +38,11 @@
         on:keydown
         on:click={_ => ($editor_status = 1)}
     >
-    <div class="custom-area">
-        {#if $match_data_list.length === 0}
-            {$testString}
-        {:else}
-            {#each $match_data_list as tooltip}
-                {#if tooltip !== undefined}
-                    <ToolTip match={tooltip}/>
-                {/if}
-            {/each}
-        {/if}
-    </div>
+        <div class="custom-area">
+                {#each Object.keys($highlight_data) as match_code}
+                    <ToolTip match={$highlight_data[match_code]}/>
+                {/each}
+        </div>
     </pre>
 
     <textarea

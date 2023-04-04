@@ -7,8 +7,9 @@ export let match_status = writable(3);
 export let editor_status = writable(2);
 export let status_color = writable("--base-status-color");
 export let information_message = writable("Detailed match information will be displayed here automatically.");
-export let match_data_list = writable([]);
+export let highlight_data = writable({});
 export let MatchAstTree = writable({});
+export let match_content = writable([]);
 
 export let editorLockTimeout = writable(500);
 export let showToolTips = writable(true);

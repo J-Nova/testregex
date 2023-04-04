@@ -1,5 +1,32 @@
 <script>
-    import {information_message, match_data_list} from "$lib/stores.js";
+    import {information_message, match_content} from "$lib/stores.js";
+
+    function generateInformation($match_content){
+        let match_data = [];
+        for (let i=0; i<$match_content.length; i++){
+            let match = $match_content[i];
+            for (let j=0; j<match.length; j++){
+                if (match[j]){
+                    let current_match = match[j];
+                    let match_num = i + 1;
+                    let group_num = 9999;
+                    let group_name = match[j].name !== undefined ? match[j].name : "";
+                    let start = match[j].start;
+                    let end = match[j].end;
+                    let content = match[j].content;
+                    let match_info = {
+                        match_num: match_num,
+                        group_name: group_name,
+                        start: start,
+                        end: end,
+                        content: content
+                    }
+                    match_data.push(match_info);
+                }
+            }
+        }
+        return match_data;
+    }
 </script>
 
 <div class="right-container">
@@ -7,17 +34,19 @@
         Information
     </h2>
     <div class="info-container">
-        {#if $match_data_list.length == 0}
+        {#if Object.keys($match_content).length == 0}
             <span>{$information_message}</span>
         {:else}
-            {#each $match_data_list as match}
-                {#if match.start !== undefined}
+            {#each generateInformation($match_content) as match}
                 <div class="match">
-                    <div>Match {(parseInt(match.matchNumber)+1)}</div>
+                    {#if match.group_name !== undefined && match.group_name !== ""}
+                        <div>Group {match.group_name}</div>
+                    {:else}
+                        <div>Match {match.match_num}</div>
+                    {/if}
                     <div>{match.start}-{match.end}</div>
                     <div>{match.content}</div>
                 </div>
-                {/if}
             {/each}
         {/if}
     </div>

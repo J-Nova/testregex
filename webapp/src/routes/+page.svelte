@@ -12,7 +12,7 @@
     import Tools from './Tools.svelte';
     import Settings from './Settings.svelte';
 
-    import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, match_data_list, MatchAstTree, editorLockTimeout, flavor, status_color, explain_timeout, match_timeout} from "$lib/stores.js";
+    import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, highlight_data as highlight_data, MatchAstTree, editorLockTimeout, flavor, status_color, explain_timeout, match_timeout, match_content} from "$lib/stores.js";
     
 
     let expression_timer;
@@ -39,7 +39,7 @@
             );
         }
 
-        $match_data_list = [];
+        $highlight_data = {};
         if ($expressionString.length > 0 && $testString.length > 0){
             runExpression($expressionString, $flags.sort().join(""), $testString, $delimiter, $flavor, explain);
             clearTimeout(expression_timer);
@@ -62,7 +62,6 @@
     }
 
     function successCallback(match_data){
-        console.log(match_data);
         if (Object.keys(match_data.highlighter).length > 0 ){
             $match_status = 1;
             $status_color = "--match-status-color";
@@ -70,7 +69,8 @@
             $match_status = 0;
             $status_color = "--no-match-status-color";
         }
-        $match_data_list = highlighter(match_data.highlighter, $testString);
+        $match_content = match_data.highlighter;
+        $highlight_data = highlighter(match_data.highlighter, $testString);
     }
 
     function errorCallback(errorMessage){

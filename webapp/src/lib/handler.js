@@ -114,49 +114,51 @@ export function transpileExpression(expression){
     return transpiledExpression
 }
 
+function randomColor(){
+    let r = getRandomInt(85, 170);
+    let g = getRandomInt(85, 170);
+    let b = getRandomInt(85, 170);
+    return `background-color: rgb(${r}, ${g}, ${b});`
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 
 export function highlighter(matches, testString){
-    let new_match_html = [];
+    // First loop over the whole test string. Create an object for it to contain match data for each character.
+    let match_html = {};
+    for (let i=0; i<testString.length; i++){
+        match_html[i] = {content:testString[i], class_name:"no-match", color:""};
+    }
 
     // Loop over all the matches.
     for (let i=0; i<matches.length; i++){
         let match = matches[i];
         for (let j=0; j<match.length; j++){
             if (match[j]){
+                let current_match = match[j];
                 let match_num = i + 1;
                 let group_num = 9999;
                 let group_name = match[j].name !== undefined ? match[j].name : "";
-                let content = match[j].content;
                 let start = match[j].start;
                 let end = match[j].end;
-                let class_name = "match";
-                let tooltip = {match_num:match_num, group_num:group_num, group_name:group_name, content:content, start:start, end:end, class_name};
-                new_match_html.push(tooltip);
+                let color = randomColor();
+                // Loop over start and end range of the match to edit the data in the match_html object.
+                for (let k=current_match.start; k<current_match.end; k++){
+                    match_html[k].class_name = "match";
+                    match_html[k].match_num = match_num;
+                    match_html[k].group_num = group_num; 
+                    match_html[k].group_name= group_name; 
+                    match_html[k].start = start; 
+                    match_html[k].end = end; 
+                    match_html[k].color = color;
+                }
             }
         }
     }
-
-
-    // for (let i=0; i<testString.length; i++){
-    //     let tooltip;
-    //     let isMatch;
-    //     if (matches[i]){
-    //         let match_num = i + 1;
-    //         let group_num = 9999;
-    //         let group_name = matches[i].name !== undefined ? matches[i].name : "";
-    //         let content = matches[i].content;
-    //         let start = matches[i].start;
-    //         let end = matches[i].end;
-    //         isMatch = true;
-    //         tooltip = {matchNumber:matchNumber, groupNumber:groupNumber, groupNames:groupNames, content:content, start:start, end:end, isMatch:isMatch, classNames:classNames};
-    //         new_match_html.push(tooltip);
-    //     } else{
-    //         isMatch = false;
-    //         let char = testString[i];   
-    //         tooltip = {isMatch:isMatch, content:char, classNames:["no-match"]};
-    //         new_match_html.push(tooltip);
-    //     }
-    // }
-
-    return new_match_html
+    return match_html
 }

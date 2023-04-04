@@ -4,15 +4,10 @@
 	let x;
 	let y;
 
-
-	function classString(){
-		return match.class_name;
-	}
-
 	function matchContent(){
 		let value;
-		if (match.group_name !== undefined) {
-			value = "Group " + (match.group_num) + match.group_name + ": " + match.content;
+		if (match.group_name !== undefined && match.group_name !== "") {
+			value = "Group "+ match.group_name + ": " + match.content;
 		} else {
 			value = "Matched: " + match.content;
 		}
@@ -30,24 +25,11 @@
 	function mouseLeave() {
 		isHovered = false;
 	}
-
-	function randomColor(){
-		let r = getRandomInt(85, 170);
-		let g = getRandomInt(85, 170);
-		let b = getRandomInt(85, 170);
-		return `${r}, ${g}, ${b}`
-	}
-
-	function getRandomInt(min, max) {
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min) + min);
-	}
 </script>
 
 
 <span
-	class="{classString()}"
+	class="{match.class_name}"
 	on:focusout={mouseLeave}
 	on:pointerleave={mouseLeave}
     on:mouseleave={mouseLeave}
@@ -69,7 +51,7 @@
 
 	on:touchmove={showTooltip}
 	on:touchstart={showTooltip}
-	style="background-color: rgb({randomColor()});"
+	style="{match.color}"
 	>
 	{match.content}
 </span>
