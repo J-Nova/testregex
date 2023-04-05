@@ -8,12 +8,14 @@
             for (let j=0; j<match.length; j++){
                 if (match[j]){
                     let match_num = i + 1;
+                    let group_num = match[j].group_number;
                     let group_name = match[j].name !== undefined ? match[j].name : "";
+                    let content = match[j].content;
                     let start = match[j].start;
                     let end = match[j].end;
-                    let content = match[j].content;
                     let match_info = {
                         match_num: match_num,
+                        group_num: group_num,
                         group_name: group_name,
                         start: start,
                         end: end,
@@ -37,8 +39,8 @@
         {:else}
             {#each generateInformation($match_content) as match}
                 <div class="match">
-                    {#if match.group_name !== undefined && match.group_name !== ""}
-                        <div>Group {match.group_name}</div>
+                    {#if match.group_num !== undefined && match.group_num !== 0}
+                        <div>{`Group (${match.group_num}) ${match.group_name}`}</div>
                     {:else}
                         <div>Match {match.match_num}</div>
                     {/if}
