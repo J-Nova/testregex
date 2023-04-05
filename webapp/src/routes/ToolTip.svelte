@@ -6,10 +6,10 @@
 
 	function matchContent(){
 		let value;
-		if (match.group_name !== undefined && match.group_name !== "") {
-			value = "Group "+ match.group_name + ": " + match.content;
+		if (match.group_num !== undefined && match.group_num !== 0) {
+			value = `Group (${match.group_num}) ${match.group_name}: ${match.content}`;
 		} else {
-			value = "Matched: " + match.content;
+			value = `Matched: ${match.content}`;
 		}
 		return value;
 	}

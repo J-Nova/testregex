@@ -7,9 +7,7 @@
             let match = $match_content[i];
             for (let j=0; j<match.length; j++){
                 if (match[j]){
-                    let current_match = match[j];
                     let match_num = i + 1;
-                    let group_num = 9999;
                     let group_name = match[j].name !== undefined ? match[j].name : "";
                     let start = match[j].start;
                     let end = match[j].end;

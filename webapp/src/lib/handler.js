@@ -142,7 +142,7 @@ export function highlighter(matches, testString){
             if (match[j]){
                 let current_match = match[j];
                 let match_num = i + 1;
-                let group_num = 9999;
+                let group_num = match[j].group_number;
                 let group_name = match[j].name !== undefined ? match[j].name : "";
                 let start = match[j].start;
                 let end = match[j].end;

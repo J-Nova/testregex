@@ -166,16 +166,16 @@ function preg_match(match_text) {
                         start: start_index,
                         end: end_index,
                         content: match_text.substring(start_index, end_index),
-                        subpats: cached_pattern.subpats
+                        subpats: cached_pattern.subpats,
+                        group_number: GROUP_NUMBER/2
                     };
                     let match = -1 !== start_index;
-
                     if (match && subpaths > 0) { 
-                            for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) { // Here it adds the group name if there is one.
-                                var M = HEAP8[L];
-                                void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2)),
-                                    L += 2 * E;
-                                }
+                        for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) { // Here it adds the group name if there is one.
+                            var M = HEAP8[L];
+                            void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2)),
+                                L += 2 * E;
+                            }
                         }
 
                 }
