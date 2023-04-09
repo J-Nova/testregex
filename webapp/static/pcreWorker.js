@@ -171,7 +171,8 @@ function preg_match(match_text) {
                     };
                     let match = -1 !== start_index;
                     if (match && subpaths > 0) { 
-                        for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) { // Here it adds the group name if there is one.
+                        //add the group name to the result
+                        for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) {
                             var M = HEAP8[L];
                             void 0 !== d[M] && (d[M].name = UTF16ToString(L + 2)),
                                 L += 2 * E;
@@ -353,8 +354,7 @@ var PCRE_CASELESS = 1,
     oldPatternEnd = 0,
     oldStrStart = 0,
     oldStrEnd = 0,
-    lookbehind = void 0,
-    debugging = false;
+    lookbehind = void 0;
 
 self.onmessage = function (event) {
     self.postMessage("onload")
