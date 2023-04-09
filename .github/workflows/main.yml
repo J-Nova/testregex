@@ -1,9 +1,8 @@
-on:
-  pull_request:
-    branches:
-    - main
+name: Deployment
+on: push
 
 jobs:
-  my_job:
-    name: deploy to staging
+  deployment:
     runs-on: ubuntu-latest
+    steps:
+      - run : echo Hello World
