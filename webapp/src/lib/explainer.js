@@ -1,7 +1,15 @@
 // @ts-nocheck
 import regexpTree from 'regexp-tree';
 
-export function explainRegex(test_data){
+export function explain_regex(test_data, explain_callback){
+    explain_timer && clearTimeout(explain_timer),
+    explain_timer = setTimeout(function () {
+        let explanation = explainRegex(test_data);
+        if (explanation) explain_callback(explanation);
+    }, maxExplainTimeout)
+}
+
+function explainRegex(test_data){
     try {
         let regex = new RegExp(test_data.regex, test_data.options);
     
@@ -104,6 +112,38 @@ export function explainRegex(test_data){
     }
 }
 
+/**
+ * Generates information about the matches found in the given match_content array.
+ * @param {Array} match_content - An array of matches found by a regular expression.
+ * @returns {Array} An array of objects containing information about each match.
+ */
+export function generateInformation(match_content){
+    let match_data = [];
+    for (let i=0; i<match_content.length; i++){
+        let match = match_content[i];
+        for (let j=0; j<match.length; j++){
+            if (match[j]){
+                let match_num = i + 1;
+                let group_num = match[j].group_number;
+                let group_name = match[j].name !== undefined ? match[j].name : "";
+                let content = match[j].content;
+                let start = match[j].start;
+                let end = match[j].end;
+                let match_info = {
+                    match_num: match_num,
+                    group_num: group_num,
+                    group_name: group_name,
+                    start: start,
+                    end: end,
+                    content: content
+                }
+                match_data.push(match_info);
+            }
+        }
+    }
+    return match_data;
+}
+
 export function optimizeRegex(expression){
     let optimizedExpression = regexpTree.optimize(expression).toRegExp();
     return optimizedExpression
@@ -128,6 +168,12 @@ function getRandomInt(min, max) {
 }
 
 
+/**
+ * Highlights the matches in a given test string with the corresponding color.
+ * @param {Array} matches - An array of match objects containing the group number, group name, start and end indices, and color.
+ * @param {string} testString - The string to be highlighted.
+ * @returns An object containing the highlighted string with the corresponding class name and color for each character.
+ */
 export function highlighter(matches, testString){
     // First loop over the whole test string. Create an object for it to contain match data for each character.
     let match_html = {};
@@ -162,3 +208,6 @@ export function highlighter(matches, testString){
     }
     return match_html
 }
+
+var maxExplainTimeout = 2000,
+explain_timer

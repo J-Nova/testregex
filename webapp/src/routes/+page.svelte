@@ -1,7 +1,7 @@
 <script>
 // @ts-nocheck
     import {updateRegex} from "$lib/matcher.js";
-    import {highlighter} from "$lib/handler.js";
+    import {highlighter} from "$lib/explainer.js";
     import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
     import Matchexplanation from './Matchexplanation.svelte';

@@ -1,32 +1,7 @@
 <script>
     import {information_message, match_content} from "$lib/stores.js";
+    import {generateInformation} from "$lib/explainer.js";
 
-    function generateInformation($match_content){
-        let match_data = [];
-        for (let i=0; i<$match_content.length; i++){
-            let match = $match_content[i];
-            for (let j=0; j<match.length; j++){
-                if (match[j]){
-                    let match_num = i + 1;
-                    let group_num = match[j].group_number;
-                    let group_name = match[j].name !== undefined ? match[j].name : "";
-                    let content = match[j].content;
-                    let start = match[j].start;
-                    let end = match[j].end;
-                    let match_info = {
-                        match_num: match_num,
-                        group_num: group_num,
-                        group_name: group_name,
-                        start: start,
-                        end: end,
-                        content: content
-                    }
-                    match_data.push(match_info);
-                }
-            }
-        }
-        return match_data;
-    }
 </script>
 
 <div class="right-container">

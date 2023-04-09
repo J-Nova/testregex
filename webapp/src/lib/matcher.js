@@ -1,8 +1,7 @@
 // @ts-nocheck
-import {explainRegex} from "$lib/handler.js"
+import {explain_regex} from "$lib/explainer.js"
 
 export function updateRegex(expression, flags, test_string, delimiter, flavor, errorCallback, successCallback, timeoutCallback, explain, explainCallback, explain_timeout, match_timeout) {
-    maxExplainTimeout = explain_timeout;
     maxWorkerTimeout = match_timeout;
 
     var callbacks = {
@@ -22,14 +21,10 @@ export function updateRegex(expression, flags, test_string, delimiter, flavor, e
     
     if (test_data.flavor == "PCRE"){
             updatePCRE(test_data, callbacks)
-    }
+    }// Handle other flavours here aswell
 
     if (explain) { // Explain the expression that has been given.
-        explain_timer && clearTimeout(explain_timer),
-        explain_timer = setTimeout(function () {
-            let explanation = explainRegex(test_data);
-            if (explanation) explainCallback(explanation);
-        }, maxExplainTimeout)
+        explain_regex(test_data, explainCallback);
     }
 }
 
@@ -88,8 +83,6 @@ function updatePCRE(test_data, callbacks) {
 }
 
 
-var maxExplainTimeout = 2000,
-    explain_timer,
-    maxWorkerTimeout = 2000,
+var maxWorkerTimeout = 2000,
     workerObj = {},
     workerTimeout;
