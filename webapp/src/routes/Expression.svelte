@@ -1,6 +1,8 @@
 <script>
     import Options from "./Options.svelte";
     import Flags from "./Flags.svelte";
+    import Optimize from "./Optimize.svelte";
+    import Transpile from "./Transpile.svelte";
     import {expressionString, match_status, status_color, match_codes} from "$lib/stores.js";
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
@@ -11,11 +13,12 @@
 
 <div class="heading">
     <h2>regular expression</h2>
+    <Optimize/>
+    <Transpile/>
     <span class="result" style="background-color:var({$status_color})">{match_codes[$match_status]}</span>
 </div>
 <div class="input">
     <Options/>
-        <!-- Create input container -->
         <div class="container">
             <pre
                 bind:this={expressionBackdrop}
@@ -36,7 +39,6 @@
                 placeholder="Insert your expression here"
             ></textarea>
         </div>
-        <!-- End of creating input container -->
         <Options/>
         <Flags/>
 </div>

@@ -441,20 +441,10 @@ export const quickref = {
             info: "Any text appearing in this group is ignored in the regex.",
             flavors: ["PCRE", "PYTHON"]
         }, {
-            token: "(?'name'...)",
-            desc: "Named capturing group",
-            info: "This capturing group can be referred to using the given name instead of a number.",
-            flavors: ["PCRE"]
-        }, {
-            token: "(?<name>...)",
-            desc: "Named capturing group",
-            info: "This capturing group can be referred to using the given name instead of a number.",
-            flavors: ["PCRE"]
-        }, {
             token: "(?P<name>...)",
             desc: "Named capturing group",
             info: "This capturing group can be referred to using the given name instead of a number.",
-            flavors: ["PCRE", "PYTHON"]
+            flavors: ["PCRE", "PYTHON","JAVASCRIPT"]
         }, {
             token: "(?imsxXU)",
             desc: "Inline modifiers",

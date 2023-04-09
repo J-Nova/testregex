@@ -1,6 +1,6 @@
 <script>
 // @ts-nocheck
-    import {quickref} from "$lib/reference_data.js";
+    import {quickref} from "$lib/quickref.js";
     import {flavor} from "$lib/stores.js";
     import Item from "./Quickref-item.svelte";
 
@@ -46,10 +46,6 @@
         else {
             getCategoryData("all")
         }
-    }
-
-    function updateCategory(event){
-        getCategoryData(event.target.id);
     }
 
     function highlighter(item){
