@@ -8,11 +8,11 @@ jobs:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: "{%- raw -%} ${{ secrets.SSH_PRIVATE_KEY }}"
-          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: "temp"
       
       - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }}{% endraw%} >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deployment
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && git pull && sudo docker build -t testregex . && sudo docker run -d -p 80:3000 testregex"
