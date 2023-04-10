@@ -12,7 +12,7 @@
 </script>
 
 <div class="heading">
-    <h2>regular expression</h2>
+    <h2>regular expression mwehahaha</h2>
     <Optimize/>
     <Transpile/>
     <span class="result" style="background-color:var({$status_color})">{match_codes[$match_status]}</span>
