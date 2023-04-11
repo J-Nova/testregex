@@ -22,6 +22,7 @@
 
 
     --highlight-color: #f1f1f14d;
+    --button-border-color: #d75526;
 
     --checked-border-color: #3cb371;
     --unchecked-border-color: #9b3737;
@@ -92,4 +93,15 @@ h2, h1 {
 a {
     text-decoration: none;
     color: var(--tertiary);
+}
+
+.optimize, .transpile{
+    background-color: var(--tertiary);
+    border: 1px solid var(--button-border-color);
+    box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
+    border-radius: 3px;
+    padding: 2px;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    user-select: none;
 }

@@ -41,11 +41,11 @@
 
         $highlight_data = {};
         if ($expressionString.length > 0 && $testString.length > 0){
-            runExpression($expressionString, $flags.sort().join(""), $testString, $delimiter, $flavor, explain);
+            runExpression($expressionString, $flags.join(""), $testString, $delimiter, $flavor, explain);
             clearTimeout(expression_timer);
             expression_timer = setTimeout(lockEditor, $editorLockTimeout);
         } else if ($expressionString.length > 0) {
-            runExpression($expressionString, $flags.sort().join(""), $testString, $delimiter, $flavor, explain);
+            runExpression($expressionString, $flags.join(""), $testString, $delimiter, $flavor, explain);
             clearTimeout(expression_timer);
             expression_timer = setTimeout(lockEditor, $editorLockTimeout);
         }
@@ -75,6 +75,7 @@
 
     function errorCallback(errorMessage){
         $MatchAstTree = {error:errorMessage}
+        console.log(errorMessage)
         $information_message = "Your expression contains one or more faults, please see explanation above.";
         $match_status = 2;
         $status_color = "--error-status-color";

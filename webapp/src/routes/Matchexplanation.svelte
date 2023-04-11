@@ -1,5 +1,5 @@
 <script>
-    import { JsonView } from '@zerodevx/svelte-json-view';
+    import {JsonView} from '@zerodevx/svelte-json-view';
     import {MatchAstTree, status_color} from "$lib/stores.js";
 
     let textColors = {
