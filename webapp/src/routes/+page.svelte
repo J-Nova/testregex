@@ -126,7 +126,7 @@
         display: flex;
         flex-direction: column;
         gap: 5%;
-        max-width: 15%;
+        max-width: 12%;
         width: 100%;
         height: 100%;
         background-color: var(--secondary);

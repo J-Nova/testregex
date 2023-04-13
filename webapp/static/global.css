@@ -96,12 +96,11 @@ a {
 }
 
 .optimize, .transpile{
-    background-color: var(--tertiary);
-    border: 1px solid var(--button-border-color);
+    border: 1px solid var(--checked-border-color);
     box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
     border-radius: 3px;
-    padding: 2px;
-    color: var(--secondary-text-color);
+    padding: 3px;
+    color: var(--primary-text-color);
     cursor: pointer;
     user-select: none;
 }

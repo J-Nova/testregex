@@ -8,13 +8,13 @@
             <span>Test</span><span>Regex</span>
         </h1>
     </a>
-    <div class="ad-container">
-        <span>This is an placeholder for an ad container</span>
+    <div class="container">
+        <span>This is an placeholder for an container</span>
     </div>
 </div>
 
 <style>
-    .ad-container {
+    .container {
         padding: 6px;
         background-color: var(--primary);
         cursor: default;
