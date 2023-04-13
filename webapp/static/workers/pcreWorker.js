@@ -357,7 +357,7 @@ var PCRE_CASELESS = 1,
     lookbehind = void 0;
 
 self.onmessage = function (event) {
-    self.postMessage("onload")
+    self.postMessage("onload");
     let expression = event.data.regex;
     let expression_flags = event.data.options;
     preg_compile(expression, expression_flags);

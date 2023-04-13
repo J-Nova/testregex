@@ -18,7 +18,7 @@ export const FLAVORS = {
         "delimiters": ["/", "~", "@", ";", "%", "`", "#"]
 
     },
-    "JS": {
+    "JAVASCRIPT": {
         "start": "",
         "flags":[
         {"g": {"global": "Don't return after the first match"}},

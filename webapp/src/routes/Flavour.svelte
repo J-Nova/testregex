@@ -1,5 +1,5 @@
 <script>
-import {flavor} from "$lib/stores.js";
+import {flavor, delimiter} from "$lib/stores.js";
 import {FLAVORS} from  "$lib/data.js";
 import Icon from '@iconify/svelte';
 
@@ -13,6 +13,7 @@ function className(available_flavour){
 function selectFlavour(available_flavour){
     console.log(available_flavour);
     $flavor = available_flavour;
+    $delimiter = FLAVORS[available_flavour].delimiters[0];
     flavors = flavors;
 }
 

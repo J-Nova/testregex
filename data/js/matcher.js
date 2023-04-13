@@ -35,10 +35,10 @@ function updateRegex(explain) {
         // TODO handle other languages like Javascript and python...
 
         
-        // switch (test_data.regexText.length > 0, current_flavour) {
-        //     case FLAVOR.JS: updateJavascript(test_data);
-        //         break;
-        //     case FLAVOR.PYTHON:
+        switch (test_data.regexText.length > 0, current_flavour) {
+            case FLAVOR.JS: updateJavascript(test_data);
+                break;
+            case FLAVOR.PYTHON:
         // }
 
         if (explain) {
@@ -226,6 +226,7 @@ function sanitizePython(e) {
         return "\\" === e.charAt(0) ? e : "[\\:" + r + "\\:]"
     })
 }
+
 function updateJavascript(e) {
     function r(r, t) {
         t.running = !1,
@@ -266,6 +267,7 @@ function updateJavascript(e) {
     jsWorker.running = !1,
     jsWorker.worker.postMessage(e)
 }
+
 function whitespaceCallback(e) {
     return "\\n" === e ? String.fromCharCode(10) : "\\r" === e ? String.fromCharCode(13) : "\\f" === e ? String.fromCharCode(14) : "\\t" === e ? String.fromCharCode(9) : e
 }
