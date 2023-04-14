@@ -23,12 +23,14 @@ function jsMatch(e) {
             putSuffix(x, n.index, '<span data-tooltip="' + r + '" class="' + l + '">'),
             putPrefix(x, n.index + n[0].length, "</span>")
         }
-        if (i) 
-            break
-
-        
-
     }
+    console.log(s);
+    s.forEach(e => function (e) {
+        console.log(e)
+        e.forEach(e => {
+            console.log(e)
+        });
+    });
     return {result: s, hl: x}
 }
 self.onmessage = function (e) {

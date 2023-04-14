@@ -356,11 +356,14 @@ var PCRE_CASELESS = 1,
     oldStrEnd = 0,
     lookbehind = void 0;
 
+    var debug = true;
+
 self.onmessage = function (event) {
     self.postMessage("onload");
     let expression = event.data.regex;
     let expression_flags = event.data.options;
     preg_compile(expression, expression_flags);
     let result = preg_match(event.data.regexText);
+    debug && console.log(result, "result");
     self.postMessage(result);
 };

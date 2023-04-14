@@ -21,13 +21,13 @@ export const FLAVORS = {
     "JAVASCRIPT": {
         "start": "",
         "flags":[
-        {"g": {"global": "Don't return after the first match"}},
-        {"m": {"multi line": "^ and $ match start/end of file"}},
-        {"i": {"insensitive":"Case insensitive match"}},
-        {"y": {"sticky": "Anchor to the start of pattern or at the end of most recent match"}},
-        {"u": {"unicode": "Match with full unicode"}},
-        {"d": {"indices": "Returns match indices"}},
-        {"s": {"single line": "Dot matches newline"}}
+        {"g": {full:"global", desc: "Don't return after the first match"}},
+        {"m": {full:"multi line", desc:"^ and $ match start/end of file"}},
+        {"i": {full:"insensitive", desc:"Case insensitive match"}},
+        {"y": {full:"sticky", desc:"Anchor to the start of pattern or at the end of most recent match"}},
+        {"u": {full:"unicode", desc:"Match with full unicode"}},
+        {"d": {full:"indices", desc:"Returns match indices"}},
+        {"s": {full:"single line", desc:"Dot matches newline"}}
         ],
         "delimiters": ["/", "`", '"', "'"]
     },

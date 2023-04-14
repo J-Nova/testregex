@@ -11,7 +11,6 @@ function className(available_flavour){
 }
 
 function selectFlavour(available_flavour){
-    console.log(available_flavour);
     $flavor = available_flavour;
     $delimiter = FLAVORS[available_flavour].delimiters[0];
     flavors = flavors;
