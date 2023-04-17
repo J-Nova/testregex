@@ -23,6 +23,10 @@
         }
         return locking;
     }
+
+    function yoink(){
+        dispatch("update", false);
+    }
     $: disabled_input = ($editor_status == 0 ? updateEditor(true) : updateEditor(false));
 
 </script>
@@ -48,7 +52,7 @@
     <textarea
         bind:this={testTextArea}
         bind:value={$testString}
-        on:input={_ => dispatch("updateExpression", false)}
+        on:input={_ => (dispatch("update", false))}
         on:scroll={scrollFn}
         spellcheck="false" 
         autocomplete="off" 

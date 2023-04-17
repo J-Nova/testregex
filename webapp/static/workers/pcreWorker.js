@@ -1,3 +1,6 @@
+importScripts('./classes.js');
+importScripts("./libs/pcrelib16.js");
+
 // @ts-nocheck
 function callout(_) {
     match_steps++,
@@ -162,13 +165,10 @@ function preg_match(match_text) {
                         end_index = HEAP32[c + (GROUP_NUMBER + 1)];
                     
                     let index = p++;
-                    d[index] = {
-                        start: start_index,
-                        end: end_index,
-                        content: match_text.substring(start_index, end_index),
-                        subpats: cached_pattern.subpats,
-                        group_number: GROUP_NUMBER/2
-                    };
+                    let content = match_text.substring(start_index, end_index);
+                    let group_number = GROUP_NUMBER/2;
+                    d[index]= new Match(content, group_number, undefined, start_index, end_index)
+
                     let match = -1 !== start_index;
                     if (match && subpaths > 0) { 
                         //add the group name to the result
@@ -201,15 +201,13 @@ function preg_match(match_text) {
         return _free(e),
         
         _free(r), {
-            highlighter: result_data,
+            result: result_data,
             catastrophic: matches_amount === PCRE_ERROR_MATCHLIMIT,
             steps: total_steps
         }
     }
     throw new Error("No pattern supplied to matching function!")
 }
-
-importScripts("pcrelib16.js");
 
 var PCRE_CASELESS = 1,
     PCRE_MULTILINE = 2,
@@ -356,14 +354,14 @@ var PCRE_CASELESS = 1,
     oldStrEnd = 0,
     lookbehind = void 0;
 
-    var debug = true;
-
 self.onmessage = function (event) {
     self.postMessage("onload");
-    let expression = event.data.regex;
-    let expression_flags = event.data.options;
-    preg_compile(expression, expression_flags);
-    let result = preg_match(event.data.regexText);
+    let start_time = performance.now();
+    preg_compile(event.data.regex, event.data.options);
+    let expression_result = preg_match(event.data.regexText);
+    let execution_time = performance.now() - start_time;
+
+    let result = new Result(expression_result.result, execution_time, expression_result.steps, expression_result.catastrophic);
     debug && console.log(result, "result");
     self.postMessage(result);
 };

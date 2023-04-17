@@ -61,21 +61,20 @@
         }
     }
 
-    function successCallback(match_data){
-        if (Object.keys(match_data.highlighter).length > 0 ){
+    function successCallback(data){
+        if (Object.keys(data.result).length > 0 ){
             $match_status = 1;
             $status_color = "--match-status-color";
         } else {
             $match_status = 0;
             $status_color = "--no-match-status-color";
         }
-        $match_content = match_data.highlighter;
-        $highlight_data = highlighter(match_data.highlighter, $testString);
+        $match_content = data.result;
+        $highlight_data = highlighter(data.result, $testString);
     }
 
-    function errorCallback(errorMessage){
-        $MatchAstTree = {error:errorMessage}
-        console.log(errorMessage)
+    function errorCallback(data){
+        $MatchAstTree = data
         $information_message = "Your expression contains one or more faults, please see explanation above.";
         $match_status = 2;
         $status_color = "--error-status-color";
@@ -102,8 +101,8 @@
         <Settings/>
     </div>
     <div class="main-content">
-        <Expression on:updateExpression={updateExpression}/>
-        <TestData on:updateExpression={updateExpression}/>
+        <Expression on:update={updateExpression}/>
+        <TestData on:update={updateExpression}/>
     </div>
     
     <div class="informative-content">

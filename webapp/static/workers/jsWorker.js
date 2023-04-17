@@ -1,3 +1,5 @@
+importScripts('./classes.js');
+
 function executeExpression(regex, flags, test_string) {
     !flags.includes("d") && (flags += "d");
 
@@ -18,35 +20,29 @@ function executeExpression(regex, flags, test_string) {
             null != match.indices && null != match.indices[index] ? (start_index = match.indices[index][0],
             end_index = match.indices[index][1]) : 0 === index && (start_index = match.index,
             end_index = match.index + match[0].length);
-            let match_data = {
-                content: match[index],
-                group_number: index,
-                name: groupName,
-                start: start_index,
-                end: end_index
-            };
+
+            let match_data = new Match(match[index], index, groupName, start_index, end_index);
             sub_result.push(match_data)
         }
         result.push(sub_result)
         if (!global) break; 
     }
-    return {
-        highlighter: result
-    }
+    return result;
 }
 
 function jsMatch(test_data) {
     try {
         let start_time = performance.now();
         let result = executeExpression(test_data.data.regex, test_data.data.options, test_data.data.regexText);
-        result.time = performance.now() - start_time;
+        let execution_time = performance.now() - start_time;
+        result = new Result(result, execution_time, undefined, undefined);
         return result;
     } catch (e) {
-        return{error: e.message}
+        let error = new Error(e.message);
+        return error
     }
 }
 
-var debug = true;
 self.onmessage = function(test_data) {
     self.postMessage("onload")
     let result = jsMatch(test_data);
