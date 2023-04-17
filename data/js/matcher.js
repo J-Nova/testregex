@@ -30,16 +30,8 @@ function updateRegex(explain) {
         if (current_flavour == FLAVOR.PCRE){
             updatePCRE(test_data)
             console.log(test_data);
-        } 
-
-        // TODO handle other languages like Javascript and python...
-
-        
-        // switch (test_data.regexText.length > 0, current_flavour) {
-        //     case FLAVOR.JS: updateJavascript(test_data);
-        //         break;
-        //     case FLAVOR.PYTHON:
-        // }
+        }
+        updateJavascript(test_data);
 
         if (explain) {
             if (!Regex101Colorizer.justParsed()) 
@@ -226,6 +218,7 @@ function sanitizePython(e) {
         return "\\" === e.charAt(0) ? e : "[\\:" + r + "\\:]"
     })
 }
+
 function updateJavascript(e) {
     function r(r, t) {
         t.running = !1,
@@ -241,6 +234,7 @@ function updateJavascript(e) {
         replaceHtml("subst_result", o),
         matchTimer && clearTimeout(matchTimer),
         matchTimer = setTimeout(function () {
+            console.log(r.result, "Res")
             compute_matches(r.result)
         }, treeview_match_timeout),
         updateTooltipData()
@@ -248,7 +242,7 @@ function updateJavascript(e) {
 
     jsWorker.running && (clearTimeout(jsTimeout), jsWorker.worker.terminate(), jsWorker =
         {}),
-    jsWorker.worker || (jsWorker.worker = new Worker("/js/javascript.regex101.js"), 
+    jsWorker.worker || (jsWorker.worker = new Worker("./js/javascript.regex101.js"), 
     
     jsWorker.worker.onmessage = function (e) {
         "onload" === e.data ? (
@@ -266,6 +260,7 @@ function updateJavascript(e) {
     jsWorker.running = !1,
     jsWorker.worker.postMessage(e)
 }
+
 function whitespaceCallback(e) {
     return "\\n" === e ? String.fromCharCode(10) : "\\r" === e ? String.fromCharCode(13) : "\\f" === e ? String.fromCharCode(14) : "\\t" === e ? String.fromCharCode(9) : e
 }
@@ -301,27 +296,6 @@ function handleSubResult(e, r, t) {
     }
 }
 
-function cancelUnitTest() {
-    unitTimeout && clearTimeout(unitTimeout),
-    unitWorker.worker && unitWorker.worker.terminate(),
-    unitWorker = {}
-}
-
-function runUnitTests(e, r, t) {
-    unitWorker.running && cancelUnitTest(),
-    unitWorker.worker || (unitWorker.worker = new Worker(getFlavor() === FLAVOR.JS ? "/js/javascript.regex101.js" : "./js/pcre.regex101.js"), unitWorker.worker.onmessage = function (e) {
-        "onload" === e.data ? (unitWorker.running =! 0, unitTimeout && clearTimeout(unitTimeout), unitTimeout = setTimeout(function () {
-            unitWorker.worker.terminate();
-            var e = unitWorker.timeout;
-            unitWorker = {},
-            e()
-        }, maxWorkerTimeout)) : (clearTimeout(unitTimeout), unitWorker.callback(e.data, unitWorker))
-    },
-    unitWorker.callback = r,
-    unitWorker.timeout = t,
-    unitWorker.running =! 1,
-    unitWorker.worker.postMessage(e))
-}
 
 var treeview_match_timeout = 500,
     treeview_timer,

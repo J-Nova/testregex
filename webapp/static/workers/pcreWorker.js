@@ -1,3 +1,6 @@
+importScripts('./classes.js');
+importScripts("./libs/pcrelib16.js");
+
 // @ts-nocheck
 function callout(_) {
     match_steps++,
@@ -131,7 +134,7 @@ function preg_compile(expression, expression_flags) {
  * @returns None
  * @throws {Error} If no pattern is supplied to the matching function.
  */
-function preg_match(match_text) {
+function preg_match(match_text, start_time) {
     if (cached_pattern.regex) {
         lookbehind = void 0,
         oldPatternStart = oldPatternEnd = match_id = match_steps = total_steps = 0;
@@ -162,13 +165,10 @@ function preg_match(match_text) {
                         end_index = HEAP32[c + (GROUP_NUMBER + 1)];
                     
                     let index = p++;
-                    d[index] = {
-                        start: start_index,
-                        end: end_index,
-                        content: match_text.substring(start_index, end_index),
-                        subpats: cached_pattern.subpats,
-                        group_number: GROUP_NUMBER/2
-                    };
+                    let content = match_text.substring(start_index, end_index);
+                    let group_number = GROUP_NUMBER/2;
+                    d[index]= new Match(content, group_number, undefined, start_index, end_index)
+
                     let match = -1 !== start_index;
                     if (match && subpaths > 0) { 
                         //add the group name to the result
@@ -200,16 +200,10 @@ function preg_match(match_text) {
         } while (cached_pattern.is_global);
         return _free(e),
         
-        _free(r), {
-            highlighter: result_data,
-            catastrophic: matches_amount === PCRE_ERROR_MATCHLIMIT,
-            steps: total_steps
-        }
+        _free(r), new Result(result_data, performance.now() - start_time, total_steps, matches_amount === PCRE_ERROR_MATCHLIMIT)
     }
     throw new Error("No pattern supplied to matching function!")
 }
-
-importScripts("pcrelib16.js");
 
 var PCRE_CASELESS = 1,
     PCRE_MULTILINE = 2,
@@ -356,11 +350,15 @@ var PCRE_CASELESS = 1,
     oldStrEnd = 0,
     lookbehind = void 0;
 
+function executeExpression(event){
+    let start_time = performance.now();
+    preg_compile(event.data.regex, event.data.options);
+    return preg_match(event.data.regexText, start_time)
+}
+
 self.onmessage = function (event) {
-    self.postMessage("onload")
-    let expression = event.data.regex;
-    let expression_flags = event.data.options;
-    preg_compile(expression, expression_flags);
-    let result = preg_match(event.data.regexText);
+    self.postMessage("onload");
+    let result = executeExpression(event);
+    debug && console.log(result, "result");
     self.postMessage(result);
 };

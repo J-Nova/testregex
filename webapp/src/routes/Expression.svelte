@@ -31,7 +31,7 @@
             <textarea
                 bind:this={expressionTextArea}
                 bind:value={$expressionString}
-                on:input={_ => {dispatch("updateExpression", true);}}
+                on:input={_ => {dispatch("update", true);}}
                 on:scroll={_ => {expressionBackdrop.scrollTop = expressionTextArea.scrollTop;}}
                 spellcheck="false" 
                 autocomplete="off" 
