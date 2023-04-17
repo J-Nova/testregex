@@ -32,26 +32,26 @@ export const FLAVORS = {
     "PYTHON": {
         "start": "r",
         "flags": [
-        {"g": {"global": "Don't return after the first match"}},
-        {"m": {"multi line": "^ and $ match start/end of file"}},
-        {"i": {"insensitive":"Case insensitive match"}},
-        {"u": {"unicode": "Match with full unicode"}},
-        {"s": {"single line": "Dot matches newline"}},
-        {"x": {"extended":"Ignore whitespace"}},
-        {"a": {"ascii": "Make escape sequences perform ASCII only matching"}}
+        {"g": {full:"global", desc: "Don't return after the first match"}},
+        {"m": {full:"multi line", desc: "^ and $ match start/end of file"}},
+        {"i": {full:"insensitive", desc: "Case insensitive match"}},
+        {"u": {full:"unicode", desc: "Match with full unicode"}},
+        {"s": {full:"single line", desc: "Dot matches newline"}},
+        {"x": {full:"extended", desc: "Ignore whitespace"}},
+        {"a": {full:"ascii", desc: "Make escape sequences perform ASCII only matching"}}
         ],
         "delimiters": ['"', "'", '"""', "'''"]
     },
     "JAVA": {
         "start": "",
         "flags":[
-        {"g": {"global": "Don't return after the first match"}},
-        {"m": {"multi line": "^ and $ match start/end of file"}},
-        {"i": {"insensitive":"Case insensitive match"}},
-        {"s": {"single line": "Dot matches newline"}},
-        {"u": {"unicode case": "Case insensitive matching, affects unicode characters aswell"}},
-        {"x": {"extended":"Ignore whitespace"}},
-        {"U": {"Unicode matching": "Enabled unicode support for predefined classes"}},
+        {"g": {full:"global", desc: "Don't return after the first match"}},
+        {"m": {full:"multi line", desc: "^ and $ match start/end of file"}},
+        {"i": {full:"insensitive", desc: "Case insensitive match"}},
+        {"s": {full:"single line", desc: "Dot matches newline"}},
+        {"u": {full:"unicode case", desc: "Case insensitive matching, affects unicode characters aswell"}},
+        {"x": {full:"extended", desc: "Ignore whitespace"}},
+        {"U": {full:"Unicode matching", desc: "Enabled unicode support for predefined classes"}},
         ],
         "delimiters": ['"']
     }
