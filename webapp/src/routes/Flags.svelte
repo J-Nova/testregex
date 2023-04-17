@@ -27,7 +27,7 @@
 
 <span class="container">
     <span class="dropbtn">
-        {$flags.sort().join("")}
+        { $flags.length > 0 ? $flags.sort().join("") : "-"}
     </span>
     <div class="dropdown-content">
         {#each available_flags as availableFlag }
