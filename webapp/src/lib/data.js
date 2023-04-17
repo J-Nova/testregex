@@ -1,5 +1,3 @@
-// Reexport your entry components here
-
 export const FLAVORS = {
     "PCRE": {
         "start": ":",
@@ -44,17 +42,6 @@ export const FLAVORS = {
         ],
         "delimiters": ['"', "'", '"""', "'''"]
     },
-    "GO": {
-        "start": "",
-        "flags": [
-        {"g": {"global": "Don't return after the first match"}},
-        {"m": {"multi line": "^ and $ match start/end of file"}},
-        {"i": {"insensitive":"Case insensitive match"}},
-        {"s": {"single line": "Dot matches newline"}},
-        {"U": {"ungreedy": "Make quantifiers lazy"}}
-        ],
-        "delimiters": ["`"]
-    },
     "JAVA": {
         "start": "",
         "flags":[
@@ -65,20 +52,6 @@ export const FLAVORS = {
         {"u": {"unicode case": "Case insensitive matching, affects unicode characters aswell"}},
         {"x": {"extended":"Ignore whitespace"}},
         {"U": {"Unicode matching": "Enabled unicode support for predefined classes"}},
-        ],
-        "delimiters": ['"']
-    },
-    "C#": {
-        "start": "@",
-        "flags":[
-        {"g": {"global": "Don't return after the first match"}},
-        {"m": {"multi line": "^ and $ match start/end of file"}},
-        {"i": {"insensitive":"Case insensitive match"}},
-        {"s": {"single line": "Dot matches newline"}},
-        {"n": {"non-capturing": "Groups are not implicitly capturing"}},
-        {"R": {"Right to left": "Perform matching from right to left"}},
-        {"N": {"No backtracing": "Disable backtracing when matching"}},
-        {"x": {"extended":"Ignore whitespace"}}
         ],
         "delimiters": ['"']
     }

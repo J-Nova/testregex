@@ -134,7 +134,7 @@ function preg_compile(expression, expression_flags) {
  * @returns None
  * @throws {Error} If no pattern is supplied to the matching function.
  */
-function preg_match(match_text) {
+function preg_match(match_text, start_time) {
     if (cached_pattern.regex) {
         lookbehind = void 0,
         oldPatternStart = oldPatternEnd = match_id = match_steps = total_steps = 0;
@@ -200,11 +200,7 @@ function preg_match(match_text) {
         } while (cached_pattern.is_global);
         return _free(e),
         
-        _free(r), {
-            result: result_data,
-            catastrophic: matches_amount === PCRE_ERROR_MATCHLIMIT,
-            steps: total_steps
-        }
+        _free(r), new Result(result_data, performance.now() - start_time, total_steps, matches_amount === PCRE_ERROR_MATCHLIMIT)
     }
     throw new Error("No pattern supplied to matching function!")
 }
@@ -354,14 +350,15 @@ var PCRE_CASELESS = 1,
     oldStrEnd = 0,
     lookbehind = void 0;
 
-self.onmessage = function (event) {
-    self.postMessage("onload");
+function executeExpression(event){
     let start_time = performance.now();
     preg_compile(event.data.regex, event.data.options);
-    let expression_result = preg_match(event.data.regexText);
-    let execution_time = performance.now() - start_time;
+    return preg_match(event.data.regexText, start_time)
+}
 
-    let result = new Result(expression_result.result, execution_time, expression_result.steps, expression_result.catastrophic);
+self.onmessage = function (event) {
+    self.postMessage("onload");
+    let result = executeExpression(event);
     debug && console.log(result, "result");
     self.postMessage(result);
 };

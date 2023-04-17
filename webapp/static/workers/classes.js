@@ -17,7 +17,7 @@ class Result{
   }
 }
 
-class Error {
+class MatchError {
   constructor(message){
     this.error = message;
   }

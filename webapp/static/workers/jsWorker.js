@@ -34,11 +34,9 @@ function jsMatch(test_data) {
     try {
         let start_time = performance.now();
         let result = executeExpression(test_data.data.regex, test_data.data.options, test_data.data.regexText);
-        let execution_time = performance.now() - start_time;
-        result = new Result(result, execution_time, undefined, undefined);
-        return result;
+        return new Result(result, performance.now() - start_time, undefined, undefined);
     } catch (e) {
-        let error = new Error(e.message);
+        let error = new MatchError(e.message);
         return error
     }
 }
