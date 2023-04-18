@@ -1,7 +1,7 @@
 <script>
     import {delimiter, flavor} from "$lib/stores.js";
     import {FLAVORS} from "$lib/data.js"
-    let flavorObj = FLAVORS[$flavor];
+    $: flavorObj = FLAVORS[$flavor];
     
 
     function setDelimiter(updatedDelimiter) {
