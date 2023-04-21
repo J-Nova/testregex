@@ -18,13 +18,13 @@ const color_codes = {
 class Editor {
     constructor(){
         this.editorLockTimeout = 2000;
-        this.showToolTips = true;
-        this.visualizeSpecialCharacters = false;
         this.explain_timeout = 2000;
         this.match_timeout = 2000;
+        this.showToolTips = true;
+        this.visualizeSpecialCharacters = false;
 
-        this.editor_lock = false;
-        this.test_lock = false;
+        this.editor_lock = true;
+        this.test_lock = true;
 
         this.status_color = "--base-status-color";
         this.match_status = 3;
@@ -58,10 +58,16 @@ class Test {
 
 class MatchData {
     constructor(){
-        this.content = [];
         this.ast_tree = {};
-        this.test_highlight = {};
+        this.test_highlight = [];
         this.expression_highlight = [];
+        this.information = "Detailed match information will be displayed here automatically.";
+    }
+
+    clear(){
+        this.ast_tree = {};
+        this.test_highlight = [];
+        this.expression_highlight = []; 
         this.information = "Detailed match information will be displayed here automatically.";
     }
 }

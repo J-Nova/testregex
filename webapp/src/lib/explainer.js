@@ -156,7 +156,7 @@ function getRandomInt(min, max) {
 }
 
 
-export function highlighter(matches, testString){
+export function testHighlighter(matches, testString){
     // First loop over the whole test string. Create an object for it to contain match data for each character.
     let match_html = {};
     for (let i=0; i<testString.length; i++){
@@ -188,7 +188,7 @@ export function highlighter(matches, testString){
             }
         }
     }
-    return match_html
+    return Object.values(match_html);
 }
 
 var maxExplainTimeout = 2000,

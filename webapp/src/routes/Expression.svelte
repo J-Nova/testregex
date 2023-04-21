@@ -1,8 +1,6 @@
 <script>
 // @ts-nocheck
     import {editor, test, match_data} from "$lib/stores.js";
-    import {explainRegex} from "$lib/explainer.js";
-    import {generateTooltips} from "$lib/expression.js";
     import { createEventDispatcher } from 'svelte';
     import Options from "./Options.svelte";
     import Flags from "./Flags.svelte";
@@ -22,7 +20,7 @@
     }
 
     function lockEditor(){
-        if (!expressionTextArea) return;
+        if (!expressionTextArea || $test.expression.length == 0) return;
         expressionTextArea.style.display = "none";
         expressionTextArea.disabled = true;
     }
@@ -38,17 +36,16 @@
         {$editor.getMatchStatus()}
     </span>
 </div>
+
 <div class="input">
     <Options/>
         <div class="container">
             <pre
                 bind:this={expressionBackdrop}
-                on:keyup
-                on:keydown
                 on:dblclick={unlockEditor}
-                >
+            >
                 <div class="custom-area">
-                    {#if $match_data.expression_highlight.length >= 1}
+                    {#if $match_data.expression_highlight.length >= 1 && $test.expression.length >= 1}
                         {#each $match_data.expression_highlight as expression}
                             <ExpressionTooltip expression={expression}/>
                         {/each}

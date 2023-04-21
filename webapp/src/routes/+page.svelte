@@ -2,7 +2,7 @@
 // @ts-nocheck
     import {editor, test, match_data} from "$lib/stores.js";
     import {updateRegex} from "$lib/matcher.js";
-    import {highlighter} from "$lib/explainer.js";
+    import {testHighlighter} from "$lib/explainer.js";
     import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
     import Matchexplanation from './Matchexplanation.svelte';
@@ -14,27 +14,26 @@
     import Settings from './Settings.svelte';
     let expression_timer;
 
-
     function updateExpression(explain){
-        $match_data.test_highlight = {};
+        if ($test.expression.length == 0) {$match_data.clear(); $match_data = $match_data; $editor.test_lock = false; $editor.updateMatchStatus(3); return;}
         updateRegex($test, errorCallback, successCallback, timeoutCallback, explainCallback, explain);
         expression_timer && clearTimeout(expression_timer),
         expression_timer = setTimeout(function (){
             console.log("locking editor")
-            // $editor.editor_lock = true;
-            // $editor.test_lock = true;
+            $editor.editor_lock = true;
+            $editor.test_lock = true;
         }, $editor.editorLockTimeout);
     }
 
     function successCallback(data){
         if (Object.keys(data.result).length > 0 ){
             $editor.updateMatchStatus(1);
-            $match_data.content = data.result;
-            $match_data.test_highlight = highlighter($match_data.content, $test.test_string);
-        } else {
+            $match_data.test_highlight = testHighlighter(data.result, $test.test_string);
+            $editor = $editor;
+        } else { // No match
             $editor.updateMatchStatus(0);
         }
-        $editor = $editor;
+
     }
 
     function errorCallback(data){
@@ -52,7 +51,7 @@
     function explainCallback(explanation_data){
         if (explanation_data.explanation.success){
             $editor.updateMatchStatus(0);
-            $match_data.ast_tree = explanation.explanation.body;
+            $match_data.ast_tree = explanation_data.explanation.body;
             $match_data.expression_highlight = explanation_data.tooltip_data;
         } else {
             $editor.updateMatchStatus(2);

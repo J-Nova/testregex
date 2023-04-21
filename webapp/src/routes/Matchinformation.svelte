@@ -1,7 +1,5 @@
 <script>
     import {match_data} from "$lib/stores.js";
-    import {matchInformation} from "$lib/explainer.js";
-
 </script>
 
 <div class="right-container">
@@ -9,10 +7,10 @@
         Information
     </h2>
     <div class="info-container">
-        {#if Object.keys($match_data.content).length == 0}
+        {#if $match_data.test_highlight.length == 0}
             <span>{$match_data.information}</span>
         {:else}
-            {#each matchInformation($match_data.content) as match}
+            {#each $match_data.test_highlight as match}
                 <div class="match">
                     {#if match.group_num !== undefined && match.group_num !== 0}
                         <div>{`Group (${match.group_num}) ${match.group_name}`}</div>

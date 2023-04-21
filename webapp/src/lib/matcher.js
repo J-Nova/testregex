@@ -21,10 +21,11 @@ export function updateRegex(test, errorCallback, successCallback, timeoutCallbac
 
     if (explain_expression) { // Explain the expression that has been given.
         console.log(explainRegex(test_data, true).body);
-        let temp = explainRegex(test_data, true)
+        let explain_tree = explainRegex(test_data, true);
         let explanation_data = {
                     explanation: explainRegex(test_data, false),
-                    tooltip_data: generateTooltips(temp, test_data.regex)
+                    tooltip_data: generateTooltips(explain_tree.body.expressions || [explain_tree.body]
+                                                    ,test_data.regex)
                     }
         explainCallback(explanation_data);
     }
