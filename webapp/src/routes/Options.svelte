@@ -1,29 +1,29 @@
 <script>
-    import {delimiter, flavor} from "$lib/stores.js";
+    import {test} from "$lib/stores.js";
     import {FLAVORS} from "$lib/data.js"
-    $: flavorObj = FLAVORS[$flavor];
+    $: flavorObj = FLAVORS[$test.flavor];
     
 
     function setDelimiter(updatedDelimiter) {
-        $delimiter = updatedDelimiter;
+        $test.delimiter = updatedDelimiter;
         available_delimiters = available_delimiters;
     }
 
     function checkedDelimiter(delim){
-        if ($delimiter === delim){
+        if ($test.delimiter === delim){
             return "checked";
         } else {
             return "unchecked";
         }
     }
 
-    $: available_delimiters = FLAVORS[$flavor].delimiters;
+    $: available_delimiters = FLAVORS[$test.flavor].delimiters;
 </script>
 
 <span class="container">
     <span class="dropbtn">
         <span>{flavorObj.start}</span>
-        <span class="delimiter">{$delimiter}</span>
+        <span class="delimiter">{$test.delimiter}</span>
     </span>
     <div class="dropdown-content">
         {#each available_delimiters as availableDelimiter }

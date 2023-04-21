@@ -1,13 +1,13 @@
 <script>
-import {editorLockTimeout, showToolTips, visualizeSpecialCharacters} from "$lib/stores.js";
+import {editor} from "$lib/stores.js";
 </script>
 
 <div>
     <h2>Settings</h2>
     <div class="container">
-        <span>Editor lock time-out: {$editorLockTimeout}</span>
-        <span>Show tooltips: {$showToolTips}</span>
-        <span>Visualize special characters: {$visualizeSpecialCharacters}</span>
+        <span>Editor lock time-out: {$editor.editorLockTimeout}</span>
+        <span>Show tooltips: {$editor.showToolTips}</span>
+        <span>Visualize special characters: {$editor.visualizeSpecialCharacters}</span>
     </div>
 </div>
 

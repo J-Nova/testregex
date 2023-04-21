@@ -1,37 +1,76 @@
 import { writable } from 'svelte/store';
 
-export let expressionString = writable("");
-export let testString = writable("");
-
-export let match_status = writable(3);
-export let editor_status = writable(2);
-export let status_color = writable("--base-status-color");
-export let information_message = writable("Detailed match information will be displayed here automatically.");
-export let highlight_data = writable({});
-export let MatchAstTree = writable({});
-export let match_content = writable([]);
-
-export let editorLockTimeout = writable(500);
-export let showToolTips = writable(true);
-export let visualizeSpecialCharacters = writable(false);
-
-export let flavor = writable("PCRE");
-export let flags = writable(["g", "m"]);
-export let delimiter = writable("/");
-
-export let match_timeout = writable(2000);
-export let explain_timeout = writable(2000);
-
-
-export const match_codes = {
+const match_codes = {
     0: "No match",
     1: "Match found",
     2: "Error",
     3: "-"
 };
 
-export const editor_codes = {
+const editor_codes = {
     0: "View mode",
     1: "Edit mode",
     2: "-"
 }
+
+const color_codes = {
+    0: "--no-match-status-color",
+    1: "--match-status-color",
+    2: "--error-status-color",
+    3: "--base-status-color",
+}
+
+class Editor {
+    constructor(){
+        this.editorLockTimeout = 500;
+        this.showToolTips = true;
+        this.visualizeSpecialCharacters = false;
+        this.explain_timeout = 2000;
+        this.match_timeout = 2000;
+
+        this.editor_status = 2;
+        this.test_status = 2;
+
+        this.status_color = "--base-status-color";
+        this.match_status = 3;
+    }
+    getMatchStatus(){
+        return match_codes[this.match_status];
+    }
+
+    updateMatchStatus(status){
+        this.match_status = status;
+        this.status_color = color_codes[this.match_status];
+    }
+
+    getEditorStatus(){
+        return editor_codes[this.editor_status];
+    }
+}
+
+
+class Test {
+    constructor(){
+        this.expression = "";
+        this.test_string = "";
+        this.flavor = "PCRE";
+        this.flags = ["g", "m"];
+        this.delimiter = "/";
+    }
+}
+
+
+class MatchData {
+    constructor(){
+        this.content = [];
+        this.ast_tree = {};
+        this.test_highlight = {};
+        this.expression_highlight = {};
+        this.information = "Detailed match information will be displayed here automatically.";
+    }
+}
+
+
+export let editor = writable(new Editor());
+export let test = writable(new Test());
+export let match_data = writable(new MatchData());

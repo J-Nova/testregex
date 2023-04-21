@@ -1,33 +1,33 @@
 <script>
-    import {flags, flavor} from "$lib/stores.js";
+    import {test} from "$lib/stores.js";
     import {FLAVORS} from "$lib/data.js"
 
     function setFlags(updateFlag) {
         updateFlag = Object.keys(updateFlag)[0];
-        if ($flags.includes(updateFlag)) {
-            $flags = $flags.filter(e => e !== updateFlag);
+        if ($test.flags.includes(updateFlag)) {
+            $test.flags = $test.flags.filter(e => e !== updateFlag);
         }else {
-            $flags.push(updateFlag);
-            $flags = $flags
+            $test.flags.push(updateFlag);
+            $test.flags = $test.flags
         }
-        available_flags = FLAVORS[$flavor].flags;
+        available_flags = FLAVORS[$test.flavor].flags;
     }
 
     function checkedFlag(flag){
-        if ($flags.includes(Object.keys(flag)[0])){
+        if ($test.flags.includes(Object.keys(flag)[0])){
             return "checked";
         }else {
             return "unchecked";
         }
     }
 
-    $: available_flags = FLAVORS[$flavor].flags;
+    $: available_flags = FLAVORS[$test.flavor].flags;
 
 </script>
 
 <span class="container">
     <span class="dropbtn">
-        { $flags.length > 0 ? $flags.sort().join("") : "-"}
+        { $test.flags.length > 0 ? $test.flags.sort().join("") : "-"}
     </span>
     <div class="dropdown-content">
         {#each available_flags as availableFlag }

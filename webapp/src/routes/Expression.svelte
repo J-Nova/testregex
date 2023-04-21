@@ -1,41 +1,88 @@
 <script>
+// @ts-nocheck
+    import {editor, test} from "$lib/stores.js";
     import Options from "./Options.svelte";
     import Flags from "./Flags.svelte";
     import Optimize from "./Optimize.svelte";
     import Transpile from "./Transpile.svelte";
-    import {expressionString, match_status, status_color, match_codes} from "$lib/stores.js";
+    import ExpressionTooltip from "./ExpressionTooltip.svelte";
+    import {explainRegex} from "$lib/explainer.js";
+    import {generateTooltips} from "$lib/expression.js";
     import { createEventDispatcher } from 'svelte';
+    
     const dispatch = createEventDispatcher();
     let expressionBackdrop;
     let expressionTextArea;
 
+    function updateEditor(locking){
+        if (locking){
+            expressionBackdrop.focus();
+            expressionTextArea.style.display = "none";
+            expressionTextArea.disabled = true;
+        } else if (expressionTextArea && !locking) {
+            expressionTextArea.disabled = false;
+            expressionTextArea.style.display = "block";
+            expressionTextArea.focus();
+            expressionTextArea.setSelectionRange(-1, -1);
+        }
+        return locking;
+    }
+
+    $: disabled_input = ($editor.editor_status == 0 ? updateEditor(true) : updateEditor(false));
+
+    function expressionHighlighting(){
+        if ($test.expression.length > 0){
+            let test_data = {
+                "regex": $test.expression,
+                "options": $test.flags.join("")
+            }
+            let explain_tree = explainRegex(test_data, true);
+            if (explain_tree.success){
+                tooltip = generateTooltips(explain_tree.body.expressions || [explain_tree.body], $test.expression);
+                dispatch("update", true);
+            }
+        } else {
+            tooltip = [];
+        }
+    }
+
+    $: tooltip = [];
 </script>
 
 <div class="heading">
     <h2>regular expression</h2>
     <Optimize/>
     <Transpile/>
-    <span class="result" style="background-color:var({$status_color})">{match_codes[$match_status]}</span>
+    <span class="result" style="background-color:var({$editor.status_color})">
+        {$editor.getMatchStatus()}
+    </span>
 </div>
 <div class="input">
     <Options/>
         <div class="container">
             <pre
                 bind:this={expressionBackdrop}
-                aria-hidden="true"
-                class="pre-container"
+                on:keyup
+                on:keydown
+                on:click={_ => ($editor.editor_status = 1)}
                 >
-            <div class="custom-area">{$expressionString}</div>
+                <div class="custom-area">
+                    {#if tooltip.length >= 1}
+                        {#each tooltip as expression}
+                            <ExpressionTooltip expression={expression}/>
+                        {/each}
+                    {/if}
+                </div>
             </pre>
         
             <textarea
                 bind:this={expressionTextArea}
-                bind:value={$expressionString}
-                on:input={_ => {dispatch("update", true);}}
+                bind:value={$test.expression}
+                on:input={expressionHighlighting}
                 on:scroll={_ => {expressionBackdrop.scrollTop = expressionTextArea.scrollTop;}}
-                spellcheck="false" 
-                autocomplete="off" 
-                translate="no" 
+                spellcheck="false"
+                autocomplete="off"
+                translate="no"
                 placeholder="Insert your expression here"
             ></textarea>
         </div>
@@ -44,17 +91,6 @@
 </div>
 
 <style>
-    .heading {
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin: 5px 0px;
-        padding: 5px 0px;
-        color: var(--primary-text-color);
-    }
-
     .result {
         border: 1px solid var(--border-color);
         border-radius: 3px;
@@ -63,12 +99,6 @@
         width: fit-content;
         text-align: center;
         color: var(--secondary-text-color);
-    }
-
-    h2 {
-        margin: 0px;
-        text-transform: uppercase;
-        font-weight: 500;
     }
 
     .input {
@@ -84,37 +114,6 @@
         position: relative;
         width: 100%;
     }
-    .pre-container{
-        max-height: inherit !important;
-        min-height: inherit !important;
-    }
-    pre {
-        top: 0;
-    }
-    pre div {
-        display: contents;
-    }
-    pre, textarea{
-        word-wrap: break-word;
-        white-space:pre-line;
-        overflow-y: auto;
-        word-break:break-all;
-        line-height: 1.25;
-        width: 100%;
-        height: 100%;
-        font-size: larger;
-        font-weight: 400;
-        padding: 1px 1px 1px 1px;
-        margin:0;
-        padding-top: 5px;
-    }
 
-    textarea {
-        top: 0;
-        position: absolute;
-        background-color: transparent !important;
-        resize: none;
-        border: none;
-        outline: none;
-    }
+
 </style>
