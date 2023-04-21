@@ -4,14 +4,9 @@ const match_codes = {
     0: "No match",
     1: "Match found",
     2: "Error",
-    3: "-"
+    3: "-",
+    4: "Working.."
 };
-
-const editor_codes = {
-    0: "View mode",
-    1: "Edit mode",
-    2: "-"
-}
 
 const color_codes = {
     0: "--no-match-status-color",
@@ -22,18 +17,19 @@ const color_codes = {
 
 class Editor {
     constructor(){
-        this.editorLockTimeout = 500;
+        this.editorLockTimeout = 2000;
         this.showToolTips = true;
         this.visualizeSpecialCharacters = false;
         this.explain_timeout = 2000;
         this.match_timeout = 2000;
 
-        this.editor_status = 2;
-        this.test_status = 2;
+        this.editor_lock = false;
+        this.test_lock = false;
 
         this.status_color = "--base-status-color";
         this.match_status = 3;
     }
+    
     getMatchStatus(){
         return match_codes[this.match_status];
     }
@@ -41,10 +37,6 @@ class Editor {
     updateMatchStatus(status){
         this.match_status = status;
         this.status_color = color_codes[this.match_status];
-    }
-
-    getEditorStatus(){
-        return editor_codes[this.editor_status];
     }
 }
 
@@ -57,6 +49,10 @@ class Test {
         this.flags = ["g", "m"];
         this.delimiter = "/";
     }
+
+    getFlags(){
+        return this.flags.join("");
+    }
 }
 
 
@@ -65,7 +61,7 @@ class MatchData {
         this.content = [];
         this.ast_tree = {};
         this.test_highlight = {};
-        this.expression_highlight = {};
+        this.expression_highlight = [];
         this.information = "Detailed match information will be displayed here automatically.";
     }
 }

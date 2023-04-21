@@ -1,52 +1,33 @@
 <script>
 // @ts-nocheck
-    import {editor, test} from "$lib/stores.js";
+    import {editor, test, match_data} from "$lib/stores.js";
+    import {explainRegex} from "$lib/explainer.js";
+    import {generateTooltips} from "$lib/expression.js";
+    import { createEventDispatcher } from 'svelte';
     import Options from "./Options.svelte";
     import Flags from "./Flags.svelte";
     import Optimize from "./Optimize.svelte";
     import Transpile from "./Transpile.svelte";
     import ExpressionTooltip from "./ExpressionTooltip.svelte";
-    import {explainRegex} from "$lib/explainer.js";
-    import {generateTooltips} from "$lib/expression.js";
-    import { createEventDispatcher } from 'svelte';
     
     const dispatch = createEventDispatcher();
     let expressionBackdrop;
     let expressionTextArea;
 
-    function updateEditor(locking){
-        if (locking){
-            expressionBackdrop.focus();
-            expressionTextArea.style.display = "none";
-            expressionTextArea.disabled = true;
-        } else if (expressionTextArea && !locking) {
-            expressionTextArea.disabled = false;
-            expressionTextArea.style.display = "block";
-            expressionTextArea.focus();
-            expressionTextArea.setSelectionRange(-1, -1);
-        }
-        return locking;
+    function unlockEditor(){
+        expressionTextArea.disabled = false;
+        expressionTextArea.style.display = "block";
+        expressionTextArea.focus()
+        expressionTextArea.setSelectionRange(-1, -1);
     }
 
-    $: disabled_input = ($editor.editor_status == 0 ? updateEditor(true) : updateEditor(false));
-
-    function expressionHighlighting(){
-        if ($test.expression.length > 0){
-            let test_data = {
-                "regex": $test.expression,
-                "options": $test.flags.join("")
-            }
-            let explain_tree = explainRegex(test_data, true);
-            if (explain_tree.success){
-                tooltip = generateTooltips(explain_tree.body.expressions || [explain_tree.body], $test.expression);
-                dispatch("update", true);
-            }
-        } else {
-            tooltip = [];
-        }
+    function lockEditor(){
+        if (!expressionTextArea) return;
+        expressionTextArea.style.display = "none";
+        expressionTextArea.disabled = true;
     }
-
-    $: tooltip = [];
+    
+    $: _ = lockEditor($editor.editor_lock);
 </script>
 
 <div class="heading">
@@ -64,11 +45,11 @@
                 bind:this={expressionBackdrop}
                 on:keyup
                 on:keydown
-                on:click={_ => ($editor.editor_status = 1)}
+                on:dblclick={unlockEditor}
                 >
                 <div class="custom-area">
-                    {#if tooltip.length >= 1}
-                        {#each tooltip as expression}
+                    {#if $match_data.expression_highlight.length >= 1}
+                        {#each $match_data.expression_highlight as expression}
                             <ExpressionTooltip expression={expression}/>
                         {/each}
                     {/if}
@@ -78,7 +59,7 @@
             <textarea
                 bind:this={expressionTextArea}
                 bind:value={$test.expression}
-                on:input={expressionHighlighting}
+                on:input={_ => (dispatch("update", true))}
                 on:scroll={_ => {expressionBackdrop.scrollTop = expressionTextArea.scrollTop;}}
                 spellcheck="false"
                 autocomplete="off"
