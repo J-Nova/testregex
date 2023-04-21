@@ -1,6 +1,5 @@
 <script>
-import Icon from '@iconify/svelte';
-
+    import Icon from '@iconify/svelte';
 </script>
 
 <div>

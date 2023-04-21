@@ -1,11 +1,11 @@
 <script>
     import {optimizeRegex} from "$lib/explainer.js";
-    import {expressionString, flags} from "$lib/stores.js";
+    import {test} from "$lib/stores.js";
     function getOptimzedExpression() {
-        if ($expressionString.length == 0) return;
-        let optimized_expression = optimizeRegex(`/${$expressionString}/${$flags.join("")}`);
-        $expressionString = optimized_expression.source;
-        $flags = optimized_expression.flags.split("");
+        if ($test.expression.length == 0) return;
+        let optimized_expression = optimizeRegex(`/${$test.expression}/${$test.flags.join("")}`);
+        $test.expression = optimized_expression.source;
+        $test.flags = optimized_expression.flags.split("");
     }
 </script>
 

@@ -104,3 +104,52 @@ a {
     cursor: pointer;
     user-select: none;
 }
+
+
+/* Text input styling - expression & test data */
+
+textarea {
+    top: 0;
+    position: absolute;
+    background-color: transparent !important;
+    resize: none;
+    border: none;
+    outline: none;
+}
+
+
+pre, textarea{
+    word-wrap: break-word;
+    white-space:pre-line;
+    overflow: auto;
+    word-break:break-all;
+    cursor:default;
+    font-size: larger;
+    line-height: 1.25;
+    width: 100%;
+    height: 100%;
+    font-weight: 400;
+    padding: 10px 10px;
+    margin:0;
+}
+
+pre div {
+    display: table-row;
+}
+
+pre {
+    max-height: inherit !important;
+    min-height: inherit !important;
+    top: 0;
+}
+
+div.heading {
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 5px 0px;
+    padding: 5px 0px;
+    color: var(--primary-text-color);
+}

@@ -9,17 +9,17 @@ export function explain_regex(test_data, explain_callback){
     }, maxExplainTimeout)
 }
 
-function explainRegex(test_data){
+export function explainRegex(test_data, include_locations){
     try {
         let regex = new RegExp(test_data.regex, test_data.options);
     
-        let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true});
+        let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true, captureLocations: include_locations});
         regexpTree.traverse(astTree, {
             
             Char: { // Adds explanations to Chars
                 post({node}) {
                     if (node.kind === "meta") {
-                        if (node.value === "\\w") node.explanation = "Matches any word character [a-zA-Z0-9_]"
+                        if (node.value === "\\w") node.explanation = "Matches any word character [a-zA-Z0-9]"
                         if (node.value === "\\W") node.explanation = "Matches any non-word character [^a-zA-Z0-9_]"
                         if (node.value === "\\d") node.explanation = "Matches any digit [0-9]"
                         if (node.value === "\\D") node.explanation = "Matches any non-digit [^0-9]"
@@ -37,9 +37,7 @@ function explainRegex(test_data){
     
             Quantifier: { // Add explanations to Quantifiers
                 post({node}) {
-                    let greedy;
-                    if (node.greedy) greedy = "Greedy"
-                    else greedy = "Non-greedy";
+                    let greedy = node.greedy ? "Greedy" : "Non-greedy";
                     if (node.kind === "*") node.explanation = `Matches 0 or more of the previous token (${greedy})`
                     else if (node.kind === "+") node.explanation = `Matches 1 or more of the previous token (${greedy})`
                     else if (node.kind === "?") node.explanation = `Matches 0 or 1 of the previous token (${greedy})`
@@ -103,20 +101,17 @@ function explainRegex(test_data){
     
             Alternative: { // Adds explanations to Alternatives (Multiple expressions)
                 post({node}){
-                    node.explanation = "Matches data by expressions below"
+                    node.explanation = "Matches data by expressions above"
             }}
         })
+        astTree.success = true;
         return astTree
     } catch (err) {
-        return false
+        return {error: err, success: false}
     }
 }
 
-/**
- * Generates information about the matches found in the given match_content array.
- * @param {Array} match_content - An array of matches found by a regular expression.
- * @returns {Array} An array of objects containing information about each match.
- */
+
 export function generateInformation(match_content){
     let match_data = [];
     for (let i=0; i<match_content.length; i++){
@@ -168,12 +163,6 @@ function getRandomInt(min, max) {
 }
 
 
-/**
- * Highlights the matches in a given test string with the corresponding color.
- * @param {Array} matches - An array of match objects containing the group number, group name, start and end indices, and color.
- * @param {string} testString - The string to be highlighted.
- * @returns An object containing the highlighted string with the corresponding class name and color for each character.
- */
 export function highlighter(matches, testString){
     // First loop over the whole test string. Create an object for it to contain match data for each character.
     let match_html = {};

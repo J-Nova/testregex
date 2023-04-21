@@ -1,29 +1,29 @@
 <script>
-import {flavor, delimiter} from "$lib/stores.js";
-import {FLAVORS} from  "$lib/data.js";
-import Icon from '@iconify/svelte';
+    import {test} from "$lib/stores.js";
+    import {FLAVORS} from  "$lib/data.js";
+    import Icon from '@iconify/svelte';
 
-function className(available_flavour){
-    if (available_flavour == $flavor){
-        return "code";
+    function className(available_flavour){
+        if (available_flavour == $test.flavor){
+            return "code";
+        }
+        return "code-hide";
     }
-    return "code-hide";
-}
 
-function selectFlavour(available_flavour){
-    $flavor = available_flavour;
-    $delimiter = FLAVORS[available_flavour].delimiters[0];
-    flavors = flavors;
-}
+    function selectFlavour(available_flavour){
+        $test.flavor = available_flavour;
+        $test.delimiter = FLAVORS[available_flavour].delimiters[0];
+        flavors = flavors;
+    }
 
-$: flavors = Object.keys(FLAVORS)
+    $: flavors = Object.keys(FLAVORS)
 </script>
 
 <div>
     <h2>Flavour</h2>
     <div class="container">
         {#each flavors as available_flavour}
-            <span class="{className(available_flavour)}" on:keydown on:click={e=> selectFlavour(available_flavour)}>
+            <span class="{className(available_flavour)}" on:keydown on:click={_=> selectFlavour(available_flavour)}>
                 <Icon class="icon" icon="carbon:{className(available_flavour)}"/>
                 {available_flavour}
             </span>

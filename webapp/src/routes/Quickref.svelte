@@ -1,7 +1,7 @@
 <script>
 // @ts-nocheck
     import {quickref} from "$lib/quickref.js";
-    import {flavor} from "$lib/stores.js";
+    import {test} from "$lib/stores.js";
     import Item from "./Quickref-item.svelte";
 
     function getCategoryData(categoryKey){
@@ -9,14 +9,14 @@
         if (categoryKey === "all") {
             Object.entries(quickref).forEach(([key, _]) => {
                 Object.entries(quickref[key]).forEach(([_, value]) => {
-                    if (value.flavors.includes($flavor)) {
+                    if (value.flavors.includes($test.flavor)) {
                         items.push(value);
                     }
                 });
             }); 
         } else {
             Object.entries(quickref[categoryKey]).forEach(([_, value]) => {
-                if (value.flavors.includes($flavor)) {
+                if (value.flavors.includes($test.flavor)) {
                     items.push(value);
                 }
             });
@@ -30,7 +30,7 @@
         Object.entries(quickref).forEach(([_, cr_items]) => {
                 cr_items.forEach((item) => {
                     if (
-                        item.flavors.includes($flavor) && 
+                        item.flavors.includes($test.flavor) && 
                         (item.desc.includes(searchString) || item.info.includes(searchString))) 
                         { items.push(item); }
                 });

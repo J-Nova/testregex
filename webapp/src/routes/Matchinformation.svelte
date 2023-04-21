@@ -1,5 +1,5 @@
 <script>
-    import {information_message, match_content} from "$lib/stores.js";
+    import {match_data} from "$lib/stores.js";
     import {generateInformation} from "$lib/explainer.js";
 
 </script>
@@ -9,10 +9,10 @@
         Information
     </h2>
     <div class="info-container">
-        {#if Object.keys($match_content).length == 0}
-            <span>{$information_message}</span>
+        {#if Object.keys($match_data.content).length == 0}
+            <span>{$match_data.information}</span>
         {:else}
-            {#each generateInformation($match_content) as match}
+            {#each generateInformation($match_data.content) as match}
                 <div class="match">
                     {#if match.group_num !== undefined && match.group_num !== 0}
                         <div>{`Group (${match.group_num}) ${match.group_name}`}</div>

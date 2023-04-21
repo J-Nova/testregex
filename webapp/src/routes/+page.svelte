@@ -1,5 +1,6 @@
 <script>
 // @ts-nocheck
+    import {editor, test, match_data} from "$lib/stores.js";
     import {updateRegex} from "$lib/matcher.js";
     import {highlighter} from "$lib/explainer.js";
     import Quickref from "./Quickref.svelte";
@@ -11,84 +12,71 @@
     import Flavour from './Flavour.svelte';
     import Tools from './Tools.svelte';
     import Settings from './Settings.svelte';
-
-    import {delimiter, flags, editor_status, expressionString, testString, match_status, information_message, highlight_data as highlight_data, MatchAstTree, editorLockTimeout, flavor, status_color, explain_timeout, match_timeout, match_content} from "$lib/stores.js";
-    
-
     let expression_timer;
 
     function lockEditor(){
-        if ($testString.length > 0) $editor_status = 0;
+        if ($test.test_string.length > 0) $editor.editor_status = 0, $editor.test_status = 0;
     }
 
     function updateExpression(explain){
-        function runExpression(regex_expression, flags, test_string, delimiter, flavor, explain){
+        function runExpression(test, explain){
             updateRegex(
-            regex_expression, 
-            flags, 
-            test_string,
-            delimiter, 
-            flavor,
+            test.expression, 
+            test.flags.join(""), 
+            test.test_string,
+            test.delimiter, 
+            test.flavor,
             errorCallback,
             successCallback,
             timeoutCallback, 
             explain,
             explainCallback,
-            $explain_timeout,
-            $match_timeout
+            $editor.explain_timeout,
+            $editor.match_timeout
             );
         }
 
-        $highlight_data = {};
-        if ($expressionString.length > 0 && $testString.length > 0){
-            runExpression($expressionString, $flags.join(""), $testString, $delimiter, $flavor, explain);
-            clearTimeout(expression_timer);
-            expression_timer = setTimeout(lockEditor, $editorLockTimeout);
-        } else if ($expressionString.length > 0) {
-            runExpression($expressionString, $flags.join(""), $testString, $delimiter, $flavor, explain);
-            clearTimeout(expression_timer);
-            expression_timer = setTimeout(lockEditor, $editorLockTimeout);
+        $match_data.test_highlight = {};
+        if ($test.expression.length > 0){
+            runExpression($test, explain);
+            clearTimeout(expression_timer); 
+            expression_timer = setTimeout(lockEditor, $editor.editorLockTimeout);
         }
         
-        if ($expressionString.length == 0) {
-            $MatchAstTree = {};
-            $match_status = 3;
-            $status_color = "--base-status-color";
+        if ($test.expression.length == 0) {
+            $match_data.ast_tree = {};
+            $editor.updateMatchStatus(0);
         }
 
-        if ($testString.length == 0) {
-            $information_message = "Detailed match information will be displayed here automatically.";
+        if ($test.test_string.length == 0) {
+            $match_data.information = "Detailed match information will be displayed here automatically.";
         }
     }
 
     function successCallback(data){
         if (Object.keys(data.result).length > 0 ){
-            $match_status = 1;
-            $status_color = "--match-status-color";
+            $editor.updateMatchStatus(1);
         } else {
-            $match_status = 0;
-            $status_color = "--no-match-status-color";
+            $editor.updateMatchStatus(0);
         }
-        $match_content = data.result;
-        $highlight_data = highlighter(data.result, $testString);
+        $match_data.content = data.result;
+        $match_data.test_highlight = highlighter($match_data.content, $test.test_string);
     }
 
     function errorCallback(data){
-        $MatchAstTree = data
-        $information_message = "Your expression contains one or more faults, please see explanation above.";
-        $match_status = 2;
-        $status_color = "--error-status-color";
+        $match_data.ast_tree = data
+        $match_data.information = "Your expression contains one or more faults, please see explanation above.";
+        $editor.updateMatchStatus(2);
     }
     
     function timeoutCallback(){
-        $MatchAstTree = {error: "Timed out while waiting on expression results"}
-        $information_message = "Detailed match information will be displayed here automatically.";
-        $status_color = "--error-status-color";
-        $match_status = 2;
+        $match_data.ast_tree = {error: "Timed out while waiting on expression results"}
+        $match_data.information = "Detailed match information will be displayed here automatically.";
+        $editor.updateMatchStatus(2);
     }
 
     function explainCallback(explanation){
-        $MatchAstTree = explanation.body;
+        $match_data.ast_tree = explanation.body;
     }
     
 </script>
