@@ -153,3 +153,20 @@ div.heading {
     padding: 5px 0px;
     color: var(--primary-text-color);
 }
+
+
+.codewrap {
+    height: 100% !important;
+    /* margin: 1rem !important; */
+}
+
+.codewindow {
+    height: 90% !important;
+    width: 100% !important;
+    background: var(--primary) !important;
+}
+
+.codecontent {
+    width: 100% !important; 
+    height: 100% !important;
+}

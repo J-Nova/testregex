@@ -1,8 +1,12 @@
 <script>
 // @ts-nocheck
+    import Modal from 'svelte-simple-modal';
+    import Popup from './WIPPopup.svelte';
+
     import {editor, test, match_data} from "$lib/stores.js";
     import {updateRegex} from "$lib/matcher.js";
     import {testHighlighter} from "$lib/explainer.js";
+
     import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
     import Matchexplanation from './Matchexplanation.svelte';
@@ -60,7 +64,7 @@
     }
     
 </script>
-
+<Modal show={Popup}/>
 <div class="container">
     <div class="settings-content">
         <Ad/>
