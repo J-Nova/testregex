@@ -69,6 +69,7 @@
         justify-content: center;
         background-color: var(--tertiary);
         border-radius: 2px;
+        cursor: pointer;
     }
     
     .close:hover{
@@ -95,5 +96,6 @@
         align-items: center;
         justify-content: center;
         margin: 10px;
+        cursor: pointer;
     }
 </style>

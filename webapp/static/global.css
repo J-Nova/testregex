@@ -8,7 +8,7 @@
     --primary-text-color: #8a8a8e;
     --secondary-text-color: #252525;
 
-    --border-color: #ffffff1a;
+    --border-color: #9d9d9da6;
 
     --match_color_1: #5286AA;
 	--match_color_2: #1A5593;
@@ -81,13 +81,14 @@ body {
 
 h2, h1 {
     margin: 0px;
-    border-bottom: 1px solid var(--border-color);
+    /* border-bottom: 1px solid var(--border-color); */
     margin-bottom: 3px;
     text-transform: uppercase;
     font-weight: 500;
     height: fit-content;
     word-wrap: break-word;
     font-size: x-large;
+    user-select: none;
 }
 
 a {
@@ -131,6 +132,7 @@ pre, textarea{
     font-weight: 400;
     padding: 10px 10px;
     margin:0;
+    cursor: text;
 }
 
 pre div {
@@ -152,12 +154,12 @@ div.heading {
     margin: 5px 0px;
     padding: 5px 0px;
     color: var(--primary-text-color);
+    align-items: flex-end;
 }
 
 
 .codewrap {
     height: 100% !important;
-    /* margin: 1rem !important; */
 }
 
 .codewindow {

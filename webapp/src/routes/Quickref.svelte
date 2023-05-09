@@ -112,6 +112,7 @@
         border: none;
         padding: 3px;
         color: var(--primary-text-color);
+        cursor: text;
     }
 
     .item{
@@ -121,6 +122,7 @@
         background-color: inherit;
         border: none;
         width: 100%;
+        cursor: pointer;
     }
 
     .result-item{
@@ -130,6 +132,7 @@
         background-color: inherit;
         border: none;
         width: 100%;
+        cursor:pointer
     }
     
     .item:hover, .result-item:hover {

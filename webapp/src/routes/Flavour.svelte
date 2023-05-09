@@ -56,9 +56,17 @@
     .code {
         border: 1px solid var(--checked-border-color);
         border-radius: 3px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5%;
     }
     .code-hide {
         border: 1px solid var(--unchecked-border-color);
         border-radius: 3px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5%;
     }
 </style>

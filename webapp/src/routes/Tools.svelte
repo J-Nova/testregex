@@ -47,5 +47,10 @@
         border-radius: 3px;
         color: var(--secondary-text-color);
         padding:3px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5%;
     }
 </style>
