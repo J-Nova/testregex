@@ -9,7 +9,7 @@
         code = generation($test.expression, $test.test_string, flavour);
     }
     $: flavors = Object.keys(FLAVORS)
-    $: code = ""
+    $: code = "Select one of the flavours to generate code."
 </script>
 
 
@@ -33,6 +33,7 @@
             spellcheck="false"
             autocomplete="off"
             translate="no"
+            placeholder="Select one of the flavours to generate code."
             bind:value={code}/>
             
     </div>    
@@ -66,6 +67,15 @@
         padding: 6px;
         height: fit-content;
         width: 15%;
+    }
+
+    .flavor-item {
+        border-radius: 3px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5%;
     }
 
     .flavor-item:hover {
