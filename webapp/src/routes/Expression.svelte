@@ -77,6 +77,7 @@
         width: fit-content;
         text-align: center;
         color: var(--secondary-text-color);
+        user-select: none;
     }
 
     .input {
@@ -93,5 +94,5 @@
         width: 100%;
     }
 
-
+    
 </style>

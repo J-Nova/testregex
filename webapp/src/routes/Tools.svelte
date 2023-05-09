@@ -47,5 +47,6 @@
         border-radius: 3px;
         color: var(--secondary-text-color);
         padding:3px;
+        cursor: pointer;
     }
 </style>
