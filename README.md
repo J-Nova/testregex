@@ -2,4 +2,4 @@
 
 This is the repository of testregex.com
 
-My free project :D
+The whole of this project is being developed as a part for my graduation portfolio.
