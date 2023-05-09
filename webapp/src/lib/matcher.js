@@ -1,25 +1,36 @@
 // @ts-nocheck
-import {explain_regex} from "$lib/explainer.js"
+import {explainRegex} from "$lib/explainer.js";
+import {generateTooltips} from "$lib/expression.js";
 
-export function updateRegex(expression, flags, test_string, delimiter, flavor, errorCallback, successCallback, timeoutCallback, explain, explainCallback, explain_timeout, match_timeout) {
-    maxWorkerTimeout = match_timeout;
+export function updateRegex(test, errorCallback, successCallback, timeoutCallback, explainCallback, explain_expression) {
 
-    var callbacks = {
+    let callbacks = {
         success: successCallback,
         error: errorCallback,
         catastrophic: errorCallback,
         timeout: timeoutCallback,
-        explain: explainCallback
     }
     
-    var test_data = {
-            regex: expression, // The regular expression
-            options: flags, // The expression flags
-            regexText: test_string, // The text to test the regex against.
-            delimiter: delimiter,
-            flavor: flavor,
+    let test_data = {
+            regex: test.expression, // The regular expression
+            options: test.getFlags(), // The expression flags
+            regexText: test.test_string, // The text to test the regex against.
+            delimiter: test.delimiter,
+            flavor: test.flavor,
         };
-    
+
+    if (explain_expression) { // Explain the expression that has been given.
+        console.log(explainRegex(test_data, true).body);
+        let explain_tree = explainRegex(test_data, true);
+        let explanation_data = {
+                    explanation: explainRegex(test_data, false),
+                    tooltip_data: generateTooltips(explain_tree.body.expressions || [explain_tree.body]
+                                                    ,test_data.regex)
+                    }
+        explainCallback(explanation_data);
+    }
+
+    // Run expression against the regex worker.
     if (test_data.flavor == "PCRE"){
         runExpression(test_data, callbacks, "pcreWorker.js")
     } else if (test_data.flavor == "JAVASCRIPT") {
@@ -29,10 +40,6 @@ export function updateRegex(expression, flags, test_string, delimiter, flavor, e
     } else if (test_data.flavor == "PYTHON") {
         test_data.regex = sanitizePython(test_data.regex);
         runExpression(test_data, callbacks, "pcreWorker.js");
-    }
-
-    if (explain) { // Explain the expression that has been given.
-        explain_regex(test_data, explainCallback);
     }
 }
 
@@ -55,7 +62,6 @@ function timeoutWorker(){
     workerObj.running =! 0, workerTimeout && clearTimeout(workerTimeout)
     workerTimeout = setTimeout(function () {
         workerObj.worker.terminate(),
-        // shit took too long
         callbacks.timeout();
         workerObj = {}
     }, maxWorkerTimeout)

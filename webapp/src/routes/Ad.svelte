@@ -1,5 +1,6 @@
 <script>
     import logo from "$lib/assets/site_icon.png";
+    import Icon from '@iconify/svelte';
 </script>
 
 <div>
@@ -10,7 +11,15 @@
         </h1>
     </a>
     <div class="container">
-        <span>This is an placeholder for an container</span>
+        
+        <span class="social">
+            <Icon icon="carbon:logo-github" color="black"/> 
+            <a href="https://github.com/J-Nova/testregex">Github</a>
+        </span>
+        <span class="social">
+            <Icon icon="carbon:logo-linkedin" color="black"/> 
+            <a href="https://www.linkedin.com/in/juup-pikkemaat/">LinkedIn</a>
+        </span>
     </div>
 </div>
 
@@ -30,5 +39,13 @@
         height: 25%;
         width: 25%;
         padding-right: 5%;
+    }
+
+    .social {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5%;
     }
 </style>

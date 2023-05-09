@@ -1,8 +1,12 @@
 <script>
 // @ts-nocheck
+    import Modal from 'svelte-simple-modal';
+    import Popup from './WIPPopup.svelte';
+
     import {editor, test, match_data} from "$lib/stores.js";
     import {updateRegex} from "$lib/matcher.js";
-    import {highlighter} from "$lib/explainer.js";
+    import {testHighlighter} from "$lib/explainer.js";
+
     import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
     import Matchexplanation from './Matchexplanation.svelte';
@@ -14,53 +18,26 @@
     import Settings from './Settings.svelte';
     let expression_timer;
 
-    function lockEditor(){
-        if ($test.test_string.length > 0) $editor.editor_status = 0, $editor.test_status = 0;
-    }
-
     function updateExpression(explain){
-        function runExpression(test, explain){
-            updateRegex(
-            test.expression, 
-            test.flags.join(""), 
-            test.test_string,
-            test.delimiter, 
-            test.flavor,
-            errorCallback,
-            successCallback,
-            timeoutCallback, 
-            explain,
-            explainCallback,
-            $editor.explain_timeout,
-            $editor.match_timeout
-            );
-        }
-
-        $match_data.test_highlight = {};
-        if ($test.expression.length > 0){
-            runExpression($test, explain);
-            clearTimeout(expression_timer); 
-            expression_timer = setTimeout(lockEditor, $editor.editorLockTimeout);
-        }
-        
-        if ($test.expression.length == 0) {
-            $match_data.ast_tree = {};
-            $editor.updateMatchStatus(0);
-        }
-
-        if ($test.test_string.length == 0) {
-            $match_data.information = "Detailed match information will be displayed here automatically.";
-        }
+        if ($test.expression.length == 0) {$match_data.clear(); $match_data = $match_data; $editor.test_lock = false; $editor.updateMatchStatus(3); return;}
+        updateRegex($test, errorCallback, successCallback, timeoutCallback, explainCallback, explain);
+        expression_timer && clearTimeout(expression_timer),
+        expression_timer = setTimeout(function (){
+            console.log("locking editor")
+            $editor.editor_lock = true;
+            $editor.test_lock = true;
+        }, $editor.editorLockTimeout);
     }
 
     function successCallback(data){
         if (Object.keys(data.result).length > 0 ){
             $editor.updateMatchStatus(1);
-        } else {
+            $match_data.test_highlight = testHighlighter(data.result, $test.test_string);
+            $editor = $editor;
+        } else { // No match
             $editor.updateMatchStatus(0);
         }
-        $match_data.content = data.result;
-        $match_data.test_highlight = highlighter($match_data.content, $test.test_string);
+
     }
 
     function errorCallback(data){
@@ -75,12 +52,19 @@
         $editor.updateMatchStatus(2);
     }
 
-    function explainCallback(explanation){
-        $match_data.ast_tree = explanation.body;
+    function explainCallback(explanation_data){
+        if (explanation_data.explanation.success){
+            $editor.updateMatchStatus(0);
+            $match_data.ast_tree = explanation_data.explanation.body;
+            $match_data.expression_highlight = explanation_data.tooltip_data;
+        } else {
+            $editor.updateMatchStatus(2);
+            errorCallback({error: explanation.error.message});
+        }
     }
     
 </script>
-
+<Modal show={Popup}/>
 <div class="container">
     <div class="settings-content">
         <Ad/>

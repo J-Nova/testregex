@@ -3,47 +3,42 @@
     import ToolTip from "./MatchTooltip.svelte";
     import { createEventDispatcher } from 'svelte';
     import {editor, test, match_data} from "$lib/stores.js";
-    
     const dispatch = createEventDispatcher();
-    function scrollFn(){testBackdrop.scrollTop = testTextArea.scrollTop;}
 
     let testBackdrop;
     let testTextArea;
 
-
-    function updateEditor(locking){
-        if (locking){
-            testBackdrop.focus();
-            testTextArea.style.display = "none";
-            testTextArea.disabled = true;
-        } else if (testTextArea && !locking) {
-            testTextArea.disabled = false;
-            testTextArea.style.display = "block";
-            testTextArea.focus();
-            testTextArea.setSelectionRange(-1, -1);
-        }
-        return locking;
+    function unlockEditor(focus){
+        testTextArea.disabled = false;
+        testTextArea.style.display = "block"
+        if (focus)testTextArea.focus(), testTextArea.setSelectionRange(-1, -1);
     }
 
-    $: disabled_input = ($editor.test_status == 0 ? updateEditor(true) : updateEditor(false));
+    function lockEditor(lock){
+        if (!testTextArea || $test.test_string.length == 0) return;
+        if (!lock) {unlockEditor(false); return;}
+        testTextArea.style.display = "none";
+        testTextArea.disabled = true;
+    }
+
+    $: _ = (lockEditor($editor.test_lock));
 
 </script>
 <div class="heading">
     <h2>test data</h2>
-    <div class="editor-status">{$editor.getEditorStatus()}</div>
 </div>
 
 <div class="container">
     <pre
         bind:this={testBackdrop}
-        on:keyup
-        on:keydown
-        on:click={_ => ($editor.test_status = 1)}
+        on:dblclick={unlockEditor}
     >
         <div class="custom-area">
-            {#each Object.keys($match_data.test_highlight) as match_code}
-                <ToolTip match={$match_data.test_highlight[match_code]}/>
-            {/each}
+            {#if $match_data.expression_highlight.length >= 1 && $test.expression.length >= 1}
+                {#each $match_data.test_highlight as match}
+                    <ToolTip match={match}/>
+                {/each}
+            {/if}
         </div>
     </pre>
 
@@ -51,7 +46,7 @@
         bind:this={testTextArea}
         bind:value={$test.test_string}
         on:input={_ => (dispatch("update", false))}
-        on:scroll={scrollFn}
+        on:scroll={_ => {testBackdrop.scrollTop = testTextArea.scrollTop;}}
         spellcheck="false" 
         autocomplete="off" 
         translate="no" 
@@ -60,17 +55,6 @@
 </div>
 
 <style>
-    .editor-status {
-        border: 1px solid var(--border-color);
-        border-radius: 3px;
-        padding: 3px 3px;
-        height: fit-content;
-        width: fit-content;
-        text-align: center;
-        background-color: var(--base-status-color);
-        color: var(--secondary-text-color);
-    }
-    
     .container {
         margin-bottom: 10px;
         width: 100%;

@@ -1,14 +1,6 @@
 // @ts-nocheck
 import regexpTree from 'regexp-tree';
 
-export function explain_regex(test_data, explain_callback){
-    explain_timer && clearTimeout(explain_timer),
-    explain_timer = setTimeout(function () {
-        let explanation = explainRegex(test_data);
-        if (explanation) explain_callback(explanation);
-    }, maxExplainTimeout)
-}
-
 export function explainRegex(test_data, include_locations){
     try {
         let regex = new RegExp(test_data.regex, test_data.options);
@@ -20,12 +12,13 @@ export function explainRegex(test_data, include_locations){
                 post({node}) {
                     if (node.kind === "meta") {
                         if (node.value === "\\w") node.explanation = "Matches any word character [a-zA-Z0-9]"
-                        if (node.value === "\\W") node.explanation = "Matches any non-word character [^a-zA-Z0-9_]"
-                        if (node.value === "\\d") node.explanation = "Matches any digit [0-9]"
-                        if (node.value === "\\D") node.explanation = "Matches any non-digit [^0-9]"
-                        if (node.value === "\\s") node.explanation = "Matches any whitespace [\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]"
-                        if (node.value === "\\S") node.explanation = "Matches any non-whitespace [^\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]"
-                        if (node.value === ".") node.explanation = "Any character (except new line \n)"
+                        else if (node.value === "\\W") node.explanation = "Matches any non-word character [^a-zA-Z0-9_]"
+                        else if (node.value === "\\d") node.explanation = "Matches any digit [0-9]"
+                        else if (node.value === "\\D") node.explanation = "Matches any non-digit [^0-9]"
+                        else if (node.value === "\\s") node.explanation = "Matches any whitespace [\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]"
+                        else if (node.value === "\\S") node.explanation = "Matches any non-whitespace [^\r\n\t\f\v \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]"
+                        else if (node.value === ".") node.explanation = "Any character (except new line \n)"
+                        else {node.explanation = "No explanation available for this token. Please report your expression"}
                     } else if (node.kind === "simple"){
                         node.explanation = `Matches the character with Ascii code: ${node.codePoint} literally (Case-Sensitive)`
                     } 
@@ -96,7 +89,7 @@ export function explainRegex(test_data, include_locations){
     
             Repetition: { // Adds explanations to Repetitions
                 post({node}){
-                    node.explanation = "Matches repeated data by the expressions list"
+                    node.explanation = "Matches repeated data by the previous expression"
             }},
     
             Alternative: { // Adds explanations to Alternatives (Multiple expressions)
@@ -112,7 +105,7 @@ export function explainRegex(test_data, include_locations){
 }
 
 
-export function generateInformation(match_content){
+export function matchInformation(match_content){
     let match_data = [];
     for (let i=0; i<match_content.length; i++){
         let match = match_content[i];
@@ -163,7 +156,7 @@ function getRandomInt(min, max) {
 }
 
 
-export function highlighter(matches, testString){
+export function testHighlighter(matches, testString){
     // First loop over the whole test string. Create an object for it to contain match data for each character.
     let match_html = {};
     for (let i=0; i<testString.length; i++){
@@ -195,7 +188,7 @@ export function highlighter(matches, testString){
             }
         }
     }
-    return match_html
+    return Object.values(match_html);
 }
 
 var maxExplainTimeout = 2000,

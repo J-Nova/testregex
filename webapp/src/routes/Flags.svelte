@@ -48,12 +48,14 @@
         border: 1px solid var(--checked-border-color);
         border-radius: 3px;
         color: var(--primary-text-color);
+        cursor: pointer;
     }
     
     .unchecked {
         border: 1px solid var(--unchecked-border-color);
         border-radius: 3px;
-        color: var(--primary-text-color );
+        color: var(--primary-text-color);
+        cursor: pointer;
     }
 
     .checked:hover, .unchecked:hover { 
