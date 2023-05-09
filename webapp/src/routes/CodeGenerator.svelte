@@ -91,6 +91,7 @@
         position: relative;
         resize: none;
         border-radius: 3px;
+        cursor: text;
     }
 
     span {
