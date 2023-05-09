@@ -132,6 +132,7 @@ pre, textarea{
     font-weight: 400;
     padding: 10px 10px;
     margin:0;
+    cursor: text;
 }
 
 pre div {
