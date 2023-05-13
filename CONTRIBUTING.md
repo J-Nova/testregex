@@ -12,8 +12,8 @@ To propose changes to the codebase, please submit a pull request following these
 2. Add tests for any new code that requires testing.
 3. Update the documentation if you've made changes to APIs.
 4. Verify that the test suite passes.
-5. Ensure your code adheres to the style guidelines by running the linter.
-6. Submit your pull request!
+5. Ensure your code adheres to the style guidelines.
+6. Submit your pull request to the development branch!
 
 ## GNU General Public License v3.0
 All contributions you make to TestRegex are subject to the GNU General Public License v3.0. If you have any concerns about licensing, please contact the maintainers.
