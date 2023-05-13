@@ -165,34 +165,6 @@ export function explainRegex(testData, includeLocations) {
 	}
 }
 
-export function matchInformation(matchContent) {
-	let matchData = [];
-	for (let i = 0; i < matchContent.length; i++) {
-		let match = matchContent[i];
-		for (let j = 0; j < match.length; j++) {
-			if (match[j]) {
-				let matchNumber = i + 1;
-				let groupNumber = match[j].group_number;
-				let groupName = match[j].name !== undefined ? match[j].name : "";
-				let content = match[j].content;
-				let start = match[j].start;
-				let end = match[j].end;
-
-				let matchInfo = {
-					match_num: matchNumber,
-					group_num: groupNumber,
-					group_name: groupName,
-					start: start,
-					end: end,
-					content: content,
-				};
-				matchData.push(matchInfo);
-			}
-		}
-	}
-	return matchData;
-}
-
 export function optimizeRegex(expression) {
 	return regexpTree.optimize(expression).toRegExp();
 }
