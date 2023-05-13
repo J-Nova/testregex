@@ -62,6 +62,7 @@ class MatchData {
         this.testHighlight = [];
         this.expressionHighlight = [];
         this.information = "Detailed match information will be displayed here automatically.";
+        this.result = {};
     }
 
     clear(){
@@ -69,6 +70,7 @@ class MatchData {
         this.testHighlight = [];
         this.expressionHighlight = []; 
         this.information = "Detailed match information will be displayed here automatically.";
+        this.result = {};
     }
 }
 

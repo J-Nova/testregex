@@ -33,6 +33,7 @@
     function successCallback(data){
         if (Object.keys(data.result).length > 0 ){
             $editor.updateMatchStatus(1);
+            $match.result = data;
             $match.testHighlight = testHighlighter(data.result, $test.testString);
             $editor = $editor;
         } else { // No match

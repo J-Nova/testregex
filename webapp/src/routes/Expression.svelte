@@ -24,8 +24,18 @@
         expressionTextArea.style.display = "none";
         expressionTextArea.disabled = true;
     }
+
+    function matchStatus(){
+        if ($match.testHighlight.filter(item => item.className !== "no-match").length == 0){
+            return $editor.getMatchStatus()
+        }
+        else{
+            return `${$match.testHighlight.filter(item => item.className !== "no-match").length} ${$editor.getMatchStatus()} - ${$match.result.time} ms`
+        }
+    }
     
     $: lockEditor($editor.editorLock);
+    $: status = matchStatus($match.testHighlight);
 </script>
 
 <div class="heading">
@@ -33,7 +43,7 @@
     <Optimize/>
     <Transpile/>
     <span class="result" style="background-color:var({$editor.statusColor})">
-        {$editor.getMatchStatus()}
+        {status}
     </span>
 </div>
 
@@ -94,5 +104,7 @@
         width: 100%;
     }
 
-    
+    .heading{
+        font-size: small;
+    }
 </style>
