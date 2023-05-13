@@ -10,7 +10,7 @@ export function updateRegex(
 	explainCallback,
 	explainExpression
 ) {
-	let callbacks = {
+	callbacks = {
 		success: successCallback,
 		error: errorCallback,
 		catastrophic: errorCallback,
@@ -118,4 +118,5 @@ function runExpression(test_data, callbacks, workerScript) {
 
 var maxWorkerTimeout = 2000,
 	workerObj = {},
-	workerTimeout;
+	workerTimeout,
+	callbacks;

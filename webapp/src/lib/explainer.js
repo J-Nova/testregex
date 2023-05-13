@@ -58,7 +58,7 @@ export function explainRegex(testData, includeLocations) {
 					else if (node.kind === "?")
 						node.explanation = `Matches 0 or 1 of the previous token (${greedy})`;
 					else if (node.kind === "Range") {
-						if (!node.hasOwnProperty("from")) node.from = "unlimited";
+						if (!Object.prototype.hasOwnProperty.call(node,"from")) node.from = "unlimited";
 						if (node.from == node.to)
 							node.explanation = `Matches the previous tokens exactly ${node.to} times (${greedy})`;
 						else

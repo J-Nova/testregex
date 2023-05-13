@@ -134,7 +134,7 @@
 	{#if highlightItem !== undefined}
 		<Item
 			item={highlightItem}
-			on:closeHighlight={e => {
+			on:closeHighlight={_ => {
 				highlightItem = undefined;
 			}}
 		/>

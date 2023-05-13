@@ -97,7 +97,7 @@
 		{#each availableFlags as availableFlag}
 			<span
 				on:keypress
-				on:click={e => {
+				on:click={_ => {
 					setFlags(availableFlag);
 				}}
 				class={checkedFlag(availableFlag)}

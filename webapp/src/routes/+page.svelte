@@ -138,7 +138,7 @@
 			$match.expressionHighlight = explanationData.tooltipData;
 		} else {
 			$editor.updateMatchStatus(2);
-			errorCallback({ error: explanation.error.message });
+			errorCallback({ error: explanationData.error.message });
 		}
 	}
 </script>
