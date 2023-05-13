@@ -37,6 +37,8 @@ Thorough bug reports are greatly appreciated.
 Please ensure that any contributions you make to TestRegex adhere to our coding style guidelines, which are:
 
 - Using camel case typing.
+- Run Prettier formatter "cd webapp && npm run format"
+- Run linter "cd webapp && npm run lint"
 
 ## License
 By contributing to TestRegex, you agree to license your contributions under the GNU General Public License v3.0.
