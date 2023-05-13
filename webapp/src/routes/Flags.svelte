@@ -10,7 +10,7 @@
             $test.flags.push(updateFlag);
             $test.flags = $test.flags
         }
-        available_flags = FLAVORS[$test.flavor].flags;
+        availableFlags = FLAVORS[$test.flavor].flags;
     }
 
     function checkedFlag(flag){
@@ -21,16 +21,16 @@
         }
     }
 
-    $: available_flags = FLAVORS[$test.flavor].flags;
+    $: availableFlags = FLAVORS[$test.flavor].flags;
 
 </script>
 
 <span class="container">
     <span class="dropbtn">
-        { $test.flags.length > 0 ? $test.flags.sort().join("") : "-"}
+        { $test.flags.length > 0 ? $test.getFlags() : "-"}
     </span>
     <div class="dropdown-content">
-        {#each available_flags as availableFlag }
+        {#each availableFlags as availableFlag }
             <span on:keypress on:click={e=> {setFlags(availableFlag)}} class={checkedFlag(availableFlag)} id="flag">
                 <span id="flag" class="full">{availableFlag[Object.keys(availableFlag)[0]].full}</span>
                 <span>{availableFlag[Object.keys(availableFlag)[0]].desc}</span>

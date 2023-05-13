@@ -23,18 +23,18 @@ function free_regex() {
 /**
  * Compiles a regular expression pattern with the given flags.
  * @param {string} expression - The regular expression pattern to compile.
- * @param {string} expression_flags - The flags to apply to the regular expression pattern.
+ * @param {string} expressionFlags - The flags to apply to the regular expression pattern.
  * @returns The compiled regular expression pattern.
  */
-function preg_compile(expression, expression_flags) {
-    if (expression_flags += "C", void 0 !== cached_pattern) {
-        if (cached_pattern.pattern === expression && cached_pattern.options === expression_flags) 
+function preg_compile(expression, expressionFlags) {
+    if (expressionFlags += "C", void 0 !== cached_pattern) {
+        if (cached_pattern.pattern === expression && cached_pattern.options === expressionFlags) 
             return cached_pattern;
         
         free_regex()
     }
-    for (var e = 0, R =! 1, a = 0; a < expression_flags.length; a++) 
-        switch (expression_flags[a]) {
+    for (var e = 0, R =! 1, a = 0; a < expressionFlags.length; a++) 
+        switch (expressionFlags[a]) {
             case "g": R = !0;
                 break;
             case "i": e |= PCRE_CASELESS;
@@ -68,7 +68,7 @@ function preg_compile(expression, expression_flags) {
         }
     
     cached_pattern.pattern = expression,
-    cached_pattern.options = expression_flags,
+    cached_pattern.options = expressionFlags,
     cached_pattern.option_bits = e,
     cached_pattern.is_global = R;
     
@@ -83,9 +83,9 @@ function preg_compile(expression, expression_flags) {
     if (! C) {
         free_regex();
         
-        var error_message = Pointer_stringify(HEAP32[r >> 2]) + " - offset: " + HEAP32[c >> 2];
-        throw self.postMessage({error: error_message}),
-        new Error(error_message)
+        var errorMessage = Pointer_stringify(HEAP32[r >> 2]) + " - offset: " + HEAP32[c >> 2];
+        throw self.postMessage({error: errorMessage}),
+        new Error(errorMessage)
     }
     
     HEAP32[getCalloutAddr() >> 2] = callout_ptr;
@@ -350,15 +350,15 @@ var PCRE_CASELESS = 1,
     oldStrEnd = 0,
     lookbehind = void 0;
 
-function executeExpression(event){
-    let start_time = performance.now();
-    preg_compile(event.data.regex, event.data.options);
-    return preg_match(event.data.regexText, start_time)
+function executeExpression(testData){
+    let startTime = performance.now();
+    preg_compile(testData.data.regex, testData.data.options);
+    return preg_match(testData.data.regexText, startTime)
 }
 
-self.onmessage = function (event) {
+self.onmessage = function (testData) {
     self.postMessage("onload");
-    let result = executeExpression(event);
+    let result = executeExpression(testData);
     debug && console.log(result, "result");
     self.postMessage(result);
 };

@@ -1,7 +1,7 @@
 class Match {
-    constructor(content, group_number, name, start, end) {
+    constructor(content, groupNumber, name, start, end) {
       this.content = content;
-      this.group_number = group_number;
+      this.groupNumber = groupNumber;
       this.name = name;
       this.start = start;
       this.end = end;

@@ -3,7 +3,7 @@
     import Modal from 'svelte-simple-modal';
     import Popup from './WIPPopup.svelte';
 
-    import {editor, test, match_data} from "$lib/stores.js";
+    import {editor, test, match} from "$lib/stores.js";
     import {updateRegex} from "$lib/matcher.js";
     import {testHighlighter} from "$lib/explainer.js";
 
@@ -16,23 +16,24 @@
     import Flavour from './Flavour.svelte';
     import Tools from './Tools.svelte';
     import Settings from './Settings.svelte';
-    let expression_timer;
+    let expressionTimer;
 
     function updateExpression(explain){
-        if ($test.expression.length == 0) {$match_data.clear(); $match_data = $match_data; $editor.test_lock = false; $editor.updateMatchStatus(3); return;}
+        if ($test.expression.length == 0) {$match.clear(); $match = $match; $editor.testLock = false; $editor.updateMatchStatus(3); return;}
+        if (expressionTimer && clearTimeout(expressionTimer)){
+            expressionTimer = setTimeout(function (){
+                console.log("locking editor")
+                $editor.editorLock = true;
+                $editor.testLock = true;
+            }, $editor.editorLockTimeout);
+        }
         updateRegex($test, errorCallback, successCallback, timeoutCallback, explainCallback, explain);
-        expression_timer && clearTimeout(expression_timer),
-        expression_timer = setTimeout(function (){
-            console.log("locking editor")
-            $editor.editor_lock = true;
-            $editor.test_lock = true;
-        }, $editor.editorLockTimeout);
     }
 
     function successCallback(data){
         if (Object.keys(data.result).length > 0 ){
             $editor.updateMatchStatus(1);
-            $match_data.test_highlight = testHighlighter(data.result, $test.test_string);
+            $match.testHighlight = testHighlighter(data.result, $test.testString);
             $editor = $editor;
         } else { // No match
             $editor.updateMatchStatus(0);
@@ -41,22 +42,22 @@
     }
 
     function errorCallback(data){
-        $match_data.ast_tree = data
-        $match_data.information = "Your expression contains one or more faults, please see explanation above.";
+        $match.astTree = data
+        $match.information = "Your expression contains one or more faults, please see explanation above.";
         $editor.updateMatchStatus(2);
     }
     
     function timeoutCallback(){
-        $match_data.ast_tree = {error: "Timed out while waiting on expression results"}
-        $match_data.information = "Detailed match information will be displayed here automatically.";
+        $match.astTree = {error: "Timed out while waiting on expression results"}
+        $match.information = "Detailed match information will be displayed here automatically.";
         $editor.updateMatchStatus(2);
     }
 
-    function explainCallback(explanation_data){
-        if (explanation_data.explanation.success){
+    function explainCallback(explanationData){
+        if (explanationData.explanation.success){
             $editor.updateMatchStatus(0);
-            $match_data.ast_tree = explanation_data.explanation.body;
-            $match_data.expression_highlight = explanation_data.tooltip_data;
+            $match.astTree = explanationData.explanation.body;
+            $match.expressionHighlight = explanationData.tooltipData;
         } else {
             $editor.updateMatchStatus(2);
             errorCallback({error: explanation.error.message});

@@ -4,9 +4,9 @@
     $: flavorObj = FLAVORS[$test.flavor];
     
 
-    function setDelimiter(updatedDelimiter) {
-        $test.delimiter = updatedDelimiter;
-        available_delimiters = available_delimiters;
+    function setDelimiter(delimiter) {
+        $test.delimiter = delimiter;
+        availableDelimiters = availableDelimiters;
     }
 
     function checkedDelimiter(delim){
@@ -17,7 +17,7 @@
         }
     }
 
-    $: available_delimiters = FLAVORS[$test.flavor].delimiters;
+    $: availableDelimiters = FLAVORS[$test.flavor].delimiters;
 </script>
 
 <span class="container">
@@ -26,9 +26,9 @@
         <span class="delimiter">{$test.delimiter}</span>
     </span>
     <div class="dropdown-content">
-        {#each available_delimiters as availableDelimiter }
-            <span on:keypress on:click={_ => {setDelimiter(availableDelimiter)}} class={checkedDelimiter(availableDelimiter)}>
-                {availableDelimiter}
+        {#each availableDelimiters as delimiter }
+            <span on:keypress on:click={_ => {setDelimiter(delimiter)}} class={checkedDelimiter(delimiter)}>
+                {delimiter}
             </span>
         {/each}
     </div>

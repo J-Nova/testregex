@@ -1,6 +1,6 @@
 <script>
     import {JsonView} from '@zerodevx/svelte-json-view';
-    import {editor, match_data} from "$lib/stores.js";
+    import {editor, match} from "$lib/stores.js";
 
     let textColors = {
         "--match-status-color":  "--jsonValStringColor: var(--senary);",
@@ -15,11 +15,11 @@
     <h2>
         Explanation
     </h2>
-    <div class="tree-container" style="{textColors[$editor.status_color]}">
-        {#if $match_data.ast_tree == void 0 || Object.keys($match_data.ast_tree).length == 0}
+    <div class="tree-container" style="{textColors[$editor.statusColor]}">
+        {#if $match.astTree == void 0 || Object.keys($match.astTree).length == 0}
             <span class="base">An explanation will automatically be generated about your regex expression.</span>
         {:else}
-            <JsonView json={$match_data.ast_tree}/>
+            <JsonView json={$match.astTree}/>
         {/if}
     </div>
 </div>

@@ -27,12 +27,12 @@
 
     function getSearchData(searchString){
         let items = []
-        Object.entries(quickref).forEach(([_, cr_items]) => {
-                cr_items.forEach((item) => {
+        Object.entries(quickref).forEach(([_, crItems]) => {
+                crItems.forEach((item) => {
                     if (
                         item.flavors.includes($test.flavor) && 
-                        (item.desc.includes(searchString) || item.info.includes(searchString))) 
-                        { items.push(item); }
+                        (item.desc.includes(searchString) || item.info.includes(searchString))
+                        ) { items.push(item); }
                 });
             });
             selectedItems = items;

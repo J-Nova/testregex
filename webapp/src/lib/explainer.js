@@ -1,11 +1,11 @@
 // @ts-nocheck
 import regexpTree from 'regexp-tree';
 
-export function explainRegex(test_data, include_locations){
+export function explainRegex(testData, includeLocations){
     try {
-        let regex = new RegExp(test_data.regex, test_data.options);
+        let regex = new RegExp(testData.regex, testData.options);
     
-        let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true, captureLocations: include_locations});
+        let astTree = regexpTree.parse(regex, {allowGroupNameDuplicates: true, captureLocations: includeLocations});
         regexpTree.traverse(astTree, {
             
             Char: { // Adds explanations to Chars
@@ -105,41 +105,40 @@ export function explainRegex(test_data, include_locations){
 }
 
 
-export function matchInformation(match_content){
-    let match_data = [];
-    for (let i=0; i<match_content.length; i++){
-        let match = match_content[i];
+export function matchInformation(matchContent){
+    let matchData = [];
+    for (let i=0; i<matchContent.length; i++){
+        let match = matchContent[i];
         for (let j=0; j<match.length; j++){
             if (match[j]){
-                let match_num = i + 1;
-                let group_num = match[j].group_number;
-                let group_name = match[j].name !== undefined ? match[j].name : "";
+                let matchNumber = i + 1;
+                let groupNumber = match[j].group_number;
+                let groupName = match[j].name !== undefined ? match[j].name : "";
                 let content = match[j].content;
                 let start = match[j].start;
                 let end = match[j].end;
-                let match_info = {
-                    match_num: match_num,
-                    group_num: group_num,
-                    group_name: group_name,
+
+                let matchInfo = {
+                    match_num: matchNumber,
+                    group_num: groupNumber,
+                    group_name: groupName,
                     start: start,
                     end: end,
                     content: content
                 }
-                match_data.push(match_info);
+                matchData.push(matchInfo);
             }
         }
     }
-    return match_data;
+    return matchData;
 }
 
 export function optimizeRegex(expression){
-    let optimizedExpression = regexpTree.optimize(expression).toRegExp();
-    return optimizedExpression
+    return regexpTree.optimize(expression).toRegExp();
 }
 
 export function transpileExpression(expression){
-    let transpiledExpression = regexpTree.compatTranspile(expression).toRegExp();
-    return transpiledExpression
+    return regexpTree.compatTranspile(expression).toRegExp();
 }
 
 function randomColor(){
@@ -158,43 +157,35 @@ function getRandomInt(min, max) {
 
 export function testHighlighter(matches, testString){
     // First loop over the whole test string. Create an object for it to contain match data for each character.
-    let match_html = {};
-    for (let i=0; i<testString.length; i++){
-        match_html[i] = {content:testString[i], class_name:"no-match", color:""};
+    let matchHtml = {};
+    for (let i=0; i < testString.length; i++){
+        matchHtml[i] = {content:testString[i], className:"no-match"};
     }
 
     // Loop over all the matches.
-    for (let i=0; i<matches.length; i++){
+    for (let i=0; i < matches.length; i++){
         let match = matches[i];
         for (let j=0; j<match.length; j++){
             if (match[j]){
-                let current_match = match[j];
-                let match_num = i + 1;
-                let group_num = match[j].group_number;
-                let group_name = match[j].name !== undefined ? match[j].name : "";
+                let currentMatch = match[j];
+                let matchNumber = i + 1;
+                let groupNumber = match[j].groupNumber;
+                let groupName = match[j].name !== undefined ? match[j].name : "";
                 let start = match[j].start;
                 let end = match[j].end;
                 let color = randomColor();
                 // Loop over start and end range of the match to edit the data in the match_html object.
-                for (let k=current_match.start; k<current_match.end; k++){
-                    match_html[k].class_name = "match";
-                    match_html[k].match_num = match_num;
-                    match_html[k].group_num = group_num; 
-                    match_html[k].group_name= group_name; 
-                    match_html[k].start = start; 
-                    match_html[k].end = end; 
-                    match_html[k].color = color;
+                for (let k=currentMatch.start; k<currentMatch.end; k++){
+                    matchHtml[k].className = "match";
+                    matchHtml[k].matchNumber = matchNumber;
+                    matchHtml[k].groupNumber = groupNumber; 
+                    matchHtml[k].groupName = groupName; 
+                    matchHtml[k].start = start; 
+                    matchHtml[k].end = end; 
+                    matchHtml[k].color = color;
                 }
             }
         }
     }
-    // Clear up the match_html object by removing the no-match class.
-    Object.keys(match_html).forEach(item => {
-        if (match_html[item].class_name === "no-match") delete match_html[item];
-    })
-
-    return Object.values(match_html);
+    return Object.values(matchHtml);
 }
-
-var maxExplainTimeout = 2000,
-explain_timer

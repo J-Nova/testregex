@@ -6,8 +6,8 @@
 
 	function matchContent(){
 		let value;
-		if (match.group_num !== undefined && match.group_num !== 0) {
-			value = `Group (${match.group_num}) ${match.group_name}: ${match.content}`;
+		if (match.groupNumber !== undefined && match.groupNumber !== 0) {
+			value = `Group (${match.groupNumber}) ${match.groupName}: ${match.content}`;
 		} else {
 			value = `Matched: ${match.content}`;
 		}
@@ -56,9 +56,9 @@
 	{match.content}
 </span>
 
-{#if isHovered && match.class_name === "match"}
+{#if isHovered && match.className === "match"}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		<span class="header">Match - {match.match_num}</span>
+		<span class="header">Match - {match.matchNumber}</span>
 		<span class="match-data">
 			{matchContent()}
 		</span>
@@ -77,7 +77,7 @@
 		border-radius: 3px;
 		padding: 10px;
 		position: absolute;
-		z-index: 0;
+		z-index: 100;
 		display: flex;
 		flex-direction: column;
 		font-size:medium;

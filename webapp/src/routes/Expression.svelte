@@ -1,6 +1,6 @@
 <script>
 // @ts-nocheck
-    import {editor, test, match_data} from "$lib/stores.js";
+    import {editor, test, match} from "$lib/stores.js";
     import { createEventDispatcher } from 'svelte';
     import Options from "./Options.svelte";
     import Flags from "./Flags.svelte";
@@ -25,14 +25,14 @@
         expressionTextArea.disabled = true;
     }
     
-    $: _ = lockEditor($editor.editor_lock);
+    $: lockEditor($editor.editorLock);
 </script>
 
 <div class="heading">
     <h2>regular expression</h2>
     <Optimize/>
     <Transpile/>
-    <span class="result" style="background-color:var({$editor.status_color})">
+    <span class="result" style="background-color:var({$editor.statusColor})">
         {$editor.getMatchStatus()}
     </span>
 </div>
@@ -45,8 +45,8 @@
                 on:dblclick={unlockEditor}
             >
                 <div class="custom-area">
-                    {#if $match_data.expression_highlight.length >= 1 && $test.expression.length >= 1}
-                        {#each $match_data.expression_highlight as expression}
+                    {#if $match.expressionHighlight.length >= 1 && $test.expression.length >= 1}
+                        {#each $match.expressionHighlight as expression}
                             <ExpressionTooltip expression={expression}/>
                         {/each}
                     {/if}

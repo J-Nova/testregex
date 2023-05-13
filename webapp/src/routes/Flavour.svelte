@@ -3,16 +3,16 @@
     import {FLAVORS} from  "$lib/data.js";
     import Icon from '@iconify/svelte';
 
-    function className(available_flavour){
-        if (available_flavour == $test.flavor){
+    function className(flavor){
+        if (flavor === $test.flavor){
             return "code";
         }
         return "code-hide";
     }
 
-    function selectFlavour(available_flavour){
-        $test.flavor = available_flavour;
-        $test.delimiter = FLAVORS[available_flavour].delimiters[0];
+    function selectFlavour(flavor){
+        $test.flavor = flavor;
+        $test.delimiter = FLAVORS[flavor].delimiters[0];
         flavors = flavors;
     }
 
@@ -22,10 +22,10 @@
 <div>
     <h2>Flavour</h2>
     <div class="container">
-        {#each flavors as available_flavour}
-            <span class="{className(available_flavour)}" on:keydown on:click={_=> selectFlavour(available_flavour)}>
-                <Icon class="icon" icon="carbon:{className(available_flavour)}"/>
-                {available_flavour}
+        {#each flavors as availableFlavor}
+            <span class="{className(availableFlavor)}" on:keydown on:click={_=> selectFlavour(availableFlavor)}>
+                <Icon class="icon" icon="carbon:{className(availableFlavor)}"/>
+                {availableFlavor}
             </span>
         {/each}
     </div>

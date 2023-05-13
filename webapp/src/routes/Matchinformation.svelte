@@ -1,5 +1,5 @@
 <script>
-    import {match_data} from "$lib/stores.js";
+    import {match} from "$lib/stores.js";
 </script>
 
 <div class="right-container">
@@ -7,15 +7,15 @@
         Information
     </h2>
     <div class="info-container">
-        {#if $match_data.test_highlight.length == 0}
-            <span>{$match_data.information}</span>
+        {#if $match.testHighlight.length == 0}
+            <span>{$match.information}</span>
         {:else}
-            {#each $match_data.test_highlight as match}
+            {#each $match.testHighlight.filter(item => item.className !== "no-match") as match}
                 <div class="match">
-                    {#if match.group_num !== undefined && match.group_num !== 0}
-                        <div>{`Group (${match.group_num}) ${match.group_name}`}</div>
+                    {#if match.groupNumber !== undefined && match.groupNumber !== 0}
+                        <div>{`Group (${match.groupName}) ${match.groupName}`}</div>
                     {:else}
-                        <div>Match {match.match_num}</div>
+                        <div>Match {match.matchNumber}</div>
                     {/if}
                     <div>{match.start}-{match.end}</div>
                     <div>{match.content}</div>

@@ -1,49 +1,49 @@
 importScripts('./classes.js');
 
-function executeExpression(regex, flags, test_string) {
+function executeExpression(regex, flags, testString) {
     !flags.includes("d") && (flags += "d");
 
-    let expression = new RegExp(regex,flags)
+    let expression = new RegExp(regex, flags)
         , result = []
         , global = flags.includes("g");
     let match;
-    while ((match = expression.exec(test_string)) !== null) {
+    while ((match = expression.exec(testString)) !== null) {
         match.index === expression.lastIndex && expression.lastIndex++;
-        let sub_result = [];
+        let subResult = [];
         for (let index = 0; index < match.length; index++) {
-            let start_index, end_index, groupName;
+            let startIndex, endIndex, groupName;
             // Check if there are groups and group names.
             if (match.groups && Object.keys(match.groups).length > 0) {
                 groupName = Object.keys(match.groups).find(key => match.groups[key] === match[index]);
             }
             // Make sure there are match indices
-            null != match.indices && null != match.indices[index] ? (start_index = match.indices[index][0],
-            end_index = match.indices[index][1]) : 0 === index && (start_index = match.index,
-            end_index = match.index + match[0].length);
+            null != match.indices && null != match.indices[index] ? (startIndex = match.indices[index][0],
+            endIndex = match.indices[index][1]) : 0 === index && (startIndex = match.index,
+            endIndex = match.index + match[0].length);
 
-            let match_data = new Match(match[index], index, groupName, start_index, end_index);
-            sub_result.push(match_data)
+            let matchData = new Match(match[index], index, groupName, startIndex, endIndex);
+            subResult.push(matchData)
         }
-        result.push(sub_result)
+        result.push(subResult)
         if (!global) break; 
     }
     return result;
 }
 
-function jsMatch(test_data) {
+function jsMatch(testData) {
     try {
-        let start_time = performance.now();
-        let result = executeExpression(test_data.data.regex, test_data.data.options, test_data.data.regexText);
-        return new Result(result, performance.now() - start_time, undefined, undefined);
+        let startTime = performance.now();
+        let result = executeExpression(testData.data.regex, testData.data.options, testData.data.regexText);
+        return new Result(result, performance.now() - startTime, undefined, undefined);
     } catch (e) {
         let error = new MatchError(e.message);
         return error
     }
 }
 
-self.onmessage = function(test_data) {
+self.onmessage = function(testData) {
     self.postMessage("onload")
-    let result = jsMatch(test_data);
+    let result = jsMatch(testData);
     debug && console.log(result, "result")
     self.postMessage(result);
 }

@@ -15,8 +15,8 @@ function getError(t) {
 function parseFlags(flags){
     let t = 0;
     for (let index = 0; index < flags.length; index++) {
-        let flag_char = flags.charAt(index);
-        switch (flag_char) {
+        let flagCharacter = flags.charAt(index);
+        switch (flagCharacter) {
             case "g":
                 continue;
             case "m": t |= 8;
@@ -34,33 +34,33 @@ function parseFlags(flags){
             case "U": t |= 256;
                 break;
             default:
-                throw new Error(`Unknown java flag ${flag_char}`)
+                throw new Error(`Unknown java flag ${flagCharacter}`)
         }
     }
     return t
 }
 
 
-function executeExpression(expression, test_string, flags) {
+function executeExpression(expression, testString, flags) {
     let time = performance.now();
     try {
         let isGlobal = flags.includes("g");
-        let [match_result, error] = self.javaMatches(expression, test_string, parseFlags(flags), isGlobal);
+        let [matchResult, error] = self.javaMatches(expression, testString, parseFlags(flags), isGlobal);
         
         if (error != null) {
             const [[[, error_message,, index]]] = error;
             return new MatchError(error_message + " near index " + index)
         }
         let result = [];
-        for (let index = 0; index < match_result.length; index++) {
-            let target_match = match_result[index];
-            if (target_match == null) 
+        for (let index = 0; index < matchResult.length; index++) {
+            let targetMatch = matchResult[index];
+            if (targetMatch == null) 
                 break;
-            let match = target_match.map((value => {
+            let match = targetMatch.map((value => {
                 let [r, a, n] = value;
                     let content = r || "";
-                    let start_index = parseInt(a, 10);
-                return new Match(content, parseInt(n, 10), undefined, start_index, start_index + content.length)
+                    let startIndex = parseInt(a, 10);
+                return new Match(content, parseInt(n, 10), undefined, startIndex, startIndex + content.length)
             }));
             result.push(match)
         }
@@ -70,9 +70,9 @@ function executeExpression(expression, test_string, flags) {
     }
 }
 
-self.onmessage = function (test_data) {
+self.onmessage = function (testData) {
     self.postMessage("onload")
-    let result = executeExpression(test_data.data.regex, test_data.data.regexText, test_data.data.options);
+    let result = executeExpression(testData.data.regex, testData.data.regexText, testData.data.options);
     debug && console.log(result);
     self.postMessage(result);
 }

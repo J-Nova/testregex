@@ -5,8 +5,8 @@
     import {test} from "$lib/stores.js";
 
     
-    function generate(flavour){
-        code = generation($test.expression, $test.test_string, flavour);
+    function generate(flavor){
+        code = generation($test.expression, $test.testString, flavor);
     }
     $: flavors = Object.keys(FLAVORS)
     $: code = "Select one of the flavours to generate code."
@@ -20,10 +20,10 @@
 
     <div class="content">
         <div class="flavor">
-            {#each flavors as available_flavour}
-                <span on:keydown on:click={_=> generate(available_flavour)} class="flavor-item">
+            {#each flavors as availableFlavor}
+                <span on:keydown on:click={_=> generate(availableFlavor)} class="flavor-item">
                     <Icon icon="carbon:code"/>
-                    {available_flavour}
+                    {availableFlavor}
                 </span>
             {/each}
         </div>

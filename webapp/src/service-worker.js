@@ -13,7 +13,7 @@ async function fetchWorker(request) {
     try {
         let res = await fetch(request);
         let cache = await caches.open(CACHE_NAME);
-        cache.put(request, res.clone());
+        await cache.put(request, res.clone());
         return res;
     } catch (err) {
         let res = await caches.match(request);

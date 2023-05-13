@@ -2,7 +2,7 @@
 // @ts-nocheck
     import ToolTip from "./MatchTooltip.svelte";
     import { createEventDispatcher } from 'svelte';
-    import {editor, test, match_data} from "$lib/stores.js";
+    import {editor, test, match} from "$lib/stores.js";
     const dispatch = createEventDispatcher();
 
     let testBackdrop;
@@ -15,13 +15,13 @@
     }
 
     function lockEditor(lock){
-        if (!testTextArea || $test.test_string.length == 0) return;
+        if (!testTextArea || $test.testString.length == 0) return;
         if (!lock) {unlockEditor(false); return;}
         testTextArea.style.display = "none";
         testTextArea.disabled = true;
     }
 
-    $: _ = (lockEditor($editor.test_lock));
+    $: (lockEditor($editor.testLock));
 
 </script>
 <div class="heading">
@@ -34,8 +34,8 @@
         on:dblclick={unlockEditor}
     >
         <div class="custom-area">
-            {#if $match_data.expression_highlight.length >= 1 && $test.expression.length >= 1}
-                {#each $match_data.test_highlight as match}
+            {#if $match.testHighlight.length >= 1 && $test.expression.length >= 1}
+                {#each $match.testHighlight as match}
                     <ToolTip match={match}/>
                 {/each}
             {/if}
@@ -44,7 +44,7 @@
 
     <textarea
         bind:this={testTextArea}
-        bind:value={$test.test_string}
+        bind:value={$test.testString}
         on:input={_ => (dispatch("update", false))}
         on:scroll={_ => {testBackdrop.scrollTop = testTextArea.scrollTop;}}
         spellcheck="false" 
