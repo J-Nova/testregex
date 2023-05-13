@@ -17,11 +17,11 @@ function executeExpression(regex, flags, testString) {
                 groupName = Object.keys(match.groups).find(key => match.groups[key] === match[index]);
             }
             // Make sure there are match indices
-            null != match.indices && null != match.indices[index] ? (startIndex = match.indices[index][0],
+            match.indices !== null && match.indices[index] !== null  ? (startIndex = match.indices[index][0],
             endIndex = match.indices[index][1]) : 0 === index && (startIndex = match.index,
             endIndex = match.index + match[0].length);
-
-            let matchData = new Match(match[index], index, groupName, startIndex, endIndex);
+            let content = match[index];
+            let matchData = new Match(content, index, groupName, startIndex, endIndex);
             subResult.push(matchData)
         }
         result.push(subResult)
@@ -34,7 +34,8 @@ function jsMatch(testData) {
     try {
         let startTime = performance.now();
         let result = executeExpression(testData.data.regex, testData.data.options, testData.data.regexText);
-        return new Result(result, performance.now() - startTime, undefined, undefined);
+        let endTime = performance.now() - startTime;
+        return new Result(result, endTime, undefined, undefined);
     } catch (e) {
         let error = new MatchError(e.message);
         return error

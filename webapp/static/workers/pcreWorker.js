@@ -3,8 +3,8 @@ importScripts("./libs/pcrelib16.js");
 
 // @ts-nocheck
 function callout(_) {
-    match_steps++,
-    total_steps++
+    matchSteps++,
+    totalSteps++
 }
 
 
@@ -14,10 +14,10 @@ function callout(_) {
  */
 function free_regex() {
     
-    void 0 !== cached_pattern.name_table && _free(cached_pattern.name_table),
+    void 0 !== cachedPattern.name_table && _free(cachedPattern.name_table),
     
-    void 0 !== cached_pattern.regex && _free(cached_pattern.regex),
-    cached_pattern = {}
+    void 0 !== cachedPattern.regex && _free(cachedPattern.regex),
+    cachedPattern = {}
 }
 
 /**
@@ -27,9 +27,9 @@ function free_regex() {
  * @returns The compiled regular expression pattern.
  */
 function preg_compile(expression, expressionFlags) {
-    if (expressionFlags += "C", void 0 !== cached_pattern) {
-        if (cached_pattern.pattern === expression && cached_pattern.options === expressionFlags) 
-            return cached_pattern;
+    if (expressionFlags += "C", void 0 !== cachedPattern) {
+        if (cachedPattern.pattern === expression && cachedPattern.options === expressionFlags) 
+            return cachedPattern;
         
         free_regex()
     }
@@ -67,10 +67,10 @@ function preg_compile(expression, expressionFlags) {
             case "u": e |= PCRE_UTF16 | PCRE_UCP
         }
     
-    cached_pattern.pattern = expression,
-    cached_pattern.options = expressionFlags,
-    cached_pattern.option_bits = e,
-    cached_pattern.is_global = R;
+    cachedPattern.pattern = expression,
+    cachedPattern.options = expressionFlags,
+    cachedPattern.option_bits = e,
+    cachedPattern.is_global = R;
     
     var E = _malloc(2 * (2 * expression.length + 1));
     
@@ -79,7 +79,7 @@ function preg_compile(expression, expressionFlags) {
     var r = _malloc(4),
         
         c = _malloc(4),
-        C = pcre_compile(E, e, r, c, null);
+        C = pcreCompile(E, e, r, c, null);
     if (! C) {
         free_regex();
         
@@ -88,88 +88,88 @@ function preg_compile(expression, expressionFlags) {
         new Error(errorMessage)
     }
     
-    HEAP32[getCalloutAddr() >> 2] = callout_ptr;
+    HEAP32[getCalloutAddr() >> 2] = calloutPattern;
     
     var n = _malloc(4);
-    pcre_fullinfo(C, null, PCRE_INFO_NAMECOUNT, n),
+    pcreFullinfo(C, null, PCRE_INFO_NAMECOUNT, n),
     
-    cached_pattern.named_subpats = HEAP32[n >> 2],
+    cachedPattern.named_subpats = HEAP32[n >> 2],
     
     _free(n);
     
     var l = _malloc(4);
-    pcre_fullinfo(C, null, PCRE_INFO_NAMETABLE, l),
-    cached_pattern.name_table = l;
+    pcreFullinfo(C, null, PCRE_INFO_NAMETABLE, l),
+    cachedPattern.name_table = l;
     
     var A = _malloc(4);
-    pcre_fullinfo(C, null, PCRE_INFO_NAMEENTRYSIZE, A),
+    pcreFullinfo(C, null, PCRE_INFO_NAMEENTRYSIZE, A),
     
-    cached_pattern.name_entry_size = HEAP32[A >> 2],
+    cachedPattern.name_entry_size = HEAP32[A >> 2],
     
     _free(A);
     
     var T = _malloc(4);
-    return pcre_fullinfo(C, null, PCRE_INFO_CAPTURECOUNT, T),
+    return pcreFullinfo(C, null, PCRE_INFO_CAPTURECOUNT, T),
     
-    cached_pattern.subpats = HEAP32[T >> 2],
+    cachedPattern.subpats = HEAP32[T >> 2],
     
-    cached_pattern.ovector_len = 3 * (HEAP32[T >> 2] + 1),
+    cachedPattern.ovector_len = 3 * (HEAP32[T >> 2] + 1),
 
     _free(T),
-    cached_pattern.match_limit = getExtraAddr(),
-    cached_pattern.regex = C,
+    cachedPattern.match_limit = getExtraAddr(),
+    cachedPattern.regex = C,
     
     _free(E),
     
     _free(r),
     
     _free(c),
-    cached_pattern
+    cachedPattern
 }
 
 
 /**
  * Searches for a pattern match in the given text using a cached regex pattern.
- * @param {string} match_text - The text to search for a pattern match.
+ * @param {string} testString - The text to search for a expression match.
  * @returns None
  * @throws {Error} If no pattern is supplied to the matching function.
  */
-function preg_match(match_text, start_time) {
-    if (cached_pattern.regex) {
+function preg_match(testString, startTime) {
+    if (cachedPattern.regex) {
         lookbehind = void 0,
-        oldPatternStart = oldPatternEnd = match_id = match_steps = total_steps = 0;
-        var text_length = match_text.length,
+        oldPatternStart = oldPatternEnd = matchId = matchSteps = totalSteps = 0;
+        var testStringLength = testString.length,
             
-            e = _malloc(2 * (2 * match_text.length + 1));
+            e = _malloc(2 * (2 * testString.length + 1));
         
-        stringToUTF16(match_text, e);
-        var subpaths = cached_pattern.named_subpats,
-            a = cached_pattern.name_table,
-            E = cached_pattern.name_entry_size;
+        stringToUTF16(testString, e);
+        var subpaths = cachedPattern.named_subpats,
+            a = cachedPattern.name_table,
+            E = cachedPattern.name_entry_size;
         
-        ovector_len = cached_pattern.ovector_len;
+        ovector_len = cachedPattern.ovector_len;
         
         var r = _malloc(4 * ovector_len),
             c = r >> 2,
             C = 0,
             P = 0,
-            result_data = [],
+            resultData = [],
             l = 0;
         do {
-            var matches_amount = pcre_exec(cached_pattern.regex, cached_pattern.match_limit, e, text_length, C, P, r, ovector_len);
-            if (matches_amount >= 0) {
-                match_steps = 0,
-                0 == matches_amount && (matches_amount = ovector_len / 3);
-                for (var d =[], p = 0, GROUP_NUMBER = 0; 2 * matches_amount > GROUP_NUMBER; GROUP_NUMBER += 2) {
-                    var start_index = HEAP32[c + GROUP_NUMBER],
-                        end_index = HEAP32[c + (GROUP_NUMBER + 1)];
+            var matchesAmount = pcreExec(cachedPattern.regex, cachedPattern.match_limit, e, testStringLength, C, P, r, ovector_len);
+            if (matchesAmount >= 0) {
+                matchSteps = 0,
+                0 == matchesAmount && (matchesAmount = ovector_len / 3);
+                for (var d =[], p = 0, groupNumber = 0; 2 * matchesAmount > groupNumber; groupNumber += 2) {
+                    var startIndex = HEAP32[c + groupNumber],
+                        endIndex = HEAP32[c + (groupNumber + 1)];
                     
                     let index = p++;
-                    let content = match_text.substring(start_index, end_index);
-                    let group_number = GROUP_NUMBER/2;
-                    d[index]= new Match(content, group_number, undefined, start_index, end_index)
+                    let content = testString.substring(startIndex, endIndex);
+                    let currentGroupNumber = groupNumber/2;
+                    d[index]= new Match(content, currentGroupNumber, undefined, startIndex, endIndex)
 
-                    let match = -1 !== start_index;
+                    let match = -1 !== startIndex;
                     if (match && subpaths > 0) { 
                         //add the group name to the result
                         for (let L = HEAP32[a >> 2], f = 0; subpaths > f; f++) {
@@ -180,27 +180,29 @@ function preg_match(match_text, start_time) {
                         }
 
                 }
-                result_data[l++] = d
+                resultData[l++] = d
             } else {
-                if (matches_amount != PCRE_ERROR_NOMATCH) {
-                    C >= text_length;
+                if (matchesAmount != PCRE_ERROR_NOMATCH) {
+                    C >= testStringLength;
                     break
                 }
-                if (!(0 != P && text_length > C)) {
-                    match_steps > 0;
+                if (!(0 != P && testStringLength > C)) {
+                    matchSteps > 0;
                     break
                 }
                 HEAP32[c] = C,
                 HEAP32[c + 1] = C + 1,
-                text_length - 1 > C && "\r" === match_text.charAt(C) && "\n" === match_text.charAt(C + 1) && (HEAP32[c + 1] += 1)
+                testStringLength - 1 > C && "\r" === testString.charAt(C) && "\n" === testString.charAt(C + 1) && (HEAP32[c + 1] += 1)
             }
             
             P = HEAP32[c + 1] === HEAP32[c] ? PCRE_NOTEMPTY_ATSTART | PCRE_ANCHORED : 0,
             C = HEAP32[c + 1]
-        } while (cached_pattern.is_global);
+        } while (cachedPattern.is_global);
+        let endTime = performance.now() - startTime;
+        let catastrophic = matchesAmount === PCRE_ERROR_MATCHLIMIT;
         return _free(e),
         
-        _free(r), new Result(result_data, performance.now() - start_time, total_steps, matches_amount === PCRE_ERROR_MATCHLIMIT)
+        _free(r), new Result(resultData, endTime, totalSteps, catastrophic)
     }
     throw new Error("No pattern supplied to matching function!")
 }
@@ -314,7 +316,7 @@ var PCRE_CASELESS = 1,
     PCRE_EXTRA_TABLES = 8,
     PCRE_EXTRA_MATCH_LIMIT_RECURSION = 16,
     
-    pcre_compile = Module.cwrap("pcre16_compile", "number", [
+    pcreCompile = Module.cwrap("pcre16_compile", "number", [
         "number",
         "number",
         "number",
@@ -322,7 +324,7 @@ var PCRE_CASELESS = 1,
         "number"
     ]),
     
-    pcre_exec = Module.cwrap("pcre16_exec", "number", [
+    pcreExec = Module.cwrap("pcre16_exec", "number", [
         "number",
         "number",
         "number",
@@ -333,17 +335,17 @@ var PCRE_CASELESS = 1,
         "number"
     ]),
     
-    pcre_fullinfo = Module.cwrap("pcre16_fullinfo", "number", ["number", "number", "number", "number"]),
+    pcreFullinfo = Module.cwrap("pcre16_fullinfo", "number", ["number", "number", "number", "number"]),
     
     getCalloutAddr = Module.cwrap("getCalloutAddress", "number", []),
     
     getExtraAddr = Module.cwrap("getExtraAddress", "number", []),
-    cached_pattern = {},
+    cachedPattern = {},
     
-    callout_ptr = Runtime.addFunction(callout),
-    match_id,
-    match_steps,
-    total_steps,
+    calloutPattern = Runtime.addFunction(callout),
+    matchId,
+    matchSteps,
+    totalSteps,
     oldPatternStart = 0,
     oldPatternEnd = 0,
     oldStrStart = 0,

@@ -1,15 +1,15 @@
 importScripts("./libs/javalib.js");
 importScripts('./classes.js');
-main();
+main(); // Run function to initialize java library.
 
 const error_messages = ["out of stack space", "too much recursion", "maximum call stack size exceeded"];
-function getError(t) {
-    if (null != t.message) {
-        let error = t.message.toLowerCase().trim().replace(/\s+/g, " ").replace(/[^a-z ]/i, "");
+function getError(error) {
+    if (null != error.message) {
+        let error = error.message.toLowerCase().trim().replace(/\s+/g, " ").replace(/[^a-z ]/i, "");
         if (error_messages.includes(error)) 
             return "JAVA_STACK_ERROR"
     }
-    return t.message || "Unknown internal Java matcher error"
+    return error.message || "Unknown internal Java matcher error"
 }
 
 function parseFlags(flags){
@@ -42,29 +42,31 @@ function parseFlags(flags){
 
 
 function executeExpression(expression, testString, flags) {
-    let time = performance.now();
+    let startTime = performance.now();
     try {
         let isGlobal = flags.includes("g");
         let [matchResult, error] = self.javaMatches(expression, testString, parseFlags(flags), isGlobal);
         
         if (error != null) {
-            const [[[, error_message,, index]]] = error;
-            return new MatchError(error_message + " near index " + index)
+            let [[[, errorMessage,, index]]] = error;
+            return new MatchError(errorMessage + " near index " + index);
         }
         let result = [];
         for (let index = 0; index < matchResult.length; index++) {
             let targetMatch = matchResult[index];
-            if (targetMatch == null) 
+            if (targetMatch === null) 
                 break;
             let match = targetMatch.map((value => {
                 let [r, a, n] = value;
-                    let content = r || "";
-                    let startIndex = parseInt(a, 10);
-                return new Match(content, parseInt(n, 10), undefined, startIndex, startIndex + content.length)
+                let content = r || "";
+                let startIndex = parseInt(a, 10);
+                let endIndex = startIndex + content.length;
+                return new Match(content, parseInt(n, 10), undefined, startIndex, endIndex);
             }));
-            result.push(match)
+            result.push(match);
         }
-        return new Result(result, performance.now() - time, undefined, undefined);
+        let endTime = performance.now() - startTime;
+        return new Result(result, endTime, undefined, undefined);
     } catch (e) {
         return new MatchError(getError(e));
     }
