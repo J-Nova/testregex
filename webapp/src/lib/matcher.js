@@ -20,7 +20,6 @@ export function updateRegex(test, errorCallback, successCallback, timeoutCallbac
         };
 
     if (explain_expression) { // Explain the expression that has been given.
-        console.log(explainRegex(test_data, true).body);
         let explain_tree = explainRegex(test_data, true);
         let explanation_data = {
                     explanation: explainRegex(test_data, false),

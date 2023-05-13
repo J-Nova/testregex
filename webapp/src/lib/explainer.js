@@ -188,6 +188,11 @@ export function testHighlighter(matches, testString){
             }
         }
     }
+    // Clear up the match_html object by removing the no-match class.
+    Object.keys(match_html).forEach(item => {
+        if (match_html[item].class_name === "no-match") delete match_html[item];
+    })
+
     return Object.values(match_html);
 }
 
