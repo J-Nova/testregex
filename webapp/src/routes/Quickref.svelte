@@ -1,157 +1,174 @@
+<style>
+	.quickref {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		overflow: hidden;
+		height: 100%;
+		flex-grow: 1;
+	}
+
+	.category,
+	.results {
+		overflow-y: auto;
+		overflow-x: hidden;
+		width: 100%;
+	}
+
+	input::placeholder {
+		color: var(--primary-text-color);
+	}
+	input {
+		width: 99%;
+		background-color: var(--background-color);
+		border-radius: 3px;
+		border: none;
+		padding: 3px;
+		color: var(--primary-text-color);
+		cursor: text;
+	}
+
+	.item {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: inherit;
+		border: none;
+		width: 100%;
+		cursor: pointer;
+	}
+
+	.result-item {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: inherit;
+		border: none;
+		width: 100%;
+		cursor: pointer;
+	}
+
+	.item:hover,
+	.result-item:hover {
+		background-color: var(--highlight-color);
+		border-radius: 3px;
+	}
+
+	.desc {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		flex-grow: 1;
+		text-align: left;
+		margin-right: 10px;
+	}
+
+	.token {
+		color: #3cb371;
+		white-space: nowrap;
+		flex-shrink: 1;
+	}
+</style>
+
 <script>
-// @ts-nocheck
-    import {quickref} from "$lib/quickref.js";
-    import {test} from "$lib/stores.js";
-    import Item from "./Quickref-item.svelte";
+	// @ts-nocheck
+	import { quickref } from "$lib/quickref.js";
+	import { test } from "$lib/stores.js";
+	import Item from "./Quickref-item.svelte";
 
-    function getCategoryData(categoryKey){
-        let items = [];
-        if (categoryKey === "all") {
-            Object.entries(quickref).forEach(([key, _]) => {
-                Object.entries(quickref[key]).forEach(([_, value]) => {
-                    if (value.flavors.includes($test.flavor)) {
-                        items.push(value);
-                    }
-                });
-            }); 
-        } else {
-            Object.entries(quickref[categoryKey]).forEach(([_, value]) => {
-                if (value.flavors.includes($test.flavor)) {
-                    items.push(value);
-                }
-            });
-        }
-        selectedItems = items;
-        return items;
-    }
+	function getCategoryData(categoryKey) {
+		let items = [];
+		if (categoryKey === "all") {
+			Object.entries(quickref).forEach(([key, _]) => {
+				Object.entries(quickref[key]).forEach(([_, value]) => {
+					if (value.flavors.includes($test.flavor)) {
+						items.push(value);
+					}
+				});
+			});
+		} else {
+			Object.entries(quickref[categoryKey]).forEach(([_, value]) => {
+				if (value.flavors.includes($test.flavor)) {
+					items.push(value);
+				}
+			});
+		}
+		selectedItems = items;
+		return items;
+	}
 
-    function getSearchData(searchString){
-        let items = []
-        Object.entries(quickref).forEach(([_, crItems]) => {
-                crItems.forEach((item) => {
-                    if (
-                        item.flavors.includes($test.flavor) && 
-                        (item.desc.includes(searchString) || item.info.includes(searchString))
-                        ) { items.push(item); }
-                });
-            });
-            selectedItems = items;
-        return items;
-    }
+	function getSearchData(searchString) {
+		let items = [];
+		Object.entries(quickref).forEach(([_, crItems]) => {
+			crItems.forEach(item => {
+				if (
+					item.flavors.includes($test.flavor) &&
+					(item.desc.includes(searchString) || item.info.includes(searchString))
+				) {
+					items.push(item);
+				}
+			});
+		});
+		selectedItems = items;
+		return items;
+	}
 
-    function search(){
-        if (searchString.length > 0) {
-            getSearchData(searchString);
-        }
-        else {
-            getCategoryData("all")
-        }
-    }
+	function search() {
+		if (searchString.length > 0) {
+			getSearchData(searchString);
+		} else {
+			getCategoryData("all");
+		}
+	}
 
-    function highlighter(item){
-        highlightItem = item;
-    }
+	function highlighter(item) {
+		highlightItem = item;
+	}
 
-    $: selectedItems = getCategoryData("all");
-    $: highlightItem = undefined;
-    let searchString = undefined;
+	$: selectedItems = getCategoryData("all");
+	$: highlightItem = undefined;
+	let searchString = undefined;
 </script>
 
 <div class="right-container">
-    {#if highlightItem !== undefined}
-            <Item item={highlightItem} on:closeHighlight={e => {highlightItem = undefined}}/>
-    {:else}
-        <h2>
-            Lookup
-        </h2>
-        <div class="quickref">
-            <div class="category">
-                <input type="text" placeholder="Search..." spellcheck="false" on:keyup={search} bind:value={searchString}>
-                <button class="item" on:click={_ => getCategoryData("all")}>All tokens</button>
-                {#each Object.keys(quickref) as category}
-                    <button class="item" on:click={_ => getCategoryData(category)}>
-                        {category}
-                    </button>
-                {/each}
-            </div>
-            <div class="results">
-                {#each selectedItems as item}
-                    <button class="result-item" on:click={_ => {highlighter(item)}}>
-                        <div class="desc">{item.desc}</div>
-                        <div class="token">{item.token}</div>
-                    </button>
-                {/each}        
-            </div>
-        </div>
-    {/if}
+	{#if highlightItem !== undefined}
+		<Item
+			item={highlightItem}
+			on:closeHighlight={e => {
+				highlightItem = undefined;
+			}}
+		/>
+	{:else}
+		<h2>Lookup</h2>
+		<div class="quickref">
+			<div class="category">
+				<input
+					type="text"
+					placeholder="Search..."
+					spellcheck="false"
+					on:keyup={search}
+					bind:value={searchString}
+				/>
+				<button class="item" on:click={_ => getCategoryData("all")}>All tokens</button>
+				{#each Object.keys(quickref) as category}
+					<button class="item" on:click={_ => getCategoryData(category)}>
+						{category}
+					</button>
+				{/each}
+			</div>
+			<div class="results">
+				{#each selectedItems as item}
+					<button
+						class="result-item"
+						on:click={_ => {
+							highlighter(item);
+						}}
+					>
+						<div class="desc">{item.desc}</div>
+						<div class="token">{item.token}</div>
+					</button>
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
-
-<style>
-    .quickref{
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        overflow: hidden;
-        height: 100%;
-        flex-grow: 1;
-    }
-
-    .category, .results {
-        overflow-y: auto;
-        overflow-x: hidden;
-        width: 100%;
-    }
-
-    input::placeholder {
-        color: var(--primary-text-color);
-    }
-    input {
-        width: 99%;
-        background-color: var(--background-color);
-        border-radius: 3px;
-        border: none;
-        padding: 3px;
-        color: var(--primary-text-color);
-        cursor: text;
-    }
-
-    .item{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        background-color: inherit;
-        border: none;
-        width: 100%;
-        cursor: pointer;
-    }
-
-    .result-item{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        background-color: inherit;
-        border: none;
-        width: 100%;
-        cursor:pointer
-    }
-    
-    .item:hover, .result-item:hover {
-        background-color: var(--highlight-color);
-        border-radius: 3px;
-    }
-    
-    .desc {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        flex-grow: 1;
-        text-align: left;
-        margin-right: 10px;
-    }
-
-    .token {
-        color:#3cb371;
-        white-space: nowrap;
-        flex-shrink: 1;
-    }
-</style>

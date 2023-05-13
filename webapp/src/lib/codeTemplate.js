@@ -1,6 +1,6 @@
-export function generation(expression, testString, flavor){
-    if (flavor === "PYTHON") {
-        return `
+export function generation(expression, testString, flavor) {
+	if (flavor === "PYTHON") {
+		return `
 import re
 
 regex = r"${expression}"
@@ -18,8 +18,8 @@ for matchNum, match in enumerate(matches, start=1):
         
         print ("Group {groupNum} found at {start}-{end}: {group}".format(groupNum = groupNum, start = match.start(groupNum), end = match.end(groupNum), group = match.group(groupNum)))
         `;
-    } else if (flavor === "JAVASCRIPT") {
-        return `
+	} else if (flavor === "JAVASCRIPT") {
+		return `
 let regex = new RegExp('${expression}', 'gm');
 let test_string = '${testString}';
 let match;
@@ -35,17 +35,17 @@ while ((match = regex.exec(str)) !== null) {
         console.log(\`Found match, group \${groupIndex}: \${match}\`);
     });
 }`;
-    } else if (flavor === "PCRE") {
-        return `
+	} else if (flavor === "PCRE") {
+		return `
 $regex = '/${expression}/gm';
 $test_string = '${testString}';
 
 preg_match_all($regex, $test_string, $matches, PREG_SET_ORDER, 0);
 
 // Print the entire match result
-var_dump($matches);`
-    } else if (flavor === "JAVA") {
-        return `
+var_dump($matches);`;
+	} else if (flavor === "JAVA") {
+		return `
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,8 +66,6 @@ public class Example {
         }
     }
 }
-        `
-    }
+        `;
+	}
 }
-
-

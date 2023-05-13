@@ -2,27 +2,30 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="theme-color" content="#2D2F40"/>
-		<meta name="description" content="TestRegex.com. Quickly test, build and debug regex expressions"/>
+		<meta name="theme-color" content="#2D2F40" />
+		<meta
+			name="description"
+			content="TestRegex.com. Quickly test, build and debug regex expressions"
+		/>
 		<title>TestRegex: test, build and debug regex</title>
 		<link rel="icon" href="%sveltekit.assets%/images/site_icon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="%sveltekit.assets%/global.css">
-		<link rel="manifest" href="%sveltekit.assets%/manifest.json"/>
+		<link rel="stylesheet" href="%sveltekit.assets%/global.css" />
+		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
 		<!-- Google tag (gtag.js) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-6W8V7X5RX0"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
 
-			gtag('config', 'G-6W8V7X5RX0');
+			gtag("config", "G-6W8V7X5RX0");
 		</script>
 		%sveltekit.head%
 	</head>
 	<body>
-		<div style="display: contents">
-			%sveltekit.body%
-		</div>
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
