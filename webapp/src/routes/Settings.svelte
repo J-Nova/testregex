@@ -9,17 +9,56 @@
 		background-color: var(--primary);
 		padding: 6px;
 	}
+
+	span {
+		display: flex;
+		flex-direction: column;
+		height: fit-content;
+	}
+	button {
+		border: 1px solid var(--tertiary);
+		border-radius: 3px;
+	}
 </style>
 
 <script>
 	import { editor } from "$lib/stores.js";
+	import Modal from "svelte-simple-modal";
+	import EditPopup from "./EditPopup.svelte";
+
+	$: popup = undefined;
+
 </script>
+
+<Modal show={popup} />
 
 <div>
 	<h2>Settings</h2>
 	<div class="container">
-		<span>Editor lock time-out: {$editor.editorLockTimeout}</span>
-		<span>Show tooltips: {$editor.showToolTips}</span>
-		<span>Visualize special characters: {$editor.visualizeSpecialCharacters}</span>
+		<span>
+			Lock timeout: {$editor.editorLockTimeout}ms
+		</span>
+
+		<span>
+			Execution timeout: {$editor.matchTimeout}ms
+		</span>
+
+		<span>
+			Explain timeout: {$editor.explainTimeout}ms
+		</span>
+
+		<span>
+			Show tooltips: {$editor.showToolTips}
+		</span>
+
+		<span>
+			Visualize special characters: {$editor.visualizeSpecialCharacters}
+		</span>
+
+		<button
+			on:click={_ => {
+				popup = EditPopup;
+			}}>Edit settings</button
+		>
 	</div>
 </div>
