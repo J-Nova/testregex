@@ -14,7 +14,7 @@
 		flex-direction: column;
 		height: fit-content;
 	}
-	button{
+	button {
 		border: 1px solid var(--tertiary);
 		border-radius: 3px;
 	}
@@ -28,7 +28,7 @@
 	$: popup = undefined;
 </script>
 
-<Modal show={popup}/>
+<Modal show={popup} />
 
 <div>
 	<h2>Settings</h2>
@@ -48,11 +48,15 @@
 		<span>
 			Show tooltips: {$editor.showToolTips}
 		</span>
-		
+
 		<span>
 			Visualize special characters: {$editor.visualizeSpecialCharacters}
 		</span>
 
-		<button on:click={_ => {popup = EditPopup}}>Edit settings</button>
+		<button
+			on:click={_ => {
+				popup = EditPopup;
+			}}>Edit settings</button
+		>
 	</div>
 </div>
