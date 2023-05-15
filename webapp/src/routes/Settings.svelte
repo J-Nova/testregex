@@ -8,6 +8,7 @@
 	.container {
 		background-color: var(--primary);
 		padding: 6px;
+		color: var(--secondary-text-color);
 	}
 
 	span {
