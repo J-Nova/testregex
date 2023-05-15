@@ -28,7 +28,6 @@
 	import EditPopup from "./EditPopup.svelte";
 
 	$: popup = undefined;
-
 </script>
 
 <Modal show={popup} />
