@@ -9,6 +9,7 @@
 		background-color: var(--primary);
 		padding: 6px;
 	}
+
 	span {
 		display: flex;
 		flex-direction: column;
@@ -26,6 +27,7 @@
 	import EditPopup from "./EditPopup.svelte";
 
 	$: popup = undefined;
+
 </script>
 
 <Modal show={popup} />
