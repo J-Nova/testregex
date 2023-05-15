@@ -10,12 +10,13 @@
 	.settings-content {
 		display: flex;
 		flex-direction: column;
-		gap: 5%;
-		max-width: 12%;
+		gap: 1%;
+		max-width: 15%;
 		width: 100%;
 		height: 100%;
 		background-color: var(--secondary);
 		color: var(--primary-text-color);
+		overflow-y: overlay;
 	}
 
 	.main-content {
