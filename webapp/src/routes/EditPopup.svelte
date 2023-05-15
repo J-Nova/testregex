@@ -2,7 +2,23 @@
     input, button{
 		border: 1px solid var(--tertiary);
 		border-radius: 3px;
+        width: 30%;
 	}
+
+    span {
+        display: flex;
+        flex-direction: row;
+        gap: 5%;
+        width: 100%;
+        justify-content: space-between;
+    }
+    div.container{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        justify-content: center;
+    }
 </style>
 
 

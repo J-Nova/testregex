@@ -34,15 +34,15 @@
 	<h2>Settings</h2>
 	<div class="container">
 		<span>
-			Lock timeout: {$editor.editorLockTimeout}
+			Lock timeout: {$editor.editorLockTimeout}ms
 		</span>
 
 		<span>
-			Execution timeout: {$editor.matchTimeout}
+			Execution timeout: {$editor.matchTimeout}ms
 		</span>
 
 		<span>
-			Explain timeout: {$editor.explainTimeout}
+			Explain timeout: {$editor.explainTimeout}ms
 		</span>
 
 		<span>
@@ -52,7 +52,7 @@
 		<span>
 			Visualize special characters: {$editor.visualizeSpecialCharacters}
 		</span>
-		
+
 		<button on:click={_ => {popup = EditPopup}}>Edit settings</button>
 	</div>
 </div>
