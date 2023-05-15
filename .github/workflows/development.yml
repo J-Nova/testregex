@@ -1,0 +1,33 @@
+name: Deployment
+on: 
+  pull_request:
+    branches:
+      - development
+    types: [closed]
+  
+  push:
+    branches:
+      - development
+
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_DEVELOPMENT_PK }}
+          known_hosts: "temp"
+      
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST_DEVELOPMENT }} >> ~/.ssh/known_hosts
+
+      - name: Stopping containers
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
+
+      - name: Removing containers
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
+
+      - name: Deployment
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git checkout development && git pull && sudo docker build -t testregex . && sudo docker run -d -p 80:3000 testregex"
