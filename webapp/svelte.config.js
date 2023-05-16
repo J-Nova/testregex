@@ -7,7 +7,7 @@ const config = {
 		adapter: adapter({out:"build"}),
 		alias: {
 			"$components": "src/components"
-		}
+		},
 	},
 	checkOrigin: true,
     preprocess: vitePreprocess()
