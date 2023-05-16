@@ -13,9 +13,9 @@
 
 <script>
 	// @ts-nocheck
-	import ToolTip from "./MatchTooltip.svelte";
 	import { createEventDispatcher } from "svelte";
 	import { editor, test, match } from "$lib/stores.js";
+	import ToolTip from "./MatchTooltip.svelte";
 	const dispatch = createEventDispatcher();
 
 	let testBackdrop;

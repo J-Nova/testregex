@@ -7,43 +7,34 @@
 		border-radius: 3px;
 		padding: 10px;
 		position: absolute;
-		z-index: 100;
+		z-index: 10000;
 		display: flex;
 		flex-direction: column;
 		font-size: medium;
 	}
-
-	.match0 {
-		background-color: var(--senary);
-	}
-	.match0_2 {
-		background-color: var(--tertiary);
+	.Group {
+		background-color: #fcba03;
 	}
 
-	.match1 {
-		background-color: var(--senary);
+	.CharacterClass {
+		background-color: #4287f5;
 	}
 
-	.match2 {
-		background-color: var(--tertiary);
+	.Repetition {
+		background-color: #03fc84;
+	}
+
+	.Quantifier {
+		background-color: #03fc84;
 	}
 </style>
 
 <script>
-	export let match;
+	import { editor } from "$lib/stores.js";
+	export let expression;
 	let isHovered = false;
 	let x;
 	let y;
-
-	function matchContent() {
-		let value;
-		if (match.groupNumber !== undefined && match.groupNumber !== 0) {
-			value = `Group (${match.groupNumber}) ${match.groupName}: ${match.content}`;
-		} else {
-			value = `Matched: ${match.content}`;
-		}
-		return value;
-	}
 
 	function showTooltip(event) {
 		if (!isHovered) {
@@ -56,10 +47,17 @@
 	function mouseLeave() {
 		isHovered = false;
 	}
+	function getClass(expression) {
+		if ($editor.visualizeSpecialCharacters === true) {
+			return expression.type;
+		} else {
+			return "";
+		}
+	}
 </script>
 
 <span
-	class={match.class_name}
+	class={getClass(expression)}
 	on:focusout={mouseLeave}
 	on:pointerleave={mouseLeave}
 	on:mouseleave={mouseLeave}
@@ -76,19 +74,14 @@
 	on:mouseover={showTooltip}
 	on:touchmove={showTooltip}
 	on:touchstart={showTooltip}
-	style={match.color}
 >
-	{match.content}
+	{expression.content}
 </span>
 
-{#if isHovered && match.className === "match"}
+{#if isHovered && $editor.showToolTips === true}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		<span class="header">Match - {match.matchNumber}</span>
-		<span class="match-data">
-			{matchContent()}
-		</span>
-		<span class="match-position">
-			Position: {match.start}-{match.end}
+		<span class="expression-data">
+			{expression.explanation}
 		</span>
 	</div>
 {/if}

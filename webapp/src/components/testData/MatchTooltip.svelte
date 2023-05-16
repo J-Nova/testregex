@@ -7,33 +7,44 @@
 		border-radius: 3px;
 		padding: 10px;
 		position: absolute;
-		z-index: 0;
+		z-index: 100;
 		display: flex;
 		flex-direction: column;
 		font-size: medium;
 	}
-	.Group {
-		background-color: #fcba03;
+
+	.match0 {
+		background-color: var(--senary);
+	}
+	.match0_2 {
+		background-color: var(--tertiary);
 	}
 
-	.CharacterClass {
-		background-color: #4287f5;
+	.match1 {
+		background-color: var(--senary);
 	}
 
-	.Repetition {
-		background-color: #03fc84;
-	}
-
-	.Quantifier {
-		background-color: #03fc84;
+	.match2 {
+		background-color: var(--tertiary);
 	}
 </style>
 
 <script>
-	export let expression;
+	import { editor } from "$lib/stores.js";
+	export let match;
 	let isHovered = false;
 	let x;
 	let y;
+
+	function matchContent() {
+		let value;
+		if (match.groupNumber !== undefined && match.groupNumber !== 0) {
+			value = `Group (${match.groupNumber}) ${match.groupName}: ${match.content}`;
+		} else {
+			value = `Matched: ${match.content}`;
+		}
+		return value;
+	}
 
 	function showTooltip(event) {
 		if (!isHovered) {
@@ -49,7 +60,7 @@
 </script>
 
 <span
-	class={expression.type}
+	class={match.class_name}
 	on:focusout={mouseLeave}
 	on:pointerleave={mouseLeave}
 	on:mouseleave={mouseLeave}
@@ -66,14 +77,19 @@
 	on:mouseover={showTooltip}
 	on:touchmove={showTooltip}
 	on:touchstart={showTooltip}
+	style={match.color}
 >
-	{expression.content}
+	{match.content}
 </span>
 
-{#if isHovered}
+{#if isHovered && match.className === "match" && $editor.showToolTips === true}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
-		<span class="expression-data">
-			{expression.explanation}
+		<span class="header">Match - {match.matchNumber}</span>
+		<span class="match-data">
+			{matchContent()}
+		</span>
+		<span class="match-position">
+			Position: {match.start}-{match.end}
 		</span>
 	</div>
 {/if}

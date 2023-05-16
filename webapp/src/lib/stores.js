@@ -21,7 +21,7 @@ class Editor {
 		this.explainTimeout = 2000;
 		this.matchTimeout = 2000;
 		this.showToolTips = true;
-		this.visualizeSpecialCharacters = false;
+		this.visualizeSpecialCharacters = true;
 
 		this.editorLock = true;
 		this.testLock = true;

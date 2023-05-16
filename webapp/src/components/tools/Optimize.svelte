@@ -4,7 +4,7 @@
 	function getOptimzedExpression() {
 		if ($test.expression.length == 0) return;
 		let optimizedExpression = optimizeRegex(
-			`/${$test.expression}/${$test.flags.join("")}`
+			`/${$test.expression}/${$test.getFlags()}`
 		);
 		$test.expression = optimizedExpression.source;
 		$test.flags = optimizedExpression.flags.split("");
