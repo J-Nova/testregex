@@ -5,6 +5,9 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 const config = {
 	kit: {
 		adapter: adapter({out:"build"}),
+		alias: {
+			"$components": "src/components"
+		}
 	},
 	checkOrigin: true,
     preprocess: vitePreprocess()

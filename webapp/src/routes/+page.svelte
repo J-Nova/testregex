@@ -73,12 +73,12 @@
 	import Quickref from "./Quickref.svelte";
 	import Matchinformation from "./Matchinformation.svelte";
 	import Matchexplanation from "./Matchexplanation.svelte";
-	import Expression from "./Expression.svelte";
-	import TestData from "./TestData.svelte";
-	import Ad from "./Ad.svelte";
+	import Expression from "$components/expression/Expression.svelte";
+	import TestData from "$components/testData/TestData.svelte";
+	import Ad from "./Socials.svelte";
 	import Flavour from "./Flavour.svelte";
-	import Tools from "./Tools.svelte";
-	import Settings from "./Settings.svelte";
+	import Tools from "$components/tools/Tools.svelte";
+	import Settings from "$components/settings/Settings.svelte";
 	let expressionTimer;
 
 	function updateExpression(explain) {

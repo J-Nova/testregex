@@ -47,11 +47,11 @@
 	function mouseLeave() {
 		isHovered = false;
 	}
-	function getClass(expression){
-		if ($editor.visualizeSpecialCharacters === true){
-			return expression.type
+	function getClass(expression) {
+		if ($editor.visualizeSpecialCharacters === true) {
+			return expression.type;
 		} else {
-			return ""
+			return "";
 		}
 	}
 </script>

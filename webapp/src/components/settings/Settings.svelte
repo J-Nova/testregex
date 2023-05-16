@@ -23,8 +23,8 @@
 </style>
 
 <script>
-	import { editor } from "$lib/stores.js";
 	import Modal from "svelte-simple-modal";
+	import { editor } from "$lib/stores.js";
 	import EditPopup from "./EditPopup.svelte";
 
 	$: popup = undefined;

@@ -31,12 +31,12 @@
 
 <script>
 	// @ts-nocheck
-	import { editor, test, match } from "$lib/stores.js";
 	import { createEventDispatcher } from "svelte";
+	import { editor, test, match } from "$lib/stores.js";
+	import Optimize from "$components/tools/Optimize.svelte";
+	import Transpile from "$components/tools/Transpile.svelte";
 	import Options from "./Options.svelte";
 	import Flags from "./Flags.svelte";
-	import Optimize from "./Optimize.svelte";
-	import Transpile from "./Transpile.svelte";
 	import ExpressionTooltip from "./ExpressionTooltip.svelte";
 
 	const dispatch = createEventDispatcher();
