@@ -30,6 +30,7 @@
 </style>
 
 <script>
+	import { editor } from "$lib/stores.js";
 	export let match;
 	let isHovered = false;
 	let x;
@@ -81,7 +82,7 @@
 	{match.content}
 </span>
 
-{#if isHovered && match.className === "match"}
+{#if isHovered && match.className === "match" && $editor.showToolTips === true}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
 		<span class="header">Match - {match.matchNumber}</span>
 		<span class="match-data">

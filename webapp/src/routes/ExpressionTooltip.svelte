@@ -7,7 +7,7 @@
 		border-radius: 3px;
 		padding: 10px;
 		position: absolute;
-		z-index: 0;
+		z-index: 10000;
 		display: flex;
 		flex-direction: column;
 		font-size: medium;
@@ -30,6 +30,7 @@
 </style>
 
 <script>
+	import { editor } from "$lib/stores.js";
 	export let expression;
 	let isHovered = false;
 	let x;
@@ -46,10 +47,17 @@
 	function mouseLeave() {
 		isHovered = false;
 	}
+	function getClass(expression){
+		if ($editor.visualizeSpecialCharacters === true){
+			return expression.type
+		} else {
+			return ""
+		}
+	}
 </script>
 
 <span
-	class={expression.type}
+	class={getClass(expression)}
 	on:focusout={mouseLeave}
 	on:pointerleave={mouseLeave}
 	on:mouseleave={mouseLeave}
@@ -70,7 +78,7 @@
 	{expression.content}
 </span>
 
-{#if isHovered}
+{#if isHovered && $editor.showToolTips === true}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
 		<span class="expression-data">
 			{expression.explanation}
