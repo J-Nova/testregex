@@ -36,4 +36,4 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:testregex/
 
       - name: Deployment
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker build -t testregex . && sudo docker run -d -p 443:3000 80:1500 testregex"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker build -t testregex . && sudo docker run -d -p 443:3000 80:1500 testregex"
