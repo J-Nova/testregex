@@ -48,12 +48,10 @@ jobs:
       - name: Clone repository
         run: |
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "git clone https://github.com/J-Nova/testregex.git"
-  deploying:
-    runs-on: ubuntu-latest
-    steps:
+      
       - uses: GuillaumeFalourd/setup-rsync@v1.1
       - name: Deploy with rsync
-        run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:testregex/webapp/server
+        run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:testregex/webapp/server/
 
       - name: Deployment
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && sudo docker build -t testregex . && sudo docker run -d -p 443:3000 80:1500 testregex"
