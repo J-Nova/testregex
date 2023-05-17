@@ -8,7 +8,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write ./src/**/*.{js,svelte,html,ts} ./src/**/**/*.{js,svelte,html,ts}",
-		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/**" 
+		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/**",
+		"prod": "node ./server/server.js"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
@@ -32,6 +33,7 @@
 	"type": "module",
 	"dependencies": {
 		"@zerodevx/svelte-json-view": "^1.0.1",
+		"express": "^4.18.2",
 		"regexp-tree": "^0.1.24",
 		"svelte-simple-modal": "^1.5.2"
 	}
