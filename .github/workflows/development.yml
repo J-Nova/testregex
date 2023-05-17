@@ -48,7 +48,9 @@ jobs:
       - name: Clone repository
         run: |
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "git clone https://github.com/J-Nova/testregex.git"
-      
+  deploying:
+    runs-on: ubuntu-latest
+    steps:
       - uses: GuillaumeFalourd/setup-rsync@v1.1
       - name: Deploy with rsync
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:testregex/webapp/server
