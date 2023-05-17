@@ -30,13 +30,13 @@ app.get('/healthcheck', (_, res) => {
     res.end('ok');
 });
 
-// app.use((req, res, next) => {
-//     if(req.protocol === 'http' && start_https == true) {
-//         console.log("Redirecting to https")
-//         res.redirect(301, `https://${req.headers.host}${req.url}`);
-//     }
-//     next();
-// });
+app.use((req, res, next) => {
+    if(req.protocol === 'http' && start_https == true) {
+        console.log("Redirecting to https")
+        res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+    next();
+});
 
 
 app.use(handler);
