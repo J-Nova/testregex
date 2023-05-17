@@ -26,7 +26,7 @@ jobs:
       #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
 
       - name: Stopping containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'docker ps -q --filter "name=$testregex" | xargs -r docker stop | xargs -r docker rm"'
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'docker ps -q --filter "name=$testregex" | xargs -r docker stop | xargs -r docker rm'
 
       # - name: Removing containers
       #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
