@@ -5,8 +5,8 @@ import http from 'http';
 import fs from 'fs';
 
 
-let httpPort = 1500;
-let httpsPort = 3000;
+let httpPort = 3000;
+let httpsPort = 3500;
 
 let httpsOptions = {}
 let start_https = false;
@@ -31,7 +31,8 @@ app.get('/healthcheck', (_, res) => {
 });
 
 app.use((req, res, next) => {
-    if(req.protocol === 'http' && start_https) {
+    if(req.protocol === 'http' && start_https == true) {
+        console.log("Redirecting to https")
         res.redirect(301, `https://${req.headers.host}${req.url}`);
     }
     next();
@@ -40,11 +41,11 @@ app.use((req, res, next) => {
 
 app.use(handler);
 httpServer.listen(httpPort);
-if (start_https == true) httpsServer.listen(httpsPort);
-console.log("Servers listening on ports " + httpPort + " and " + httpsPort);
+console.log("Http server listening on port " + httpPort);
+if (start_https == true) httpsServer.listen(httpsPort), console.log("Https listening on port " + httpsPort);;
 
 
 process.on('SIGTERM', () => {
     httpsServer.close()
-    if (start_https) httpServer.close()
+    if (start_https == true) httpServer.close()
 })

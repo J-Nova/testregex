@@ -9,10 +9,10 @@ COPY /webapp .
 RUN npm install
 RUN npm run build
 
-RUN sudo iptables -t filter -A INPUT -p tcp --dport 443 -j ACCEPT
-RUN sudo iptables -t filter -A INPUT -p tcp --dport 80 -j ACCEPT
 
-EXPOSE 1500
 EXPOSE 3000
+EXPOSE 3500
+EXPOSE 80
+EXPOSE 443
 
 CMD ["node", "./server/server.js"]
