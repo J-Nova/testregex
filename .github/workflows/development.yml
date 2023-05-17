@@ -28,9 +28,6 @@ jobs:
       - name: Stopping containers
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker ps -q --filter "name=$testregex" | xargs -r sudo docker stop | xargs -r sudo docker rm'
 
-      # - name: Removing containers
-      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
-
       - name: Deploying certificates
         run: |
           touch cert.key
