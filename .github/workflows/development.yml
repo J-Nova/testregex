@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploying certificates
         run: |
-          ls -la
+          ls
           touch ./webapp/server/cert.key
           touch ./webapp/server/cert.crt
           touch ./webapp/server/cert.ca-bundle
