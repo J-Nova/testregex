@@ -20,11 +20,14 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Stopping containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
+      # - name: Stopping containers
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
 
-      - name: Removing containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
+      - name: Stopping containers
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker ps -q --filter "name=testregex" | grep -q . && docker stop testregex && docker rm -fv testregex || echo "No containers to stop"'
+
+      # - name: Removing containers
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker rm $CONTAINERS'
 
       - name: Deploying certificates
         run: |
