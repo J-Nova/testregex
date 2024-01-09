@@ -1,4 +1,4 @@
-importScripts('./classes.js');
+importScripts('/workers/classes.js');
 
 function executeExpression(regex, flags, testString) {
     !flags.includes("d") && (flags += "d");

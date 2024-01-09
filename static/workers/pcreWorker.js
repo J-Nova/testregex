@@ -1,5 +1,5 @@
-importScripts('./classes.js');
-importScripts("./libs/pcrelib16.js");
+importScripts('/workers/classes.js');
+importScripts("/workers/libs/pcrelib16.js");
 
 // @ts-nocheck
 function callout(_) {

@@ -1,5 +1,5 @@
-importScripts("./libs/javalib.js");
-importScripts('./classes.js');
+importScripts("/workers/libs/javalib.js");
+importScripts('/workers/classes.js');
 main(); // Run function to initialize java library.
 
 const error_messages = ["out of stack space", "too much recursion", "maximum call stack size exceeded"];

@@ -105,7 +105,7 @@
 	}
 </script>
 
-<Modal show={Popup} />
+<!-- <Modal show={Popup} /> -->
 <div class="grid grid-cols-6 gap-2 h-full">
 	<div class="settings-content flex flex-col justify-between gap-1 col-span-1">
 		<div>
