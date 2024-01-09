@@ -10,9 +10,6 @@ const config = {
 	],
 	build: {
 		minify: true,
-	},
-	server: {
-		port: 3006,
 	}
 };
 
