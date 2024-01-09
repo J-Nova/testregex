@@ -15,4 +15,4 @@ EXPOSE 3500
 EXPOSE 80
 EXPOSE 443
 
-CMD ["node", "./server.js"]
+CMD ["node", "./server/server.js"]
