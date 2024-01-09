@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary: #747474;
+    --secondary: #272727;
+    --tertiary: #FF652F;
+    --senary: #3cb371;
+    --quaternary: #FFE400;
+    --background-color: #1A1A1D;
+    --primary-text-color: #8a8a8e;
+    --secondary-text-color: #252525;
+
+    --border-color: #9d9d9da6;
+
+    --match_color_1: #5286AA;
+    --match_color_2: #1A5593;
+
+    --base-status-color: #565656;
+    --error-status-color: #9b3737;
+    --match-status-color: #3cb371;
+    --no-match-status-color: #377d9b;
+    --timeout-status-color: #9b8537;
+
+
+
+    --highlight-color: #f1f1f14d;
+    --button-border-color: #d75526;
+
+    --checked-border-color: #3cb371;
+    --unchecked-border-color: #9b3737;
+
+    --flag-color: #3cb371;
+
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Courier', monospace;
+
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+
+body {
+    tab-size: 4;
+    background-color: var(--background-color);
+}
+
+::-webkit-scrollbar {
+    border-radius: 0.5rem;
+    border: 0.125rem solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 0.5rem;
+    border: 0.125rem solid var(--border-color);
+}
+
+::placeholder {
+    color: var(--secondary-text-color);
+}
+
+.right-container {
+    background-color: var(--primary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 10px 3px rgb(0 0 0 / 20%);
+    height: 30%;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+h2,
+h1 {
+    text-transform: uppercase;
+    font-weight: 500;
+    height: fit-content;
+    word-wrap: break-word;
+    font-size: x-large;
+    user-select: none;
+}
+
+
+.codewrap {
+    height: 100% !important;
+}
+
+.codewindow {
+    height: 90% !important;
+    width: 100% !important;
+    background: var(--primary) !important;
+}
+
+.codecontent {
+    width: 100% !important;
+    height: 100% !important;
+}

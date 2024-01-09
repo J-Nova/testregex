@@ -1,0 +1,46 @@
+{
+	"name": "testregex.com",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"format": "prettier --write ./src/**/*.{js,svelte,html,ts} ./src/**/**/*.{js,svelte,html,ts}",
+		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/** --ignore-pattern '/src/app.css'",
+		"prod": "node ./server/server.js"
+	},
+	"devDependencies": {
+		"@babel/eslint-parser": "^7.23.3",
+		"@fontsource/fira-mono": "^4.5.10",
+		"@iconify/json": "^2.2.166",
+		"@iconify/svelte": "^3.1.6",
+		"@rollup/plugin-node-resolve": "^13.0.6",
+		"@sveltejs/adapter-node": "^2.0.2",
+		"@sveltejs/kit": "^2.0.7",
+		"@sveltejs/vite-plugin-svelte": "^3.0.1",
+		"@types/cookie": "^0.5.4",
+		"@zerodevx/svelte-toast": "^0.9.5",
+		"autoprefixer": "^10.4.16",
+		"eslint": "^8.56.0",
+		"eslint-plugin-svelte": "^2.35.1",
+		"postcss": "^8.4.33",
+		"prettier": "^2.8.8",
+		"prettier-plugin-svelte": "^2.10.1",
+		"svelte": "^4.2.8",
+		"svelte-check": "^3.6.2",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5.3.3",
+		"unplugin-icons": "^0.15.3",
+		"vite": "^5.0.11"
+	},
+	"type": "module",
+	"dependencies": {
+		"@rollup/plugin-commonjs": "^25.0.7",
+		"@zerodevx/svelte-json-view": "^1.0.7",
+		"express": "^4.18.2",
+		"regexp-tree": "^0.1.27",
+		"svelte-simple-modal": "^1.6.1"
+	}
+}
