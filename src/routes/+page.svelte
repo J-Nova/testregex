@@ -31,10 +31,6 @@
 </style>
 
 <script>
-	// @ts-nocheck
-	import Modal from "svelte-simple-modal";
-	import Popup from "$components/WIPPopup.svelte";
-
 	import { editor, test, match } from "$lib/stores.js";
 	import { updateRegex } from "$lib/matcher.js";
 	import { testHighlighter } from "$lib/explainer.js";
@@ -105,7 +101,6 @@
 	}
 </script>
 
-<!-- <Modal show={Popup} /> -->
 <div class="grid grid-cols-6 gap-2 h-full">
 	<div class="settings-content flex flex-col justify-between gap-1 col-span-1">
 		<div>
