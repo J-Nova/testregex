@@ -38,7 +38,7 @@
 </script>
 
 <div class="grid grid-cols-8 gap-2 w-full">
-	<h2 class="col-span-3 w-full text-white">regular expression</h2>
+	<h2 class="col-span-3 w-full mt-3 text-white text-base">regular expression</h2>
 	<Optimize />
 	<Transpile />
 	<span
@@ -78,7 +78,7 @@
 	<Flags />
 </div>
 
-<h2 class="mt-4 text-white">test data</h2>
+<h2 class="mt-6 text-white text-base">test data</h2>
 <div
 	class="container w-full flex flex-row flex-wrap h-auto overflow-y-auto rounded mb-2 shadow"
 	contenteditable="true"

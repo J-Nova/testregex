@@ -1,6 +1,5 @@
 <style>
-	input,
-	button {
+	input {
 		border: 1px solid var(--tertiary);
 		width: 30%;
 	}
@@ -27,7 +26,8 @@
 		<p>Explain timeout:</p>
 		<input class="rounded" type="number" bind:value={$editor.explainTimeout} />
 	</span>
-	<span>
+	<!-- Currently not supported -->
+	<!-- <span>
 		<p>Show tooltips:</p>
 		<button
 			class="rounded"
@@ -44,5 +44,5 @@
 				$editor.visualizeSpecialCharacters = !$editor.visualizeSpecialCharacters;
 			}}>{$editor.visualizeSpecialCharacters}</button
 		>
-	</span>
+	</span> -->
 </div>
