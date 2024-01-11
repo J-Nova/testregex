@@ -12,3 +12,6 @@ vite.config.ts.timestamp-*
 .crt
 .key
 .ca-bundle
+/build/
+./build
+build
