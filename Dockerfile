@@ -1,4 +1,4 @@
-FROM node:19-alpine
+FROM node:latest
 
 ENV TZ=Europe/Amsterdam
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
