@@ -1,4 +1,4 @@
-FROM node:19-alpine
+FROM node:latest
 
 ENV TZ=Europe/Amsterdam
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -7,7 +7,7 @@ WORKDIR /webapp
 
 COPY . .
 RUN npm install --force
-# RUN npm run build
+RUN npm run build
 
 
 EXPOSE 3000
