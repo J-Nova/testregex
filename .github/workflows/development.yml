@@ -23,7 +23,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST_DEVELOPMENT }} >> ~/.ssh/known_hosts
 
       - name: Stopping containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker stop $(sudo docker ps -a -q) && sudo docker rm $(sudo docker ps -a -q) && sudo docker rmi $(sudo docker images -aq | head -3)'
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker stop $(sudo docker ps -a -q) > /dev/null && sudo docker rm $(sudo docker ps -a -q) > /dev/null && sudo docker rmi $(sudo docker images -aq | head -3) > /dev/null'
 
       - name: Deploying certificates
         run: |
