@@ -19,8 +19,8 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Stopping containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker stop $(sudo docker ps -a -q) > /dev/null && sudo docker rm $(sudo docker ps -a -q) > /dev/null && sudo docker rmi $(sudo docker images -aq | head -3) > /dev/null'
+      # - name: Stopping containers
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker stop $(sudo docker ps -a -q) > /dev/null && sudo docker rm $(sudo docker ps -a -q) > /dev/null && sudo docker rmi $(sudo docker images -aq | head -3) > /dev/null'
 
       - name: Deploying certificates
         run: |
@@ -45,4 +45,4 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
 
       - name: Deployment
-        run: ssh -o ServerAliveInterval=600 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker compose up -d"
+        run: ssh -o ServerAliveInterval=600 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker compose up --force-recreate -V -d"
