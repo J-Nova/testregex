@@ -6,13 +6,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /webapp
 
 COPY . .
-RUN npm install
-RUN npm run build
+RUN mkdir node_modules
+
+RUN npm ci --no-audit --force && \
+    npm run build
+
 
 
 EXPOSE 3000
 EXPOSE 3500
-EXPOSE 80
-EXPOSE 443
 
 CMD ["node", "./server/server.js"]
