@@ -45,7 +45,7 @@ jobs:
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git pull origin development"
           fi
 
-      - name: Deploy with rsync
+      - name: Deploy certificates
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:./testregex/server/
 
       - name: Deployment
