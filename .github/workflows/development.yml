@@ -37,4 +37,4 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:./testregex/server/
 
       - name: Deployment
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git pull && sudo docker compose up --build --force-recreate -V -d"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git pull --all && sudo docker compose up --build --force-recreate -V -d"
