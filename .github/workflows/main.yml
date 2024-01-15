@@ -20,7 +20,10 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       # - name: Stopping containers
-      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker stop $(sudo docker ps -a -q) > /dev/null && sudo docker rm $(sudo docker ps -a -q) > /dev/null && sudo docker rmi $(sudo docker images -aq | head -3) > /dev/null'
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
+
+      - name: Stopping containers
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'sudo docker ps -q --filter "name=$testregex" | xargs -r sudo docker stop | xargs -r sudo docker rm'
 
       - name: Deploying certificates
         run: |
@@ -45,4 +48,4 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
 
       - name: Deployment
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker compose up --force-recreate -V -d"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker build -t testregex . && sudo docker compose up --build --force-recreate -V -d"
