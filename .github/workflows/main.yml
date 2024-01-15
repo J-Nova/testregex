@@ -45,4 +45,4 @@ jobs:
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
 
       - name: Deployment
-        run: ssh -o ServerAliveInterval=600 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker build -t testregex . && sudo docker run -d -p 443:3500 -p 80:3000 testregex"
+        run: ssh -o ServerAliveInterval=600 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker compose up -d"
