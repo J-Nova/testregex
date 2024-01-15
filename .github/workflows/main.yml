@@ -40,7 +40,6 @@ jobs:
           else
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && git fetch --all && git reset --hard origin/main"
           fi
-
       - name: Deploy certificates
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
 
