@@ -1,18 +1,15 @@
 FROM node:latest
 
-ENV TZ=Europe/Amsterdam
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 WORKDIR /webapp
+EXPOSE 3000
+EXPOSE 3500
+CMD ["node", "./server/server.js"]
+
+COPY ./package.json .
+RUN npm install --no-audit --force 
 
 COPY . .
-RUN npm install --force
 RUN npm run build
 
 
-EXPOSE 3000
-EXPOSE 3500
-EXPOSE 80
-EXPOSE 443
 
-CMD ["node", "./server/server.js"]

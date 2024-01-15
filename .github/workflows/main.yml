@@ -1,10 +1,9 @@
-name: Deployment
-on: 
+name: main-deployment
+on:
   pull_request:
     branches:
       - main
     types: [closed]
-
 
 jobs:
   deployment:
@@ -16,37 +15,34 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: "temp"
-      
+
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      # - name: Stopping containers
-      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
-
       - name: Stopping containers
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'sudo docker ps -q --filter "name=$testregex" | xargs -r sudo docker stop | xargs -r sudo docker rm'
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'sudo docker stop $(sudo docker ps -q --filter "name=$testregex" 2>/dev/null) 2>/dev/null || true'
 
       - name: Deploying certificates
         run: |
-          touch cert.key
-          touch cert.crt
-          touch cert.ca-bundle
-
           echo "${{ secrets.CERT_KEY }}" > cert.key
           echo "${{ secrets.CERT_CRT }}" > cert.crt
           echo "${{ secrets.CERT_CA_BUNDLE }}" > cert.ca-bundle
-      
-      - name: Remove old files
+
+      - name: Check if repository exists
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '[ -d "testregex" ] || echo "not-cloned"'
+
+      - name: Clone or pull repository
         run: |
-            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf testregex"
-      
-      - name: Clone repository
-        run: |
+          REPO_STATUS=$(ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '[ -d "testregex" ] && echo "cloned" || echo "not-cloned"')
+          if [ "$REPO_STATUS" == "not-cloned" ]; then
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "git clone -b main https://github.com/J-Nova/testregex.git"
-      
-      - uses: GuillaumeFalourd/setup-rsync@v1.1
-      - name: Deploy with rsync
+          else
+            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && git pull origin main"
+          fi
+
+      - name: Deploy certificates
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
 
       - name: Deployment
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker build -t testregex . && sudo docker run -d -p 443:3500 -p 80:3000 testregex"
+        run: ssh -o ServerAliveInterval=10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && sudo docker compose up --build -d"
