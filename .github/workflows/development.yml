@@ -1,4 +1,4 @@
-name: dev-deployment
+name: dev-devloyment
 on:
   pull_request:
     branches:
@@ -22,6 +22,12 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST_DEVELOPMENT }} >> ~/.ssh/known_hosts
 
+      # - name: Stopping containers
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'CONTAINERS=$(sudo docker ps -a -q --format="{{.ID}}") && sudo docker stop $CONTAINERS'
+
+      - name: Stopping containers
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} 'sudo docker ps -q --filter "name=$testregex" | xargs -r sudo docker stop | xargs -r sudo docker rm'
+
       - name: Deploying certificates
         run: |
           touch cert.key
@@ -32,9 +38,17 @@ jobs:
           echo "${{ secrets.CERT_CRT }}" > cert.crt
           echo "${{ secrets.CERT_CA_BUNDLE }}" > cert.ca-bundle
 
+      - name: Remove old files
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "rm -rf testregex"
+
+      - name: Clone repository
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "git clone -b development https://github.com/J-Nova/testregex.git"
+
       - uses: GuillaumeFalourd/setup-rsync@v1.1
-      - name: Deploy certificates with rsync
+      - name: Deploy with rsync
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }}:./testregex/server/
 
       - name: Deployment
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git pull --all && sudo docker compose up --build --force-recreate -V -d"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && sudo docker compose up --build --force-recreate -V -d"
