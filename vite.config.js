@@ -10,7 +10,6 @@ const config = {
 	],
 	build: {
 		minify: true,
-		outDir: 'public'
 	}
 };
 
