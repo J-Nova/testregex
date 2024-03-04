@@ -1,6 +1,7 @@
 name: dev-deployment
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - development
@@ -8,6 +9,7 @@ on:
   push:
     branches:
       - development
+  
 
 jobs:
   deployment:
