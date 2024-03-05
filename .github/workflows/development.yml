@@ -45,7 +45,7 @@ jobs:
           if [ "$REPO_STATUS" == "not-cloned" ]; then
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "git clone -b development https://github.com/J-Nova/testregex.git"
           else
-            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git checkout development&& git pull --all && git reset --hard origin/development"
+            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_DEVELOPMENT }} "cd testregex && git checkout development && git pull --all && git reset --hard origin/development"
           fi
 
       - name: Deploy certificates

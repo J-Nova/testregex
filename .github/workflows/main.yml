@@ -10,6 +10,8 @@ jobs:
   deployment:
     if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -39,7 +41,7 @@ jobs:
           if [ "$REPO_STATUS" == "not-cloned" ]; then
             ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "git clone -b main https://github.com/J-Nova/testregex.git"
           else
-            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && git pull --all && git checkout main && git reset --hard origin/main"
+            ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd testregex && git checkout main && git pull --all && git reset --hard origin/main"
           fi
       - name: Deploy certificates
         run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:./testregex/server/
