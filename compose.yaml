@@ -1,6 +1,0 @@
-services:
-  testregex:
-    build: .
-    ports:
-      - 443:3500
-      - 80:3000
