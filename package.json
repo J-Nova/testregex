@@ -8,8 +8,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write ./src/**/*.{js,svelte,html,ts} ./src/**/**/*.{js,svelte,html,ts}",
-		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/** --ignore-pattern '/src/app.css'",
-		"prod": "node --max-old-space-size=4096 ./server/server.js"
+		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/** --ignore-pattern '/src/app.css'"
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.23.3",
