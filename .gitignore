@@ -14,11 +14,8 @@ vite.config.ts.timestamp-*
 .ca-bundle
 /build/
 ./build
-<<<<<<< HEAD
 build
 ./node_modules
 /node_modules
 node_modules/
-=======
-build
->>>>>>> origin/main
+/dist
