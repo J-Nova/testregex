@@ -1,42 +1,3 @@
-<style>
-	input::placeholder {
-		color: var(--primary-text-color);
-	}
-
-	input {
-		background-color: var(--background-color);
-		color: var(--primary-text-color);
-	}
-	.border-color {
-		border: 1px solid var(--border-color);
-	}
-
-	.result-item {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		background-color: inherit;
-		border: none;
-		width: 100%;
-		cursor: pointer;
-	}
-
-	.desc {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-		flex-grow: 1;
-		text-align: left;
-		margin-right: 10px;
-	}
-
-	.token {
-		color: #3cb371;
-		white-space: nowrap;
-		flex-shrink: 1;
-	}
-</style>
-
 <script>
 	// @ts-nocheck
 	import { quickref } from "$lib/quickref.js";
@@ -97,7 +58,7 @@
 	let searchString = undefined;
 </script>
 
-<div class="right-container row-span-1 rounded shadow">
+<div class="card p-4 flex-grow flex flex-col max-h-[45svh]">
 	{#if highlightItem !== undefined}
 		<Item
 			item={highlightItem}
@@ -106,42 +67,53 @@
 			}}
 		/>
 	{:else}
-		<h2>Lookup</h2>
-		<div class="grid grid-cols-2 gap-2">
-			<div class="col-span-1 w-full p-1">
+		<h2 class="font-semibold mb-2">Lookup</h2>
+		<div class="grid grid-cols-2 gap-4 flex-grow overflow-hidden">
+			<div class="col-span-1 w-full">
 				<input
 					type="text"
 					placeholder="Search..."
 					spellcheck="false"
 					on:keyup={search}
 					bind:value={searchString}
-					class="w-full rounded p-1 cursor-text"
+					class="w-full p-2 mb-3 themed-bg border themed-border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
 				/>
-				<button
-					class="w-full text-left uppercase p-1 mt-1 mb-1 border-color rounded border"
-					on:click={_ => getCategoryData("all")}>All tokens</button
-				>
-				{#each Object.keys(quickref) as category}
+				<div class="space-y-2 overflow-y-auto grow justify-start h-full">
 					<button
-						class="w-full text-left uppercase p-0.5 mt-1 mb-1 rounded border-color"
-						on:click={_ => getCategoryData(category)}
+						class="w-full text-left p-2 themed-bg border themed-border rounded-lg hover:bg-opacity-80 transition-colors secondary-text"
+						on:click={_ => getCategoryData("all")}
 					>
-						{category}
+						<span class="secondary-text font-semibold">All tokens</span>
 					</button>
-				{/each}
+					{#each Object.keys(quickref) as category}
+						<button
+							class="w-full text-left p-2 themed-bg border themed-border rounded-lg hover:bg-opacity-80 hover:bg-slate-500 transition-colors secondary-text capitalize"
+							on:click={_ => getCategoryData(category)}
+						>
+							<span class="secondary-text font-semibold">{category}</span>
+						</button>
+					{/each}
+				</div>
 			</div>
-			<div class="col-span-1">
-				{#each selectedItems as item}
-					<button
-						class="result-item"
-						on:click={_ => {
-							highlighter(item);
-						}}
-					>
-						<div class="desc">{item.desc}</div>
-						<div class="token">{item.token}</div>
-					</button>
-				{/each}
+			<div class="col-span-1 flex flex-col overflow-hidden h-full">
+				<div class="space-y-2 overflow-y-auto flex-grow justify-start">
+					{#each selectedItems as item}
+						<button
+							class="w-full flex justify-between p-2 themed-bg border themed-border rounded-lg hover:bg-opacity-80 transition-colors hover:text-blue-500"
+							on:click={_ => {
+								highlighter(item);
+							}}
+						>
+							<span
+								class="text-left flex-grow text-ellipsis overflow-hidden whitespace-nowrap mr-2"
+								>{item.desc}</span
+							>
+							<span class="text-green-500 whitespace-nowrap flex-shrink-0"
+								>{item.token}</span
+							>
+						</button>
+					{/each}
+				</div>
 			</div>
 		</div>
 	{/if}

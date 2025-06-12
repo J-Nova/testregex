@@ -10,7 +10,6 @@
 		"format": "prettier --write ./src/**/*.{js,svelte,html,ts} ./src/**/**/*.{js,svelte,html,ts}",
 		"lint": "eslint --quiet --ext .js --ext .svelte --ignore-pattern '/src/app.html' ./src/** --ignore-pattern '/src/app.css'",
 		"start": "node dist/index.js"
-
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.23.3",
@@ -40,6 +39,7 @@
 		"@rollup/plugin-commonjs": "^25.0.7",
 		"@zerodevx/svelte-json-view": "^1.0.7",
 		"express": "^4.18.2",
+		"lucide-svelte": "^0.514.0",
 		"regexp-tree": "^0.1.27",
 		"svelte-simple-modal": "^1.6.1"
 	}

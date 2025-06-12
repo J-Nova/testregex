@@ -25,7 +25,7 @@
 <button
 	type="button"
 	on:click={getTranspiledExpression}
-	class="rounded text-white select-none border shadow col-span-2 text-center 2xl:text-sm text-xs self-center cursor-pointer"
+	class="rounded text-secondary px-1 select-none border shadow font-semibold text-center text-xs self-center cursor-pointe"
 >
 	Transpile expression
 </button>

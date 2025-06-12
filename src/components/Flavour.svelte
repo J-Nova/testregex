@@ -37,7 +37,7 @@
 	$: flavors = Object.keys(FLAVORS);
 </script>
 
-<div class="flex flex-col gap-1 select-none">
+<!-- <div class="flex flex-col gap-1 select-none">
 	<h2 class="p-2 text-white">Flavour</h2>
 	<div class="container p-2">
 		{#each flavors as availableFlavor}
@@ -49,6 +49,22 @@
 				on:click={_ => selectFlavour(availableFlavor)}
 			>
 				<Icon class="icon mr-1" icon="carbon:{className(availableFlavor)}" />
+				{availableFlavor}
+			</button>
+		{/each}
+	</div>
+</div> -->
+
+<!-- Flavour Section -->
+<div class="card p-4">
+	<h2 class="font-semibold mb-3">Flavour</h2>
+	<div class="space-y-2">
+		{#each flavors as availableFlavor}
+			<button
+				class={`w-full text-left p-2 rounded-lg transition hover:bg-gray-100 dark:hover:bg-gray-700 
+				${className(availableFlavor)}`}
+				on:click={_ => selectFlavour(availableFlavor)}
+			>
 				{availableFlavor}
 			</button>
 		{/each}

@@ -71,3 +71,20 @@ class MatchData {
 export let editor = writable(new Editor());
 export let test = writable(new Test());
 export let match = writable(new MatchData());
+
+class Theme {
+	constructor() {
+		this.darkMode = false;
+	}
+
+	clear() {
+		this.darkMode = false;
+	}
+
+	// Add this method
+	toggleDarkMode() {
+		this.darkMode = !this.darkMode;
+	}
+}
+
+export let theme = writable(new Theme())

@@ -1,31 +1,12 @@
 <style>
-	.checked {
-		border: 1px solid var(--checked-border-color);
-		color: var(--checked-text-color);
-	}
-
-	.unchecked {
-		border: 1px solid var(--unchecked-border-color);
-		color: var(--unchecked-text-color);
-	}
-
-	.checked:hover,
-	.unchecked:hover {
-		background-color: var(--highlight-color);
-	}
-
 	.dropdown-content {
-		border: 1px solid var(--border-color);
 		display: none;
 		position: absolute;
-		background-color: var(--secondary);
 		z-index: 1;
 		word-wrap: break-word;
-		box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);
-		border-radius: 3px;
-		max-height: 30rem;
 		overflow: auto;
-		max-width: 15rem;
+		max-height: 30rem;
+		max-width: fit-content;
 	}
 
 	.container:hover .dropdown-content {
@@ -47,9 +28,9 @@
 
 	function checkedDelimiter(delim) {
 		if ($test.delimiter === delim) {
-			return "checked";
+			return true;
 		} else {
-			return "unchecked";
+			return false;
 		}
 	}
 
@@ -61,17 +42,21 @@
 		<span>{flavorObj.start}</span>
 		<span>{$test.delimiter}</span>
 	</div>
-	<div class="dropdown-content gap-1 p-2 rounded">
+	<div
+		class="dropdown-content gap-1 p-2 rounded-md bg-gray-100 dark:bg-gray-700 shadow-lg"
+	>
 		{#each availableDelimiters as delimiter}
 			<button
 				type="button"
 				on:click={_ => {
 					setDelimiter(delimiter);
 				}}
-				class={`rounded p-2 text-xl ${checkedDelimiter(delimiter)}`}
+				class="border border-gray-400 rounded p-2 text-xl {checkedDelimiter(delimiter)
+					? 'bg-gray-300 hover:bg-gray-500 dark:hover:bg-gray-400'
+					: 'hover:bg-gray-200 hover:dark:bg-gray-600'}"
 			>
-				{delimiter}
-			</button>
+				<span>{delimiter}</span></button
+			>
 		{/each}
 	</div>
 </div>

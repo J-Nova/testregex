@@ -3,44 +3,18 @@
 		background: var(--primary);
 		border-radius: 8px;
 	}
-	.checked {
-		border: 1px solid var(--checked-border-color);
-		border-radius: 3px;
-		color: var(--primary-text-color);
-		cursor: pointer;
-	}
-
-	.unchecked {
-		border: 1px solid var(--unchecked-border-color);
-		border-radius: 3px;
-		color: var(--primary-text-color);
-		cursor: pointer;
-	}
-
-	.checked:hover,
-	.unchecked:hover {
-		background-color: var(--highlight-color);
-	}
 
 	.dropdown-content {
-		border: 1px solid var(--border-color);
 		display: none;
 		position: absolute;
-		background-color: var(--secondary);
 		z-index: 1;
 		word-wrap: break-word;
-		box-shadow: 0 0 10px 3px rgb(0 0 0 / 50%);
 		border-radius: 3px;
 		max-height: 30rem;
 		overflow: auto;
-		max-width: 15rem;
+		max-width: fit-content;
 		user-select: none;
-	}
-
-	.dropdown-content #flag {
-		display: block;
-		padding: 2px;
-		border-radius: 3px;
+		border: 1px solid var(--border-color);
 	}
 
 	.container:hover .dropdown-content {
@@ -48,18 +22,7 @@
 		flex-direction: column;
 		gap: 10px;
 		padding: 10px;
-	}
-
-	.dropbtn {
-		padding: 0px 12px;
-		font-size: x-large;
-		border: none;
-		cursor: pointer;
-		color: var(--flag-color);
-	}
-
-	.full {
-		font-weight: bold;
+		width: fit-content;
 	}
 </style>
 
@@ -80,9 +43,9 @@
 
 	function checkedFlag(flag) {
 		if ($test.flags.includes(Object.keys(flag)[0])) {
-			return "checked";
+			return true;
 		} else {
-			return "unchecked";
+			return false;
 		}
 	}
 
@@ -90,23 +53,30 @@
 </script>
 
 <div class="container w-min">
-	<span class="dropbtn">
-		{$test.flags.length > 0 ? $test.getFlags() : "-"}
-	</span>
-	<div class="dropdown-content">
+	<div class="text-lg flex flex-row gap-0">
+		<span>{$test.flags.length > 0 ? $test.getFlags() : "-"}</span>
+	</div>
+	<div
+		class="dropdown-content gap-1 p-2 rounded-md bg-gray-100 dark:bg-gray-700 shadow-lg"
+	>
 		{#each availableFlags as availableFlag}
 			<button
 				type="button"
 				on:click={_ => {
 					setFlags(availableFlag);
 				}}
-				class={checkedFlag(availableFlag)}
-				id="flag"
+				class="border border-gray-400 rounded p-2 text-xl {checkedFlag(availableFlag)
+					? 'bg-gray-300 hover:bg-gray-500 dark:hover:bg-gray-400'
+					: 'hover:bg-gray-200 hover:dark:bg-gray-600'}"
 			>
-				<span id="flag" class="full"
-					>{availableFlag[Object.keys(availableFlag)[0]].full}</span
-				>
-				<span>{availableFlag[Object.keys(availableFlag)[0]].desc}</span>
+				<div class="text-left">
+					<div class="font-bold">
+						{availableFlag[Object.keys(availableFlag)[0]].full}
+					</div>
+					<div class="text-sm">
+						{availableFlag[Object.keys(availableFlag)[0]].desc}
+					</div>
+				</div>
 			</button>
 		{/each}
 	</div>

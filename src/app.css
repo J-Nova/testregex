@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
     --primary: #747474;
     --secondary: #272727;
     --tertiary: #FF652F;
@@ -106,4 +106,100 @@ h1 {
 .codecontent {
     width: 100% !important;
     height: 100% !important;
+} */
+
+
+:root {
+    --background-light: #ffffff;
+    --text-light: #111827;
+    --primary-light: #4f46e5;
+    --secondary-light: #e0e7ff;
+    --border-light: #e5e7eb;
+    --card-light: #f9fafb;
+
+    --background-dark: #111827;
+    --text-dark: #f9fafb;
+    --primary-dark: #6366f1;
+    --secondary-dark: #312e81;
+    --border-dark: #374151;
+    --card-dark: #1f2937;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.theme-light {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+.theme-dark {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+.card {
+    border-radius: 0.75rem;
+    border-width: 1px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.theme-light .card {
+    background-color: var(--card-light);
+    border-color: var(--border-light);
+}
+
+.theme-dark .card {
+    background-color: var(--card-dark);
+    border-color: var(--border-dark);
+}
+
+.theme-light .themed-border {
+    border-color: var(--border-light);
+}
+
+.theme-dark .themed-border {
+    border-color: var(--border-dark);
+}
+
+.theme-light .themed-bg {
+    background-color: var(--background-light);
+}
+
+.theme-dark .themed-bg {
+    background-color: var(--background-dark);
+}
+
+.theme-light .primary-text {
+    color: var(--primary-light);
+}
+
+.theme-dark .primary-text {
+    color: var(--primary-dark);
+}
+
+.theme-light .secondary-bg {
+    background-color: var(--secondary-light);
+}
+
+.theme-dark .secondary-bg {
+    background-color: var(--secondary-dark);
+}
+
+.theme-light .secondary-text {
+    color: #6b7280;
+}
+
+.theme-dark .secondary-text {
+    color: #9ca3af;
+}
+
+.highlight {
+    background-color: var(--secondary-light);
+}
+
+.theme-dark .highlight {
+    background-color: var(--secondary-dark);
 }

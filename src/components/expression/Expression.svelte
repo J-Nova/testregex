@@ -1,22 +1,3 @@
-<style>
-	.result {
-		border: 1px solid var(--border-color);
-		text-align: center;
-		color: var(--secondary-text-color);
-		user-select: none;
-	}
-
-	.input {
-		background-color: var(--primary);
-		border: 1px solid var(--border-color);
-	}
-
-	.container {
-		border: 1px solid var(--border-color);
-		background-color: var(--primary);
-	}
-</style>
-
 <script>
 	// @ts-nocheck
 	import { createEventDispatcher } from "svelte";
@@ -31,74 +12,74 @@
 	let testTextArea;
 
 	function matchStatus() {
-		return `${$editor.getMatchStatus()} - ${$match.result.time ?? 0} ms`;
+		return `${$editor.getMatchStatus()} - ${($match.result.time ?? 0).toFixed(2)} ms`;
 	}
 
 	$: status = matchStatus($match.testHighlight);
+
+	// Function to handle updates to the expression
+	function handleExpressionInput(event) {
+		test.update(currentTest => {
+			currentTest.expression = event.target.value;
+			return currentTest;
+		});
+		dispatch("update", true);
+	}
+
+	// Function to handle updates to the test string
+	function handleTestStringInput(event) {
+		test.update(currentTest => {
+			currentTest.testString = event.target.value;
+			return currentTest;
+		});
+		dispatch("update", false);
+	}
 </script>
 
-<div class="grid grid-cols-8 gap-2 w-full">
-	<h2 class="col-span-3 w-full mt-3 text-white text-base">regular expression</h2>
-	<Optimize />
-	<Transpile />
-	<span
-		class="col-span-1 result rounded self-center text-xs font-bold"
-		style="background-color:var({$editor.statusColor})"
-	>
-		{status}
-	</span>
-</div>
+<main class="lg:col-span-5 flex flex-col space-y-4">
+	<div class="card p-4 flex flex-col">
+		<div class="flex items-center justify-between mb-2">
+			<div class="flex flex-row gap-2">
+				<h2 class="font-semibold">Regular Expression</h2>
+				<span
+					class="col-span-1 result rounded self-center text-xs font-bold"
+					style="background-color:var({$editor.statusColor})"
+				>
+					{status}
+				</span>
+			</div>
+			<div class="flex flex-row gap-1">
+				<Optimize />
+				<Transpile />
+			</div>
+			<div class="flex flex-row gap-1 items-center">
+				<Options />
+				<Flags />
+			</div>
+		</div>
 
-<div class="input rounded shadow w-full flex flex-row">
-	<Options />
-	<div
-		class="w-full flex flex-row flex-wrap h-auto overflow-y-auto"
-		contenteditable="true"
-		role="textbox"
-		tabindex="0"
-		on:click={_ => {
-			expressionTextArea.innerHTML = "";
-			expressionTextArea.textContent = $test.expression;
-			// Set cursor to end of expression
-			if (expressionTextArea.childNodes[0] != undefined) {
-				var range = document.createRange();
-				var sel = window.getSelection();
-				range.setStart(expressionTextArea.childNodes[0], $test.expression.length);
-				range.collapse(true);
-				sel.removeAllRanges();
-				sel.addRange(range);
-			}
-			expressionTextArea.focus();
-		}}
-		on:keyup={_ => dispatch("update", true)}
-		bind:this={expressionTextArea}
-		bind:textContent={$test.expression}
-	/>
-	<Options />
-	<Flags />
-</div>
-
-<h2 class="mt-6 text-white text-base">test data</h2>
-<div
-	class="container w-full flex flex-row flex-wrap h-auto overflow-y-auto rounded mb-2 shadow"
-	contenteditable="true"
-	role="textbox"
-	tabindex="0"
-	on:click={_ => {
-		testTextArea.innerHTML = "";
-		testTextArea.textContent = $test.testString;
-		// Set cursor to end of expression
-		if (testTextArea.childNodes[0] != undefined) {
-			var range = document.createRange();
-			var sel = window.getSelection();
-			range.setStart(testTextArea.childNodes[0], $test.testString.length);
-			range.collapse(true);
-			sel.removeAllRanges();
-			sel.addRange(range);
-		}
-		testTextArea.focus();
-	}}
-	on:keyup={_ => dispatch("update", false)}
-	bind:this={testTextArea}
-	bind:textContent={$test.testString}
-/>
+		<div class="relative flex-grow">
+			<textarea
+				id="regex-input"
+				class="w-full p-3 themed-bg border themed-border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+				placeholder="/your-regex/flags"
+				on:input={handleExpressionInput}
+				bind:this={expressionTextArea}
+				value={$test.expression}
+			/>
+		</div>
+	</div>
+	<div class="card p-4 max-h-[80svh] flex-grow flex flex-col">
+		<h2 class="font-semibold mb-2">Test Data</h2>
+		<div class="relative flex-grow">
+			<textarea
+				id="test-output"
+				class="w-full h-full p-3 themed-bg border themed-border rounded-lg resize-none whitespace-pre-wrap"
+				on:input={handleTestStringInput}
+				bind:this={testTextArea}
+				value={$test.testString}
+				placeholder="This is some test data to demonstrate the matching. You can type here."
+			/>
+		</div>
+	</div>
+</main>

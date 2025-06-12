@@ -1,37 +1,5 @@
-<style>
-	.settings-content {
-		background-color: var(--secondary);
-		color: var(--primary-text-color);
-	}
-
-	.main-content {
-		grid-template-rows: 3rem 2.5rem 4rem auto;
-		padding: 0rem 1rem 0rem 1rem;
-		background-color: var(--secondary);
-	}
-
-	.informative-content {
-		background-color: var(--secondary);
-		color: var(--secondary-text-color);
-	}
-
-	@media screen and (max-width: 800px) {
-		.informative-content {
-			display: none;
-			visibility: hidden;
-		}
-	}
-
-	@media screen and (max-width: 900px) {
-		.settings-content {
-			display: none;
-			visibility: hidden;
-		}
-	}
-</style>
-
 <script>
-	import { editor, test, match } from "$lib/stores.js";
+	import { editor, test, match, theme } from "$lib/stores.js";
 	import { updateRegex } from "$lib/matcher.js";
 	import { testHighlighter } from "$lib/explainer.js";
 
@@ -39,10 +7,11 @@
 	import Matchinformation from "$components/information/Matchinformation.svelte";
 	import Matchexplanation from "$components/information/Matchexplanation.svelte";
 	import Expression from "$components/expression/Expression.svelte";
-	import Socials from "$components/Socials.svelte";
 	import Flavour from "$components/Flavour.svelte";
 	import Tools from "$components/tools/Tools.svelte";
 	import Settings from "$components/settings/Settings.svelte";
+	import { Github, Linkedin, ScanLine } from "lucide-svelte";
+	import Socials from "$components/settings/Socials.svelte";
 
 	function updateExpression(explain) {
 		if ($test.expression.length == 0) {
@@ -101,22 +70,43 @@
 	}
 </script>
 
-<div class="grid grid-cols-6 gap-2 h-full">
+<div
+	id="app"
+	class={`h-screen p-4 grid grid-cols-1 lg:grid-cols-10 gap-4 ${
+		$theme.darkMode ? "theme-dark" : "theme-light"
+	}`}
+>
 	<div class="settings-content flex flex-col justify-between gap-1 col-span-1">
-		<div>
-			<Socials />
-			<Flavour />
-			<Tools />
-		</div>
-		<Settings />
-	</div>
-	<div class="main-content grid col-span-3">
-		<Expression on:update={updateExpression} />
+		<!-- Left Sidebar -->
+		<aside class="lg:col-span-2 flex flex-col justify-between space-y-4">
+			<div class="space-y-4">
+				<div class="flex items-center space-x-2">
+					<ScanLine class="primary-text" />
+					<h1 class="text-xl font-bold">TestRegex</h1>
+				</div>
+
+				<!-- Flavour Section -->
+				<Flavour />
+
+				<!-- Tools Section -->
+				<Tools />
+			</div>
+
+			<!-- Settings & Socials -->
+			<div class="space-y-2">
+				<Socials />
+				<Settings />
+			</div>
+		</aside>
 	</div>
 
-	<div class="informative-content col-span-2 p-4 grid-rows-3 max-h-screen">
+	<Expression on:update={updateExpression} />
+
+	<aside class="lg:col-span-3 flex flex-col space-y-4">
 		<Matchexplanation />
+
 		<Matchinformation />
+
 		<Quickref />
-	</div>
+	</aside>
 </div>
