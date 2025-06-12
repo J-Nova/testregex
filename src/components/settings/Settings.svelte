@@ -15,17 +15,24 @@
 	$: popup = undefined;
 </script>
 
-<Modal show={popup} />
+<Modal
+	classWindowWrap="fixed inset-0 z-50 flex items-center justify-center p-4"
+	classWindow="w-full max-w-4xl max-h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl"
+	classContent="w-full h-full overflow-hidden"
+	show={popup}
+/>
 
-<div class="card p-2 flex items-center justify-between">
+<div class="card p-4 flex items-center justify-between">
 	<button
-		on:click={_ => {
+		on:click={() => {
 			popup = EditPopup;
 		}}
-		id="theme-toggle"
-		class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+		class="flex items-center space-x-2 p-3 rounded-lg transition-colors
+			   cursor-pointer themed-bg border themed-border
+			   hover:shadow-sm hover:bg-opacity-80
+			   focus:outline-none focus:ring-2 focus:ring-indigo-500"
 	>
-		<span class="text-sm font-medium">Settings</span>
+		<span class="font-medium">Settings</span>
 	</button>
 	<!-- <Moon
 		class="w-5 h-5 cursor-pointer select-none"
